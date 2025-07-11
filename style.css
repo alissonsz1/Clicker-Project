@@ -1,0 +1,44 @@
+/* O estilo do body, onde dentro do body tem o container */
+body {
+    display: flex;
+    font-family: sans-serif;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    text-align: center;
+    background-color: #fdf6e3;
+
+    margin: 0px;
+    padding: 0;
+}
+
+/* O container que envolve todo o conteúdo principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+}
+
+/* O estilo do botão, que é o botão de clicar e o botão de upgrade */
+button {
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    background-color: #ffcc66;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, ease-in-out 0.2s;
+}
+
+/* As animações */
+button:hover {
+    transform: scale(1.1);
+}
+
+button:active {
+    transform: scale(1);
+}
