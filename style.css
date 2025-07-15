@@ -2,16 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 
 /* Reseta o estilo das listas */
-ul,
-ol {
-      list-style: none;
-}
+ul, ol { list-style: none; }
+img { max-width: 100%; }
 
-img {
-    max-width: 100%;
-}
-
+/* Põe a fonte global */
 * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: "Jersey 15", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -24,7 +22,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     height: 100vh;
     text-align: center;
     background-color: #fdf6e3;
@@ -33,7 +31,7 @@ body {
     padding: 0;
 }
 
-/*  */
+/* O elemento principal */
 main {
     margin: 0 auto;
     max-width: 1000px;
@@ -42,6 +40,10 @@ main {
     flex-direction: row;
     align-items: center;
     gap: 2em;
+}
+
+h1 {
+    padding-bottom: 1em;
 }
 
 /* O container que envolve a seção da esquerda */
@@ -58,10 +60,10 @@ main {
     display: flex;
     flex-direction: column;
     padding: 1em;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 3px solid gainsboro;
 
-    flex-basis: 350px;
+    flex-basis: 400px;
     background-color: rgb(74, 74, 74);
     height: 500px;
     max-height: 70vh;
@@ -77,7 +79,7 @@ main {
 
 /* Conteúdo do cotainer da direita */
 .container-content {
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-top: 2em;
 }
 
@@ -118,7 +120,8 @@ button {
 /* Os botões que ficam para trocar entre a aba de upgrades e de estruturas */
 /* Todos eles, no principio, ficam com essa aparência de "apagados" */
 .button-header {
-    font-size: 1.2em;
+    font-size: 1.3em;
+    text-transform: uppercase;
     flex-grow: 1;
     padding: 1em;
     color: rgb(153, 153, 153);
@@ -156,6 +159,7 @@ button {
     transform: scale(1);
 }
 
+/* Responsividade para o container da direita */
 @media (max-width: 600px) {
     main {
         padding-top: 10rem;
@@ -168,4 +172,80 @@ button {
         width: 100%;
         flex: 1 0 auto;
     }
+}
+
+/* EVENTO ALEATÓRIO DO CAFÉ */
+
+#coffee-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden; /* garante que cafés não escapem */
+    pointer-events: none;
+}
+
+.coffee-wrapper {
+    --time: 5s;
+    position: absolute;
+    display: block;
+    opacity: 0;
+    transform: scale(0) rotate(0);
+
+    transform-origin: center;
+    will-change: transform;
+    transition: opacity var(--time) linear, transform var(--time) ease;
+}
+
+.coffee-wrapper.fade-out {
+    transition: opacity var(--time) linear, transform var(--time) ease;
+}
+
+.coffee {
+    display: block;
+    width: 96px;
+    height: 96px;
+    cursor: pointer;
+    background-size: 96px 96px;
+    background-image: url('./assets/coffee.png');
+    background-position: 0 0;
+
+    pointer-events: auto;
+    transform-origin: center;
+    will-change: transform;
+    z-index: 1000000000000;
+}
+
+.alert-coffee {
+    color: rgb(255, 255, 255);
+    width: 200px;
+    display: block;
+    position: absolute;
+    text-shadow: black 0 0 10px;
+    transform: translate(calc(-50% + 48px), 0);
+    opacity: 0;
+
+    z-index: 10000000000000000;
+    transition: opacity .5s linear, transform 1s ease-out;
+}
+
+/* Animações */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes tilt {
+  0% { rotate: 0deg; }
+  17% { rotate: -3deg; }
+  34% { rotate: 3deg; }
+  51% { rotate: 0deg; }
+  68% { rotate: 3deg; }
+  85% { rotate: -3deg; }
+  100% { rotate: 0deg; }
 }
