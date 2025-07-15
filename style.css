@@ -1,3 +1,22 @@
+/* importa a fonte */
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
+
+/* Reseta o estilo das listas */
+ul,
+ol {
+      list-style: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+* {
+    font-family: "Jersey 15", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 /* O estilo do body, onde dentro do body tem o container */
 body {
     display: flex;
@@ -5,6 +24,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    font-size: 1.3rem;
     height: 100vh;
     text-align: center;
     background-color: #fdf6e3;
@@ -13,18 +33,111 @@ body {
     padding: 0;
 }
 
-/* O container que envolve todo o conteúdo principal */
-.container {
+/*  */
+main {
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+}
+
+/* O container que envolve a seção da esquerda */
+.container-left {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-
 }
 
-/* O estilo do botão, que é o botão de clicar e o botão de upgrade */
+/* O container que envolve a seção da direita */
+.container-right {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    border-radius: 5px;
+    border: 3px solid gainsboro;
+
+    flex-basis: 350px;
+    background-color: rgb(74, 74, 74);
+    height: 500px;
+    max-height: 70vh;
+    overflow-y: hidden;
+}
+
+/* Onde estão os botões para torcar entre abas */
+.container-header {
+    margin: -1em;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Conteúdo do cotainer da direita */
+.container-content {
+    overflow-y: scroll;
+    margin-top: 2em;
+}
+
+/* Lista que armazena os upgrades/estruturas */
+.content-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.content-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: .5em;
+    border-radius: 5px;
+    border: 3px solid gainsboro;
+    color: gainsboro;
+    background-color: rgb(114, 114, 114);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.item-icon {
+    aspect-ratio: 1/1;
+    width: 50px;
+}
+
+/* Todos os botões resetam */
 button {
+    appearance: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Os botões que ficam para trocar entre a aba de upgrades e de estruturas */
+/* Todos eles, no principio, ficam com essa aparência de "apagados" */
+.button-header {
+    font-size: 1.2em;
+    flex-grow: 1;
+    padding: 1em;
+    color: rgb(153, 153, 153);
+    background-color: rgb(52, 52, 52);
+    border-bottom: 3px solid black;
+}
+
+/* Quando são ativos, a cor fica igual a do fundo e a fonte tbm fica mais "viva" */
+.button-header.active {
+    color: gainsboro;
+    background-color: rgb(74, 74, 74);
+    border-bottom: none;
+}
+
+.button-header.left.active { border-right: 3px solid black;} /* Se o botão da esquerda que tá ativo, cria uma bordinha na direita */
+.button-header.right.active { border-left: 3px solid black;} /* Se o botão da direita que tá ativo, cria uma bordinha na esquerda */
+
+/* O estilo do botão, que é o botão de clicar e o botão de upgrade */
+.button-left {
     padding: 15px 25px;
     font-size: 1.2rem;
     background-color: #ffcc66;
@@ -35,10 +148,24 @@ button {
 }
 
 /* As animações */
-button:hover {
+.button-left:hover {
     transform: scale(1.1);
 }
 
-button:active {
+.button-left:active {
     transform: scale(1);
+}
+
+@media (max-width: 600px) {
+    main {
+        padding-top: 10rem;
+        flex-direction: column;
+    }
+
+    .container-right {
+        border: none;
+        border-top: 3px solid gainsboro;
+        width: 100%;
+        flex: 1 0 auto;
+    }
 }

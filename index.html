@@ -9,13 +9,29 @@
 </head>
 
 <body>
-    <!-- O container que envolve todo o conteúdo principal -->
-    <div class="conteiner">
-        <h1>🍪 Clicker Maneiro</h1>
-        <p>Cliques: <span id="pontos">0</span></p> <!-- Onde contabiliza os pontos -->
-        <button id="click_button">BOTAO</button> <!-- O botão de clicar -->
-        <button id="upgrade_button">+2</button> <!-- O botão de upgrade -->
-    </div>
+    <!-- O coro principal do projeto -->
+    <main>
+        <!-- O container que envolve a seção da esquerda (computador) -->
+        <div class="container-left">
+            <h1>🍪 Clicker Maneiro</h1>
+            <p>Cliques: <span id="pontos">0</span></p> <!-- Onde contabiliza os pontos -->
+            <div>
+                <button class="button-left" id="click_button">BOTAO</button> <!-- O botão de clicar -->
+                <button class="button-left" id="upgrade_button">+2</button> <!-- O botão de upgrade -->
+            </div>
+        </div>
+        <!-- O container que envolver a seção da direita (upgrades + estruturas) -->
+        <div class="container-right">
+            <div class="container-header">
+                <button class="button-header left active">Upgrades</button>
+                <button class="button-header right">Estruturas</button>
+            </div>
+            <div class="container-content">
+                <ul class="content-list">
+                </ul>
+            </div>
+        </div>
+    </main>
 
     <script src="script.js"></script> <!-- O script que contém a lógica do jogo -->
 </body>
