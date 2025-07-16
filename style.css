@@ -16,17 +16,25 @@ img { max-width: 100%; }
     font-style: normal;
 }
 
+html, body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    touch-action: manipulation; /* Essa linha previne double-tap zoom no celular */
+}
+
 /* O estilo do body, onde dentro do body tem o container */
 body {
     --c1: #6ACBD4;
     --c2: #41798A;
     --c3: #172740;
-    --c4: #162336;
+    --c4: #111e38;
     --c5: #0E192B;
     --c6: #00162f;
+    --high: rgb(182, 55, 55);
+    --low: rgb(36, 139, 36);
 
     background: url("./assets/background.png");
-    background-size: auto;
+    background-size: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,8 +43,7 @@ body {
     text-align: center;
     color: var(--c1);
     height: 100vh;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    user-select: none;
 }
 
 /* Quando está no modo matrix, as variáveis mudam para um tom de verde */
@@ -60,24 +67,23 @@ main {
     gap: 2em;
 }
 
-h1 {
-    padding-bottom: 1em;
-}
-
 .table {
     position: absolute;
-    bottom: -10%;
-    left: -10%;
-    right: -10%;
+    bottom: 0;
+    left: 0;
+    right: 0;
     top: min(53vw, 68%);
     background-color: var(--c6);
     z-index: -1;
-    transition: all .5s ease;
+    transition: box-shadow .5s ease;
 }
 
 body.matrix .table {
+    overflow: hidden;
     opacity: .8;
-    box-shadow: inset 0 20px 50px #00e20093;
+    background-position: 0 100%;
+    background: linear-gradient(to bottom, #00e20093 0%, 2.86624%, rgb(3, 110, 21) 5.73248%, 12.7389%, rgb(0, 64, 18) 19.7452%, 22.9299%, rgb(0, 56, 19) 26.1146%, 63.0573%, rgb(0, 47, 20) 100%);
+    /* box-shadow: inset 0 20px 50px #00e20093 */
 }
 
 /* O container que envolve a seção da esquerda */
@@ -92,6 +98,7 @@ body.matrix .table {
 
 /* Contém os textos do container da esquerda */
 .container-left--header {
+    text-shadow: 3px 3px 2px black;
     display: flex;
     flex-direction: column;
 }
@@ -106,28 +113,16 @@ body.matrix .table {
     height: 400px;
 }
 
+/* Muda a cor do computador apra um tom de verde */
 body.matrix .container-left--computer {
     filter: hue-rotate(300deg) contrast(0.95)
 }
 
 .computer-monitor { background: url("./assets/monitor.png");}
-.computer-back { 
-    background: url("./assets/fundo_monitor.png"); 
-    /* filter: drop-shadow(0 0 8px var(--c1)) drop-shadow(0 0 32px var(--c1)); */
-}
+.computer-back { background: url("./assets/fundo_monitor.png"); }
 .computer-keyboard { background: url("./assets/teclado.png"); transition: all .1s ease;}
+
 /* Ainda será implementado algum tipo de luz saindo do monitor */
-/* .glow {
-  background-color: var(--c1);
-  mask-position: 50% 0;
-  mask-image: url('./assets/fundo_monitor.png');
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  -webkit-mask-image: url('./assets/fundo_monitor.png');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  filter: blur(10px);
-} */
 
 /* Cada um dos componentes do computador */
 .computer {
@@ -140,11 +135,18 @@ body.matrix .container-left--computer {
     pointer-events: none;
 }
 
+/* Nome da empresa */
 .company-text {
     color: var(--c2);
     cursor: pointer;
     font-size: 1.3em;
     transition: all .1s ease;
+}
+
+/* Adiciona um pequeno brilho quando hover */
+.company-text:hover {
+    color: white;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2);
 }
 
 /* Área de fato clicável do teclado */
@@ -153,23 +155,27 @@ body.matrix .container-left--computer {
     left: 10%;
     bottom: 0;
     right: 10%;
-    top: 70%;
+    top: 75%;
     pointer-events: auto;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    outline: none;
 }
 
-.computer-hitbox:hover ~ .computer-keyboard {
-    filter: drop-shadow(0 0 4px var(--c1)) drop-shadow(0 0 8px var(--c1));
+/* Deixa levemente maior ao clicar */
+.computer-hitbox:active ~ .computer-keyboard { transform: scale(1.05); }
+
+/* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
+@media (hover: hover) {
+  .computer-hitbox:hover ~ .computer-keyboard {
+      transform: scale(1.05);
+      /* filter: drop-shadow(0 0 4px var(--c1)) drop-shadow(0 0 8px var(--c1)); */
+  }
+  .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.0); }
 }
 
-.company-text:hover {
-    color: white;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2);
-}
-
-.ls-text {
-    font-size: 1.5em;
-}
+.ls-text { font-size: 1.5em; }
 
 /* O container que envolve a seção da direita */
 .container-right {
@@ -206,9 +212,10 @@ body.matrix .container-right{
 
 /* Modifica a barra de rolagem */
 .container-content::-webkit-scrollbar { 
-    background-color: var(--c2);
+    background-color: var(--c4);
     width: 10px;
 }
+
 .container-content::-webkit-scrollbar-thumb { 
     background-color: var(--c1);
     border-radius: 50px;
@@ -222,26 +229,59 @@ body.matrix .container-right{
     gap: 0.5em;
 }
 
+/* Cada um dos items da lista */
 .content-item {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: .4em;
     padding: .5em;
     border-radius: 5px;
     border: 3px solid var(--c1);
     background-color: var(--c3);
     font-weight: bold;
     cursor: pointer;
+    opacity: .5;
+    transform: opacity .5s linear;
 }
 
-body.matrix .content-item {
-    background-color: color-mix(in srgb, var(--c3) 60%, transparent);
-}
+/* Deixa a opacidade normal ao ser desbloqueado */
+.content-item.unlocked { opacity: 1;}
+/* Deixa levemente transparente enquanto está no modo matrix */
+body.matrix .content-item { background-color: color-mix(in srgb, var(--c3) 60%, transparent);}
 
 .item-icon {
     aspect-ratio: 1/1;
     width: 50px;
+    transition: opacity .5s linear, filter .5s linear;
 }
+
+/* Deixa o icone preto enquanto ele nao for desbloqueado */
+.item-icon.hidden {
+    filter: brightness(0);
+    opacity: .7;
+}
+
+.item-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-shadow: 3px 3px 2px black;
+}
+
+/* Textos para a estrutura */
+.item-purchased { font-size: 1.8em; color: var(--c2);}
+.item-name { font-size: 1.4em; text-align: left;}
+.high { color: var(--high);}
+.low { color: var(--low);}
 
 /* Todos os botões resetam */
 button {
@@ -301,40 +341,6 @@ body.matrix .button-header.active {
     transform: scale(1);
 }
 
-/* Responsividade para o container da direita */
-@media (max-width: 730px) {
-    body {
-        font-size: 2rem;
-        background-size: auto;
-        overflow-y: auto;
-    }
-
-    main {
-        position: absolute;
-        top: 0;
-        padding-top: 10rem;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .table {
-        top: 45%;
-        bottom: 41%;
-    }
-
-    .container-left {
-        width: 100%;
-    }
-
-    .container-right {
-        border-radius: 0;
-        border: none;
-        border-top: 3px solid gainsboro;
-        width: 100%;
-        flex: 1 0 auto;
-    }
-}
-
 /* EVENTO ALEATÓRIO DO CAFÉ */
 
 #coffee-container {
@@ -345,7 +351,7 @@ body.matrix .button-header.active {
     bottom: 0;
     overflow: hidden; /* garante que cafés não escapem */
     pointer-events: none;
-    z-index: 1000000000000;
+    z-index: 10000;
 }
 
 .coffee-wrapper {
@@ -378,19 +384,40 @@ body.matrix .button-header.active {
     will-change: transform;
 }
 
+.alert-back {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 120%;
+    background-color: rgba(0, 0, 0, 0.7); /* fundo escuro com transparência */
+    border-radius: 50px;
+    filter: blur(10px);
+    opacity: .7;
+    z-index: 50;
+}
+
 .alert-coffee {
     color: rgb(255, 255, 255);
     width: 200px;
     display: block;
     position: absolute;
-    text-shadow: black 0 0 10px;
+    filter: blur(0);
+    /* text-shadow: black 0 0 10px; */
     transform: translate(calc(-50% + 48px), 0);
     opacity: 0;
 
     transition: opacity .5s linear, transform 1s ease-out;
+    text-align: center;
 }
 
-/* Animações */
+.alert-text {
+    position: relative;
+    z-index: 51;
+}
+
+/* Animações do Café */
 @keyframes pulse {
   0%, 100% {
     transform: scale(1);
@@ -437,4 +464,110 @@ body.matrix .button-header.active {
 .modal.disabled {
     pointer-events: none;
     opacity: 0;
+}
+
+/* CONTAINER BOOSTS */
+
+.container-boosts {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    position: fixed;
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.boost {
+    --time: 5s;
+    position: relative;
+    aspect-ratio: 1/1;
+    width: 2.5em;
+    border: 5px solid var(--c1);
+    background-color: var(--c5);
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    cursor: pointer;
+}
+
+/* Propriedade que serve pra animar o "conic-gradient" (efeito de cooldown) */
+@property --a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.boost.cooldown::after {
+    opacity: .5;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(transparent 0deg, transparent var(--a), var(--c1) var(--a));
+    animation: fill var(--time) linear normal;
+    animation-fill-mode: forwards;
+    z-index: 100;
+}
+
+@keyframes fill {
+  0% {
+    --a: 0deg;
+  }
+  100% {
+    --a: 360deg;
+  }
+}
+
+/* Responsividade para o container da direita */
+/* PRECISA FICAR ABAIXO DE TODO O RESTO */
+@media (max-width: 730px) {
+    html {
+
+        overflow-y: auto;
+    }
+
+    body {
+        font-size: 1.8rem;
+        background-size: auto;
+    }
+
+    main {
+        position: absolute;
+        top: 0;
+        padding-top: 5rem;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .table {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 40%;
+        bottom: 41%;
+    }
+
+    .container-left {
+        width: 95%;
+    }
+
+    .container-right {
+        border-radius: 0;
+        border: none;
+        border-top: 3px solid var(--c1);
+        width: 100%;
+        flex: 1 0 auto;
+    }
+
+    .container-boosts {
+        left: auto;
+        bottom: auto;
+        top: 1em;
+        right: 1em;
+        transform: none;
+        flex-direction: column;
+    }
 }
