@@ -102,25 +102,24 @@ const coffeeContainer = document.getElementById('coffee-container')
 // Evento do botão de clicar
 // Quando o botão é clicado, adiciona pontos e atualiza o display
 button.addEventListener('click', () => {
-    console.log('OPA')
     pontos += 1 + boost;
-    display.textContent = pontos;
+    display.textContent = `${pontos} linhas de código`;
 });
 
 // Evento do botão de upgrade
 // Quando o botão é clicado, verifica se tem pontos suficientes para o upgrade
-upgradeButton.addEventListener('click', () => {
-    if (pontos < preco_upgrade) {
-        alert("Precisas de " + preco_upgrade + " pontinhos!");
-        return;
-    } else {
-        boost += 2;
-        pontos -= preco_upgrade;
-        preco_upgrade *= 2;
-        display.textContent = pontos;
-        // Toda funcão que atualiza os pontos precisa atualizar o display
-    }
-});
+// upgradeButton.addEventListener('click', () => {
+//     if (pontos < preco_upgrade) {
+//         alert("Precisas de " + preco_upgrade + " pontinhos!");
+//         return;
+//     } else {
+//         boost += 2;
+//         pontos -= preco_upgrade;
+//         preco_upgrade *= 2;
+//         display.textContent = `${pontos} linhas de código`;
+//         // Toda funcão que atualiza os pontos precisa atualizar o display
+//     }
+// });
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
@@ -222,7 +221,7 @@ const spawnCoffe = (bonusName) => {
         // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
         const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
         const efeito = bonus.efeito() // Trigga o efeito do bônus
-        display.textContent = pontos // Atualiza os pontos na tela
+        display.textContent = `${pontos} linhas de código` // Atualiza os pontos na tela
         
         // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
         const alertCoffee = document.createElement('div')
@@ -287,3 +286,50 @@ const escolherBonusComPeso = (lista) => {
 triggerCoffeeEvent()
 
 // FIM DO EVENTO DO CAFÉ
+
+// FUNÇÃO EFEITO MATRIX (https://github.com/resolvendobug/efeito-matrix)
+
+const canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let matrix
+
+canvas.height = window.innerHeight;
+canvas.width = 2500;
+
+const texts = '0123456789'.split('');
+const fontSize = 16;
+const columns = canvas.width/fontSize;
+let drops = Array.from({ length: columns }, () => 1);
+
+function draw(){
+    ctx.fillStyle = 'rgba(0, 41, 10, 0.05)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#0F0';
+    ctx.font = fontSize+ 'px Doto';
+    for (let i = 0; i < drops.length; i++){
+        var text = texts[Math.floor(Math.random()*texts.length)];
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+        if (drops[i]*fontSize > canvas.height || Math.random() > 0.95){
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+const startMatrix = () => {
+  matrix = setInterval(draw, 33)
+  canvas.style.opacity = 1
+  document.body.classList.add('matrix')
+}
+const stopMatrix = () => {
+  clearInterval(matrix)
+  canvas.style.opacity = 0
+    document.body.classList.remove('matrix')
+  setTimeout(() => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, 500)
+}
+
+// FIM DA FUNÇÃO MATRIX

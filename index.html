@@ -11,19 +11,34 @@
 <body>
     <!-- O coro principal do projeto -->
     <main>
+        <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
+        <canvas id="canvas"></canvas> <!-- Serve para renderizar o efeito da matrix -->
+        <div class="table"></div> <!-- Mesa onde fica o computador -->
         <div id="coffee-container"></div>
         <!-- O container que envolve a seção da esquerda (computador) -->
         <div class="container-left">
-            <h1>🍪 Clicker Maneiro</h1>
-            <p>Cliques: <span id="pontos">0</span></p> <!-- Onde contabiliza os pontos -->
-            <div>
-                <button class="button-left" id="click_button">BOTAO</button> <!-- O botão de clicar -->
-                <button class="button-left" id="upgrade_button">+2</button> <!-- O botão de upgrade -->
+            <!-- <h1>🍪 Clicker Maneiro</h1> -->
+            <!-- <p>Cliques: <span id="pontos">0</span></p> Onde contabiliza os pontos -->
+            <!-- <div>
+                <button class="button-left" id="click_button">BOTAO</button> O botão de clicar
+                <button class="button-left" id="upgrade_button">+2</button> O botão de upgrade
+            </div> -->
+            <div class="container-left--header">
+                <span class="company-text">NOME DA EMPRESA</span>
+                <span class="ls-text" id="pontos">0 linhas de código</span>
+                <span>por segundo: 0</span>
+            </div>
+            <div class="container-left--computer">
+                <div class="computer computer-back"></div>
+                <div class="computer computer-monitor"></div>
+                <div class="computer-hitbox" id="click_button"></div>
+                <div class="computer computer-keyboard"></div>
+                <!-- <div class="computer computer-back glow"></div> -->
             </div>
         </div>
         <!-- O container que envolver a seção da direita (upgrades + estruturas) -->
         <div class="container-right">
-            <div class="container-header">
+            <div class="container-right--header">
                 <button class="button-header left active">Upgrades</button>
                 <button class="button-header right">Estruturas</button>
             </div>
