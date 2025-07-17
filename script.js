@@ -176,7 +176,6 @@ const clicksContainer = document.querySelector('.clicks-container')
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 function refresh(valorAtual) {
-
   animarContador(valorAtual)
 
   if (tabActive == 'Estruturas') renderEstruturas()
@@ -290,45 +289,87 @@ buttonsHeader.forEach((btn) => {
 
 // Função que irá rendereizar a lista certa na seção de estruturas
 const renderEstruturas = () => {
-  contentList.innerHTML = ''
-  let firstIndex
+  // Se antes, na lista, havia algum "upgrade", reseta o conteúdo da lista
+  if (contentList.querySelector('.upgrade')) contentList.innerHTML = ''
+  let firstIndex= -1
 
   // Acha a primeira estrutura cujo custo é menor que o total de pontos
-  for (let i in estruturas) {
-    if (pontos < estruturas[i].custoAtual && !estruturas[i].unlocked) {}
-    if (pontos >= estruturas[i].custoAtual || estruturas[i].unlocked) estruturas[i].unlocked = true
-    else {
+  for (let i = 0; i < estruturas.length; i++) {
+    const estrutura = estruturas[i]
+
+    if (pontos >= estrutura.custoAtual || estrutura.unlocked) {
+      estrutura.unlocked = true
+      continue
+    } else {
       firstIndex = i - 1
       break
     }
   }
 
+  // Se todas são compráveis, pega todas
   let estruturasFixed
-  if (firstIndex === -1) estruturasFixed = estruturas.slice(0, 2) // Se ainda não tiver uma estrura comprável, retorna as duas primeiras
+  if (firstIndex === -1 && estruturas.every(e => e.unlocked)) {
+    estruturasFixed = estruturas
+  } else if (firstIndex === -1 || firstIndex === undefined) { // Se nenhuma é comprável, pega só as duas primeiras
+    estruturasFixed = estruturas.slice(0, 2)
+  } else {
+    const finalIndex = Math.min(Number(firstIndex) + 2, estruturas.length - 1) // Caso contrário, pega todas as compráveis + duas
+    estruturasFixed = estruturas.slice(0, finalIndex + 1)
+  }
 
-  const finalIndex = Math.min(firstIndex + 2, estruturas.length-1) // O índice final será o menor valor entre o indíce encontrado + 2 e o tanto de estruturas existentes
-  estruturasFixed = estruturas.slice(0, finalIndex + 1)
-
-  // Para cada estrutura, gera uma sua div adequada
   estruturasFixed.forEach((item, i) => {
-      const div = document.createElement("div")
-      div.innerHTML = (`
-        <img src="./assets/${item.icon}" class="item-icon ${!item.unlocked ? 'hidden' : ''}"/>
-        <div class="item-content">
-          <div class="item-text">
-            <span class="item-name">${!item.unlocked ? '????' : item.nome}</span>
-            <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
-          </div>
-          <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
-        </div>
-      `)
-      div.className = "content-item"
-      if (item.unlocked) div.classList.add('unlocked')
+    const id = `estrutura-${i}`
+    const estrutura = document.getElementById(id)
 
-      div.addEventListener('click', () => buyEstrutura(i)) // Evento para quando houver clique na ESTRUTURA
-      contentList.appendChild(div)
+    // Se o item já está renderizado, não faça nada
+    if (estrutura) {
+      const custo = estrutura.querySelector('.cust')
+      const itemName = estrutura.querySelector('.item-name')
+      const comprados = estrutura.querySelector('.item-purchased')
+
+      if (item.unlocked) {
+        if (item.comprados > 0) comprados.textContent = item.comprados
+        if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
+        itemName.textContent = item.nome
+        estrutura.classList.remove('hidden')
+        estrutura.classList.add('unlocked')
+      }
+      custo.textContent = item.custoAtual
+      if (item.custoAtual > pontos) {
+        custo.classList.add('high')
+        custo.classList.remove('low')
+      } else {
+        custo.classList.add('low')
+        custo.classList.remove('high')
+      }
+      
+      return
+    } 
+
+    const div = document.createElement("div")
+    div.id = id
+    div.innerHTML = (`
+      <img src="./assets/${item.icon}" class="item-icon"/>
+      <div class="item-content">
+        <div class="item-text">
+          <span class="item-name">${!item.unlocked ? '????' : item.nome}</span>
+          <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
+        </div>
+        <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
+      </div>
+    `)
+    div.className = "content-item estrutura"
+    if (item.unlocked) {
+      div.classList.add('unlocked')
+    }
+    else div.classList.add('hidden')
+
+    div.addEventListener('click', () => buyEstrutura(i))
+
+    contentList.appendChild(div)
   })
 }
+
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
@@ -347,7 +388,7 @@ const renderUpgrades = () => {
             </div>
           </div>
         `)
-        div.className = "content-item"
+        div.className = "content-item upgrade"
         if (pontos >= item.custo) div.classList.add('unlocked')
 
         div.addEventListener('click', () => buyUpgrade(item.index))
@@ -432,7 +473,7 @@ const spawnCoffe = (bonusName) => {
     })
 
     // Ao clicar no café:
-    div.addEventListener('click', (e) => {
+    div.addEventListener('click', () => {
       const root = document.documentElement
       const cookieSize = getComputedStyle(root).getPropertyValue('--cs')
       const cookieSizeValue = parseInt(cookieSize)
