@@ -41,7 +41,7 @@ body {
     --low: rgb(36, 139, 36);
 
     background: url("./assets/background.png");
-    background-size: 50%;
+    background-size: 47.5%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,7 +79,9 @@ main {
     bottom: 0;
     left: 0;
     right: 0;
-    top: min(53vw, 68%);
+    top: auto;
+    min-height: 150px;
+    height: 40vh;
     background-color: var(--c6);
     z-index: -1;
     transition: box-shadow .5s ease;
@@ -112,12 +114,13 @@ body.matrix .table {
 
 /* Contém o computador */
 .container-left--computer {
+    aspect-ratio: 1/1;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     width: 100%;
-    height: 400px;
+    max-height: 400px;
 }
 
 /* Muda a cor do computador apra um tom de verde */
@@ -150,8 +153,8 @@ body.matrix .container-left--computer {
     transition: all .1s ease;
 }
 
-/* Adiciona um pequeno brilho quando hover */
-.company-text:hover {
+/* Adiciona um pequeno brilho quando active */
+.company-text:active {
     color: white;
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2);
 }
@@ -172,16 +175,6 @@ body.matrix .container-left--computer {
 /* .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.05); } */
 .pulinho {
     animation: pop .2s ease;
-}
-
-/* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
-@media (hover: hover) {
-    .computer-hitbox:hover ~ .computer-keyboard {
-        transform: scale(1.05);
-        /* Brilho no teclado, que ainda não será implementado */
-        /* filter: drop-shadow(0 0 4px var(--c1)) drop-shadow(0 0 8px var(--c1)); */
-    }
-    .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.0); }
 }
 
 @keyframes pop {
@@ -547,16 +540,31 @@ body.matrix .button-header.active {
   }
 }
 
+/* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
+@media (hover: hover) {
+    .computer-hitbox:hover ~ .computer-keyboard {
+        transform: scale(1.05);
+        /* Brilho no teclado, que ainda não será implementado */
+        /* filter: drop-shadow(0 0 4px var(--c1)) drop-shadow(0 0 8px var(--c1)); */
+    }
+    .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.0); }
+
+    /* Adiciona um pequeno brilho quando hover */
+    .company-text:hover {
+        color: white;
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2);
+    }
+}
+
 /* Responsividade para o container da direita */
 /* PRECISA FICAR ABAIXO DE TODO O RESTO */
-@media (max-width: 730px) {
+@media (max-width: 830px) {
     html {
-
         overflow-y: auto;
     }
 
     body {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         background-size: auto;
     }
 
@@ -572,8 +580,14 @@ body.matrix .button-header.active {
         position: absolute;
         left: 0;
         right: 0;
-        top: min(70vh, 40%);
-        bottom: 41%;
+        top: min(450px, 110vw);
+        height: calc(2vw + 250px);
+        min-height: auto;
+    }
+
+    .container-left--computer {
+        max-height: 400px;
+        height: 85vw;
     }
 
     .container-left {
