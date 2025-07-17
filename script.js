@@ -151,7 +151,8 @@ let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CA
 let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Estruturas' // Qual a aba ativa atualmente
 
-const button = document.getElementById('click_button') // Teclado
+const button = document.getElementById('click_button') // Teclado CLICÁVEL
+const keyboard = document.querySelector('.computer-keyboard')
 const display = document.getElementById('pontos') // Display das linhas de código
 const buttonsHeader = document.querySelectorAll(".button-header") // Botões para mudar de aba
 const contentList = document.querySelector('.content-list') // Lista de items
@@ -168,7 +169,7 @@ function refresh(valorAtual) {
 }
 
 // Anima os numerozinhos para eles subirem de pouco em pouco
-function animarContador(valorInicial, duracao = 500) {
+function animarContador(valorInicial, duracao = 700) {
   const valorFinal = pontos
 
   if (Math.abs(valorFinal - valorInicial == 1)) {
@@ -199,6 +200,15 @@ function animarContador(valorInicial, duracao = 500) {
   }
 
   requestAnimationFrame(step);
+}
+
+// No celular, active fica muito bugado, portanto iremos colocar uma animação manualmente
+button.addEventListener("touchstart", triggerAnimation)
+
+function triggerAnimation() {
+  keyboard.classList.remove('pulinho') // remove a classe
+  void keyboard.offsetWidth             // força reflow (reinicia a animação)
+  keyboard.classList.add('pulinho')    // adiciona novamente
 }
 
 // Evento do botão de clicar
@@ -354,63 +364,69 @@ const spawnCoffe = (bonusName) => {
 
     // É necessário um pequeno intervalo para então colocar a opacidade e a escala em 1 (CSS fará a transição suave)
     setTimeout(() => {
-        div.style.opacity = 1
-        div.style.transform = "scale(1)"
-        div.innerHTML = `<div class="coffee" style="animation: pulse 2s infinite ease-in-out, tilt 5s infinite"></div>`
+      div.style.opacity = 1
+      div.style.transform = "scale(1)"
+      div.innerHTML = `<div class="coffee" style="animation: pulse 2s infinite ease-in-out, tilt 5s infinite"></div>`
     }, 50)
 
     // Quando se passar 5s, adicionar uma animação de "fade-out"
     setTimeout(() => {
-        div.classList.add("fade-out")
-        div.style.opacity = 0
-        div.style.transform = "scale(0)"
+      div.classList.add("fade-out")
+      div.style.opacity = 0
+      div.style.transform = "scale(0)"
     }, 10050) //10050ms = 10s (lembrando que há 5s só para surgir o elemento)
 
     // Adicionar um listener para saber quando o "fade-out" terminou, para então remover a div do "coffee"
     div.addEventListener("transitionend", (e) => {
-        if (e.propertyName === "opacity" && div.classList.contains("fade-out")) div.remove()
+      if (e.propertyName === "opacity" && div.classList.contains("fade-out")) div.remove()
     })
 
     // Ao clicar no café:
     div.addEventListener('click', (e) => {
-        // ADICIONAR ALGUM SOM
-        // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
-        const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
-        const atual = pontos
-        const efeito = bonus.efeito // Trigga o efeito do bônus
-        setBonus(bonus) // Coloca o bônus na tela
-        refresh(atual) // Atualiza os pontos na tela
-        
-        // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
-        const alertCoffee = document.createElement('div')
-        alertCoffee.classList.add('alert-coffee')
-        alertCoffee.innerHTML = (`
-              <div class="alert-back"></div> 
-              <h2 class="alert-text">${bonus.nome}</h2>
-              <span class="alert-text">${efeito}</span>
-        `)
-        coffeeContainer.appendChild(alertCoffee)
-        alertCoffee.style.top = `max(5vh, ${y})` // max() serve para evitar que parte do alerta fique para fora da tela
-        alertCoffee.style.left = `clamp(5vw, ${x}, 85vw)` // clamp() cumpre o mesmo propósito: delimitar um min e max de onde o alerta estará
+      const root = document.documentElement
+      const cookieSize = getComputedStyle(root).getPropertyValue('--cs')
+      const cookieSizeValue = parseInt(cookieSize)
+      // ADICIONAR ALGUM SOM
+      // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
+      const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
+      const atual = pontos
+      const efeito = bonus.efeito // Trigga o efeito do bônus
+      setBonus(bonus) // Coloca o bônus na tela
+      refresh(atual) // Atualiza os pontos na tela
+      
+      // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
+      const alertCoffee = document.createElement('div')
+      alertCoffee.classList.add('alert-coffee')
+      alertCoffee.innerHTML = (`
+            <div class="alert-back"></div> 
+            <h2 class="alert-text alert-name">${bonus.nome}</h2>
+            <span class="alert-text">${efeito}</span>
+      `)
+      coffeeContainer.appendChild(alertCoffee)
 
-        // Um pequeno delay para iniciar a animação de subida
-        setTimeout(() => {
-            alertCoffee.style.opacity = 1
-            alertCoffee.style.transform = "translate(calc(-50% + 48px), -50%)"
-        }, 10)
+      const alertWidth = alertCoffee.offsetWidth
+      const alertHeight = alertCoffee.offsetHeight
+      alertCoffee.style.top = `max(calc(${alertHeight/2}px + .5vh), ${y})` // max() serve para evitar que parte do alerta fique para fora da tela
+      alertCoffee.style.left = `clamp(${(alertWidth*1.4/2) - (cookieSizeValue/2)}px, ${x}, calc(100vw - ${(alertWidth*1.4) - (cookieSizeValue/2)}px))` // clamp() cumpre o mesmo propósito: delimitar um min e max de onde o alerta estará
 
-        // Depois de 3s, o alerta irá começar a desaparecer com um "fade-out"
-        setTimeout(() => {
-            alertCoffee.classList.add("fade-out")
-            alertCoffee.style.opacity = 0
-        }, 3000)
+      // Um pequeno delay para iniciar a animação de subida
+      setTimeout(() => {
+          alertCoffee.style.opacity = 1
+          alertCoffee.style.transform = `translate(calc(-50% + ${cookieSizeValue/2}px), -50%)`
+      }, 10)
 
-        // Assim como o café, um listener é adicionado para saber quando a animação acaba para, então, remover a div do DOM
-        alertCoffee.addEventListener("transitionend", (e) => {
-            if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
-        })
-        
-        div.remove() // Remove o café
+      // Depois de 3s, o alerta irá começar a desaparecer com um "fade-out"
+      setTimeout(() => {
+          alertCoffee.classList.add("fade-out")
+          alertCoffee.style.opacity = 0
+      }, 3000)
+
+      // Assim como o café, um listener é adicionado para saber quando a animação acaba para, então, remover a div do DOM
+      alertCoffee.addEventListener("transitionend", (e) => {
+          if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
+      })
+      
+      div.remove() // Remove o café
     })
 }
 
@@ -459,7 +475,7 @@ const setBonus = (bonus) => {
 
     const boostDiv = document.querySelector(`[data-nome="${bonus.nome}"]`)
     boostDiv.classList = 'boost'
-    boostDiv.offsetHeight // Essa linha serve para 'atualizar' o elemento, ou seja, identificar que houver a mudança em 'classList'
+    void boostDiv.offsetHeight // Essa linha serve para 'atualizar' o elemento, ou seja, identificar que houver a mudança em 'classList'
     boostDiv.classList = 'boost cooldown'
     active.expiresIn = Date.now() + bonus.duracao * 1000
 
@@ -509,17 +525,17 @@ triggerCoffeeEvent()
 
 // FUNÇÃO EFEITO MATRIX (https://github.com/resolvendobug/efeito-matrix)
 
-const canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas')
+let ctx = canvas.getContext('2d')
 let matrix
 
-canvas.height = window.innerHeight;
-canvas.width = 2500;
+canvas.height = window.innerHeight
+canvas.width = 2000 // Se alguém tiver um monitor maior que isso...
 
-const texts = '0123456789'.split('');
+const texts = '0123456789'.split('')
 const fontSize = 16;
-const columns = canvas.width/fontSize;
-let drops = Array.from({ length: columns }, () => 1);
+const columns = canvas.width/fontSize
+let drops = Array.from({ length: columns }, () => 1)
 
 function drawMatrix(){
     ctx.fillStyle = 'rgba(0, 41, 10, 0.05)';
