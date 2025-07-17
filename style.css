@@ -41,6 +41,7 @@ body {
     --low: rgb(36, 139, 36);
 
     background: url("./assets/background.png");
+    background-position: -3px;
     background-size: 47.5%;
     display: flex;
     align-items: center;
@@ -81,7 +82,7 @@ main {
     right: 0;
     top: auto;
     min-height: 150px;
-    height: 40vh;
+    height: 35vh;
     background-color: var(--c6);
     z-index: -1;
     transition: box-shadow .5s ease;
@@ -173,9 +174,7 @@ body.matrix .container-left--computer {
 
 /* Deixa levemente maior ao clicar */
 /* .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.05); } */
-.pulinho {
-    animation: pop .2s ease;
-}
+.pulinho { animation: pop .2s ease; }
 
 @keyframes pop {
   0% {
@@ -190,6 +189,26 @@ body.matrix .container-left--computer {
 }
 
 .ls-text { font-size: 1.5em; }
+
+.clicks-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.click {
+    --time: 4s;
+    position: absolute;
+    transform: translate(-50%, -90%);
+    transition: opacity var(--time) linear, transform var(--time) linear;
+}
+
+.fading-up {
+    opacity: 0;
+    transform: translate(-50%, -2000%);
+}
 
 /* O container que envolve a seção da direita */
 .container-right {
@@ -564,7 +583,7 @@ body.matrix .button-header.active {
     }
 
     body {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         background-size: auto;
     }
 

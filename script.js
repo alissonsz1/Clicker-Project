@@ -20,7 +20,7 @@ const upgrades = [
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   }
-];
+]
 
 // Estruturas "place holder" só para o código funcionar
 const estruturas = [
@@ -56,7 +56,7 @@ const estruturas = [
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
   }
-];
+]
 
 // Lista com os possíveis bônus do café
 const bonusList = [
@@ -140,13 +140,27 @@ const bonusList = [
       return 'Não faz nada... Literalmente.'
     },
   }
-];
+]
+
+// Tabela de unidades para os números
+const unidades = [
+  { limite: 1e33, nome: 'decilhão', plural: 'decilhões' },
+  { limite: 1e30, nome: 'nonilhão', plural: 'nonilhões' },
+  { limite: 1e27, nome: 'octilhão', plural: 'octilhões' },
+  { limite: 1e24, nome: 'septilhão', plural: 'septilhões' },
+  { limite: 1e21, nome: 'sextilhão', plural: 'sextilhões' },
+  { limite: 1e18, nome: 'quintilhão', plural: 'quintilhões' },
+  { limite: 1e15, nome: 'quatrilhão', plural: 'quatrilhões' },
+  { limite: 1e12, nome: 'trilhão', plural: 'trilhões' },
+  { limite: 1e9, nome: 'bilhão', plural: 'bilhões' },
+  { limite: 1e6, nome: 'milhão', plural: 'milhões' },
+  { limite: 1e3, nome: 'mil', plural: 'mil' }
+]
 
 // Variaveis
 let pontos = 0;
-let boost = 1; // Incrementa os CLIQUES (ou TECLADADAS no futuro)
+let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
 let lsMultiplier = 0 // Multiplicador apra as LS
-let preco_upgrade = 10;
 let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Estruturas' // Qual a aba ativa atualmente
@@ -158,6 +172,7 @@ const buttonsHeader = document.querySelectorAll(".button-header") // Botões par
 const contentList = document.querySelector('.content-list') // Lista de items
 const coffeeContainer = document.getElementById('coffee-container') // Container dos cafés
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
+const clicksContainer = document.querySelector('.clicks-container')
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 function refresh(valorAtual) {
@@ -186,13 +201,14 @@ function animarContador(valorInicial, duracao = 700) {
   }
 
   function step(timestamp) {
-    if (!start) start = timestamp;
-    const tempoDecorrido = timestamp - start;
-    const progresso = Math.min(tempoDecorrido / duracao, 1); // entre 0 e 1
-    const eased = easeOutQuint(progresso); // aplica easing
+    if (!start) start = timestamp
+    const tempoDecorrido = timestamp - start
+    const progresso = Math.min(tempoDecorrido / duracao, 1) // entre 0 e 1
+    const eased = easeOutQuint(progresso) // aplica easing
 
-    const valorInterpolado = Math.floor(valorInicial + range * eased);
-    display.textContent = `${valorInterpolado} linhas de código`
+    const valorInterpolado = Math.floor(valorInicial + range * eased)
+    const valorFormatado = formatarNumero(valorInterpolado)
+    display.textContent = `${valorFormatado} linhas de código`
 
     if (progresso < 1) {
       requestAnimationFrame(step);
@@ -203,7 +219,9 @@ function animarContador(valorInicial, duracao = 700) {
 }
 
 // No celular, active fica muito bugado, portanto iremos colocar uma animação manualmente
-button.addEventListener("touchstart", triggerAnimation)
+button.addEventListener("touchstart", () => {
+  triggerAnimation()
+})
 
 function triggerAnimation() {
   keyboard.classList.remove('pulinho') // remove a classe
@@ -211,12 +229,44 @@ function triggerAnimation() {
   keyboard.classList.add('pulinho')    // adiciona novamente
 }
 
+function formatarNumero(valor) {
+  if (valor < 1000000) return valor.toString()
+
+  // Se for maior que o maior limite conhecido
+  const maiorLimite = unidades[0].limite
+  if (valor >= maiorLimite * 1000) {
+    return valor.toExponential(1).replace('+', '') // ex: "1.0e36"
+  }
+
+  for (const unidade of unidades) {
+    if (valor >= unidade.limite) {
+      const valorDividido = valor / unidade.limite
+      const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
+      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
+    }
+  }
+}
+
 // Evento do botão de clicar
 // Quando o botão é clicado, adiciona pontos e atualiza o display
-button.addEventListener('click', () => {
-    const atual = pontos
-    pontos += boost;
-    refresh(atual)
+button.addEventListener('click', (e) => {
+  const click = document.createElement('div')
+  const randomOffset = Math.random() * 8
+  click.className = 'click'
+  click.textContent = `+${boost}`
+  click.style.left = `calc(${e.pageX}px + ${randomOffset}px)`
+  click.style.top = `${e.pageY}px`
+  clicksContainer.appendChild(click)
+  void click.offsetHeight
+  click.classList.add('fading-up')
+
+  click.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
+  })
+
+  const atual = pontos
+  pontos += boost
+  refresh(atual)
 })
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
