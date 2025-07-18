@@ -107,6 +107,12 @@ button.addEventListener('click', () => {
     display.textContent = pontos;
 });
 
+// Quando uma tecla do teclado é pressionada, adiciona pontos
+document.addEventListener('keydown', (e) => {
+  pontos += 1 + boost; // Adiciona pontos com o boost
+  display.textContent = pontos; // Atualiza o display
+});
+
 // Evento do botão de upgrade
 // Quando o botão é clicado, verifica se tem pontos suficientes para o upgrade
 upgradeButton.addEventListener('click', () => {
