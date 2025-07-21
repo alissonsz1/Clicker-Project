@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Dev Clicker</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'assets/placeholder.png' %}" type="image/x-icon">
+</head>
+
+<body>
+    <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
+    <!-- O coro principal do projeto -->
+    <main>
+        <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
+        <canvas id="canvas"></canvas> <!-- Serve para renderizar o efeito da matrix -->
+        <div class="table"></div> <!-- Mesa onde fica o computador -->
+        <div id="coffee-container"></div>
+        <!-- O container que envolve a seção da esquerda (computador) -->
+        <div class="container-left">
+            <div class="container-left--header">
+                <span contenteditable="true" spellcheck="false" class="company-text" id="company-text">NOME DA EMPRESA</span>
+                <span class="ls-text" id="pontos">0 linhas de código</span>
+                <span>por segundo: 0</span>
+            </div>
+            <div class="container-left--computer">
+                <div class="computer computer-back"></div>
+                <div class="computer computer-monitor"></div>
+                <div class="computer-hitbox" id="click_button"></div>
+                <div class="computer computer-keyboard"></div>
+                <!-- <div class="computer computer-back glow"></div> -->
+            </div>
+        </div>
+        <!-- O container que envolver a seção da direita (upgrades + estruturas) -->
+        <div class="container-right">
+            <div class="container-right--header">
+                <button class="button-header left active">Estruturas</button>
+                <button class="button-header right">Upgrades</button>
+            </div>
+            <div class="container-content">
+                <ul class="content-list">
+                </ul>
+            </div>
+        </div>
+        <div class="container-boosts">
+        </div>
+    </main>
+    <script src="{% static 'js/script.js' %}" type="module"></script> <!-- O script que contém a lógica do jogo -->
+    <script src="{% static 'js/leaderboard.js' %}" type="module"></script>
+</body>
+
+</html>

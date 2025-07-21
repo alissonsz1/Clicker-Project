@@ -1,0 +1,573 @@
+/* importa a fonte */
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Jersey+15&display=swap');
+
+/* Reseta o estilo das listas */
+ul, ol { list-style: none; }
+img { max-width: 100%; }
+
+/* Põe a fonte global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Jersey 15", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html, body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    touch-action: manipulation; /* Essa linha previne double-tap zoom no celular */
+}
+
+/* O estilo do body, onde dentro do body tem o container */
+body {
+    --c1: #6ACBD4;
+    --c2: #41798A;
+    --c3: #172740;
+    --c4: #111e38;
+    --c5: #0E192B;
+    --c6: #00162f;
+    --high: rgb(182, 55, 55);
+    --low: rgb(36, 139, 36);
+
+    background: url("../assets/background.png");
+    background-size: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--c1);
+    height: 100vh;
+    user-select: none;
+}
+
+/* Quando está no modo matrix, as variáveis mudam para um tom de verde */
+body.matrix {
+    --c1: #6ad48a;
+    --c2: #418a59;
+    --c3: #17402d;
+    --c4: #163629;
+    --c5: #0e2b1b;
+    --c6: #002f14;
+}
+
+/* O elemento principal */
+main {
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+}
+
+.table {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: min(53vw, 68%);
+    background-color: var(--c6);
+    z-index: -1;
+    transition: box-shadow .5s ease;
+}
+
+body.matrix .table {
+    overflow: hidden;
+    opacity: .8;
+    background-position: 0 100%;
+    background: linear-gradient(to bottom, #00e20093 0%, 2.86624%, rgb(3, 110, 21) 5.73248%, 12.7389%, rgb(0, 64, 18) 19.7452%, 22.9299%, rgb(0, 56, 19) 26.1146%, 63.0573%, rgb(0, 47, 20) 100%);
+    /* box-shadow: inset 0 20px 50px #00e20093 */
+}
+
+/* O container que envolve a seção da esquerda */
+.container-left {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+}
+
+/* Contém os textos do container da esquerda */
+.container-left--header {
+    text-shadow: 3px 3px 2px black;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contém o computador */
+.container-left--computer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+/* Muda a cor do computador apra um tom de verde */
+body.matrix .container-left--computer {
+    filter: hue-rotate(300deg) contrast(0.95)
+}
+
+.computer-monitor { background: url("../assets/monitor.png");}
+.computer-back { background: url("../assets/fundo_monitor.png"); }
+.computer-keyboard { background: url("../assets/teclado.png"); transition: all .1s ease;}
+
+/* Ainda será implementado algum tipo de luz saindo do monitor */
+
+/* Cada um dos componentes do computador */
+.computer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    pointer-events: none;
+}
+
+/* Nome da empresa */
+.company-text {
+    color: var(--c2);
+    cursor: pointer;
+    font-size: 1.3em;
+    transition: all .1s ease;
+}
+
+/* Adiciona um pequeno brilho quando hover */
+.company-text:hover {
+    color: white;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2);
+}
+
+/* Área de fato clicável do teclado */
+.computer-hitbox {
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    right: 10%;
+    top: 75%;
+    pointer-events: auto;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    outline: none;
+}
+
+/* Deixa levemente maior ao clicar */
+.computer-hitbox:active ~ .computer-keyboard { transform: scale(1.05); }
+
+/* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
+@media (hover: hover) {
+  .computer-hitbox:hover ~ .computer-keyboard {
+      transform: scale(1.05);
+      /* filter: drop-shadow(0 0 4px var(--c1)) drop-shadow(0 0 8px var(--c1)); */
+  }
+  .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.0); }
+}
+
+.ls-text { font-size: 1.5em; }
+
+/* O container que envolve a seção da direita */
+.container-right {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    border-radius: 10px;
+    border: 3px solid var(--c1);
+
+    flex-basis: 400px;
+    background-color: var(--c4);
+    height: 700px;
+    max-height: 80vh;
+    overflow-y: hidden;
+}
+
+/* Quando o efeito de matrix estiver ativo, haverá uma pequena opacidade no fundo */
+body.matrix .container-right{
+    background-color: color-mix(in srgb, var(--c4) 70%, transparent);
+}
+
+/* Onde estão os botões para torcar entre abas */
+.container-right--header {
+    margin: -1em;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Conteúdo do cotainer da direita */
+.container-content {
+    overflow-y: auto;
+    margin-top: 2em;
+}
+
+/* Modifica a barra de rolagem */
+.container-content::-webkit-scrollbar { 
+    background-color: var(--c4);
+    width: 10px;
+}
+
+.container-content::-webkit-scrollbar-thumb { 
+    background-color: var(--c1);
+    border-radius: 50px;
+ }
+
+/* Lista que armazena os upgrades/estruturas */
+.content-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+/* Cada um dos items da lista */
+.content-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .4em;
+    padding: .5em;
+    border-radius: 5px;
+    border: 3px solid var(--c1);
+    background-color: var(--c3);
+    font-weight: bold;
+    cursor: pointer;
+    opacity: .5;
+    transform: opacity .5s linear;
+}
+
+/* Deixa a opacidade normal ao ser desbloqueado */
+.content-item.unlocked { opacity: 1;}
+/* Deixa levemente transparente enquanto está no modo matrix */
+body.matrix .content-item { background-color: color-mix(in srgb, var(--c3) 60%, transparent);}
+
+.item-icon {
+    aspect-ratio: 1/1;
+    width: 50px;
+    transition: opacity .5s linear, filter .5s linear;
+}
+
+/* Deixa o icone preto enquanto ele nao for desbloqueado */
+.item-icon.hidden {
+    filter: brightness(0);
+    opacity: .7;
+}
+
+.item-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-shadow: 3px 3px 2px black;
+}
+
+/* Textos para a estrutura */
+.item-purchased { font-size: 1.8em; color: var(--c2);}
+.item-name { font-size: 1.4em; text-align: left;}
+.high { color: var(--high);}
+.low { color: var(--low);}
+
+/* Todos os botões resetam */
+button {
+    appearance: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Os botões que ficam para trocar entre a aba de upgrades e de estruturas */
+/* Todos eles, no principio, ficam com essa aparência de "apagados" */
+.button-header {
+    font-size: 1.2em;
+    text-transform: uppercase;
+    flex-grow: 1;
+    padding: 1em;
+    color: var(--c2);
+    background-color: var(--c5);
+    border-bottom: 3px solid black;
+}
+
+body.matrix .button-header {
+    background-color: color-mix(in srgb, var(--c5) 70%, transparent);
+}
+
+/* Quando são ativos, a cor fica igual a do fundo e a fonte tbm fica mais "viva" */
+.button-header.active {
+    color: var(--c1);
+    background-color: var(--c4);
+    border-bottom: none;
+}
+
+body.matrix .button-header.active {
+    background-color: transparent;
+}
+
+.button-header.left.active { border-right: 3px solid black;} /* Se o botão da esquerda que tá ativo, cria uma bordinha na direita */
+.button-header.right.active { border-left: 3px solid black;} /* Se o botão da direita que tá ativo, cria uma bordinha na esquerda */
+
+/* O estilo do botão, que é o botão de clicar e o botão de upgrade */
+.button-left {
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    background-color: #ffcc66;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, ease-in-out 0.2s;
+}
+
+/* As animações */
+.button-left:hover {
+    transform: scale(1.1);
+}
+
+.button-left:active {
+    transform: scale(1);
+}
+
+/* EVENTO ALEATÓRIO DO CAFÉ */
+
+#coffee-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden; /* garante que cafés não escapem */
+    pointer-events: none;
+    z-index: 10000;
+}
+
+.coffee-wrapper {
+    --time: 5s;
+    position: absolute;
+    display: block;
+    opacity: 0;
+    transform: scale(0) rotate(0);
+
+    transform-origin: center;
+    will-change: transform;
+    transition: opacity var(--time) linear, transform var(--time) ease;
+}
+
+.coffee-wrapper.fade-out {
+    transition: opacity var(--time) linear, transform var(--time) ease;
+}
+
+.coffee {
+    display: block;
+    width: 96px;
+    height: 96px;
+    cursor: pointer;
+    background-size: 96px 96px;
+    background-image: url('../assets/coffee.png');
+    background-position: 0 0;
+
+    pointer-events: auto;
+    transform-origin: center;
+    will-change: transform;
+}
+
+.alert-back {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 120%;
+    background-color: rgba(0, 0, 0, 0.7); /* fundo escuro com transparência */
+    border-radius: 50px;
+    filter: blur(10px);
+    opacity: .7;
+    z-index: 50;
+}
+
+.alert-coffee {
+    color: rgb(255, 255, 255);
+    width: 200px;
+    display: block;
+    position: absolute;
+    filter: blur(0);
+    /* text-shadow: black 0 0 10px; */
+    transform: translate(calc(-50% + 48px), 0);
+    opacity: 0;
+
+    transition: opacity .5s linear, transform 1s ease-out;
+    text-align: center;
+}
+
+.alert-text {
+    position: relative;
+    z-index: 51;
+}
+
+/* Animações do Café */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes tilt {
+  0% { rotate: 0deg; }
+  17% { rotate: -3deg; }
+  34% { rotate: 3deg; }
+  51% { rotate: 0deg; }
+  68% { rotate: 3deg; }
+  85% { rotate: -3deg; }
+  100% { rotate: 0deg; }
+}
+
+/* MATRIX */
+
+#canvas {
+    /* width: 100vw; */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    transition: opacity .5s ease;
+}
+
+/* MODAL */
+/* Ainda será implementado */
+
+.modal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.modal.disabled {
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* CONTAINER BOOSTS */
+
+.container-boosts {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    position: fixed;
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.boost {
+    --time: 5s;
+    position: relative;
+    aspect-ratio: 1/1;
+    width: 2.5em;
+    border: 5px solid var(--c1);
+    background-color: var(--c5);
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    cursor: pointer;
+}
+
+/* Propriedade que serve pra animar o "conic-gradient" (efeito de cooldown) */
+@property --a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.boost.cooldown::after {
+    opacity: .5;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(transparent 0deg, transparent var(--a), var(--c1) var(--a));
+    animation: fill var(--time) linear normal;
+    animation-fill-mode: forwards;
+    z-index: 100;
+}
+
+@keyframes fill {
+  0% {
+    --a: 0deg;
+  }
+  100% {
+    --a: 360deg;
+  }
+}
+
+/* Responsividade para o container da direita */
+/* PRECISA FICAR ABAIXO DE TODO O RESTO */
+@media (max-width: 730px) {
+    html {
+
+        overflow-y: auto;
+    }
+
+    body {
+        font-size: 1.8rem;
+        background-size: auto;
+    }
+
+    main {
+        position: absolute;
+        top: 0;
+        padding-top: 5rem;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .table {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 40%;
+        bottom: 41%;
+    }
+
+    .container-left {
+        width: 95%;
+    }
+
+    .container-right {
+        border-radius: 0;
+        border: none;
+        border-top: 3px solid var(--c1);
+        width: 100%;
+        flex: 1 0 auto;
+    }
+
+    .container-boosts {
+        left: auto;
+        bottom: auto;
+        top: 1em;
+        right: 1em;
+        transform: none;
+        flex-direction: column;
+    }
+}
