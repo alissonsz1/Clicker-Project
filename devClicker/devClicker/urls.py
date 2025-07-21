@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+#caminhos para as views
 urlpatterns = [
-    path('', include('mainApp.urls')),
+    path('', include('mainApp.urls')), # inclue as urls do aplicativo principal
     path('admin/', admin.site.urls),
 ]
