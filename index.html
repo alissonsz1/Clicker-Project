@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Dev Clicker</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,26 +12,38 @@
 <body>
     <!-- O coro principal do projeto -->
     <main>
+        <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
+        <canvas id="canvas"></canvas> <!-- Serve para renderizar o efeito da matrix -->
+        <div class="table"></div> <!-- Mesa onde fica o computador -->
         <div id="coffee-container"></div>
+        <div class="clicks-container"></div>
         <!-- O container que envolve a seção da esquerda (computador) -->
         <div class="container-left">
-            <h1>🍪 Clicker Maneiro</h1>
-            <p>Cliques: <span id="pontos">0</span></p> <!-- Onde contabiliza os pontos -->
-            <div>
-                <button class="button-left" id="click_button">BOTAO</button> <!-- O botão de clicar -->
-                <button class="button-left" id="upgrade_button">+2</button> <!-- O botão de upgrade -->
+            <div class="container-left--header">
+                <span class="company-text">NOME DA EMPRESA</span>
+                <span class="ls-text" id="pontos">0 linhas de código</span>
+                <span>por segundo: 0</span>
+            </div>
+            <div class="container-left--computer">
+                <div class="computer computer-back"></div>
+                <div class="computer computer-monitor"></div>
+                <div class="computer-hitbox" id="click_button"></div>
+                <div class="computer computer-keyboard"></div>
+                <!-- <div class="computer computer-back glow"></div> -->
             </div>
         </div>
         <!-- O container que envolver a seção da direita (upgrades + estruturas) -->
         <div class="container-right">
-            <div class="container-header">
-                <button class="button-header left active">Upgrades</button>
-                <button class="button-header right">Estruturas</button>
+            <div class="container-right--header">
+                <button class="button-header left active">Estruturas</button>
+                <button class="button-header right">Upgrades</button>
             </div>
             <div class="container-content">
                 <ul class="content-list">
                 </ul>
             </div>
+        </div>
+        <div class="container-boosts">
         </div>
     </main>
 
