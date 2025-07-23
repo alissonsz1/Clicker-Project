@@ -520,14 +520,19 @@ body.matrix .button-header.active {
 
 /* MATRIX */
 
-#canvas {
-    /* width: 100vw; */
+.matrix-canvas {
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     z-index: -2;
+    opacity: 1;
+    pointer-events: none;
     transition: opacity .5s ease;
+}
+
+@starting-style {
+    .matrix-canvas { opacity: 0; }
 }
 
 /* MODAL */
