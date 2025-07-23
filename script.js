@@ -96,7 +96,7 @@ const bonusList = [
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
       refresh(pontos, ganho) // Atualiza os pontos na tela
-      return `Ganhou ${ganho} linhas!`
+      return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
   {
@@ -162,8 +162,8 @@ const bonusList = [
     descricao: "7% das linhas!", // MUDAR PARA BONUS DE LINHAS POR SEGUNDO NO FUTURO
     get efeito() {
         const ganho = Math.floor(pontos * 0.07 + 13);
-        pontos += ganho;
-        return `Ganhou ${ganho} linhas!`
+        refresh(pontos, ganho)
+        return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
   {
@@ -204,6 +204,10 @@ const unidades = [
   { limite: 1e3, nome: 'mil', plural: 'mil' }
 ]
 
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Variaveis
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
@@ -228,7 +232,7 @@ function refresh(valorAtual, add) {
   pontos = valorAtual + add
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
-
+  
   if (tabActive == 'Estruturas') renderEstruturas()
   else renderUpgrades()
 }
@@ -236,29 +240,44 @@ function refresh(valorAtual, add) {
 // Anima os numerozinhos para eles subirem de pouco em pouco
 function animarContador(valorInicial, duracao = 700) {
   const valorFinal = pontos
+  const add = valorFinal - valorInicial
 
-  if (Math.abs(valorFinal - valorInicial == 1)) {
+  if (Math.abs(add) == 1) {
     display.textContent = `${pontos} linhas de código`
+    if (add > 0) generateCodeLine()
     return
   }
 
-  let start = null;
+  const MAX_LINHAS_POR_FRAME = 10;
   const range = valorFinal - valorInicial;
+  let start = null;
+  let lastValue = valorInicial
 
-  // Função de easing (easeOutQuad)
-  function easeOutQuint(x) {
-    return 1 - Math.pow(1 - x, 5);
+  // Função de easing
+  function ease(x) {
+    return Math.sqrt(1 - Math.pow(x - 1, 2));
   }
 
   function step(timestamp) {
     if (!start) start = timestamp
     const tempoDecorrido = timestamp - start
     const progresso = Math.min(tempoDecorrido / duracao, 1) // entre 0 e 1
-    const eased = easeOutQuint(progresso) // aplica easing
+    const eased = ease(progresso) // aplica easing
 
     const valorInterpolado = Math.floor(valorInicial + range * eased)
     const valorFormatado = formatarNumero(valorInterpolado)
+
     display.textContent = `${valorFormatado} linhas de código`
+
+    // Gera code lines para cada valor novo que passou
+    const diff = valorInterpolado - lastValue;
+    if (diff > 0) {
+      const linhasAGerar = Math.min(diff, MAX_LINHAS_POR_FRAME);
+      for (let i = 0; i < linhasAGerar; i++) {
+        lastValue++;
+        generateCodeLine(1);
+      }
+    }
 
     if (progresso < 1) {
       requestAnimationFrame(step);
@@ -854,3 +873,79 @@ const stopMatrix = (id) => {
 }
 
 // FIM DA FUNÇÃO MATRIX
+
+// INÍCIO FUNÇÃO DAS "SALSICHINHAS" (os códigos passando pela tela kk)
+
+
+const container = document.querySelector(".computer-codelines");
+
+let currentIndentLevel = 0
+let isFirstLine = true
+let currentLineNumber = 1
+
+const draculaColors = [
+  '#ff79c6', // keyword
+  '#f1fa8c', // string
+  '#bd93f9', // number
+  '#50fa7b', // function/variable
+  '#8be9fd', // operator
+  '#6272a4', // comment
+];
+
+function generateCodeLine(add = 1) {
+  const wrapper = document.createElement("div")
+  wrapper.className = 'code-line-wrapper'
+
+  const lineNumber = document.createElement("div");
+  lineNumber.className = 'line-number'
+  lineNumber.textContent = currentLineNumber
+  currentLineNumber += add
+
+  const line = document.createElement("div")
+  line.className = "code-line"
+
+  if (isFirstLine) {
+    currentIndentLevel = 0
+    isFirstLine = false
+  } else {
+    // Atualiza o nível de identação com base na regra
+    const weightedChange = [-1, -1, -1, 0, 0, 0, 1, 1]
+    // const change = weightedChange[randomBetween(0, weightedChange.length-1)]
+    const change = randomBetween(-1, 1);
+    const newIndentLevel = currentIndentLevel + change
+   
+    // Garante que o novo nível é válido (0 a 3)
+    currentIndentLevel = Math.max(0, Math.min(newIndentLevel, currentIndentLevel + 1, 3))
+  }
+
+  line.style.marginLeft = `${currentIndentLevel * 15}px`;
+
+  // Quantidade de blocos aleatória
+  const weightedBlockCounts = [3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9];
+  const blockCount = weightedBlockCounts[randomBetween(0, weightedBlockCounts.length-1)]
+
+  for (let i = 0; i < blockCount; i++) {
+    const block = document.createElement("div")
+    block.className = "code-block"
+
+    // Largura aleatória 
+    const width = randomBetween(4, 15)
+    block.style.width = `${width}%`
+
+    const color = draculaColors[Math.floor(Math.random() * draculaColors.length)]
+    // block.style.backgroundColor = color
+
+    line.appendChild(block);
+  }
+
+  wrapper.appendChild(lineNumber);
+  wrapper.appendChild(line);
+  container.appendChild(wrapper);
+
+  // Reduz o número máximo de linhas visíveis
+  if (container.children.length > 34) {
+    container.removeChild(container.children[0]);
+  }
+}
+
+// FIM DA FUNÇÃO DAS SALSICHINHAS

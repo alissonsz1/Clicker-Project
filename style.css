@@ -175,6 +175,48 @@ body.matrix .container-left--computer {
 /* .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.05); } */
 .pulinho { animation: pop .2s ease; }
 
+
+/* SALSICHINHAS */
+
+.computer-codelines {
+    pointer-events: all;
+    top: 10.5%;
+    max-width: 270px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-line-wrapper {
+    --fs: .2em;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.code-line {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    margin-left: 0;
+}
+
+.line-number {
+    flex-basis: calc(var(--fs)*15);
+    text-align: right;
+    font-family: monospace;
+    font-size: var(--fs);
+    color: var(--c2);
+}
+
+.code-block {
+    height: calc(var(--fs)/2);
+    background-color: #008080;
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
 @keyframes pop {
   0% {
     transform: scale(1);
@@ -244,13 +286,13 @@ body.matrix .container-right{
 
 /* Modifica a barra de rolagem */
 .container-content::-webkit-scrollbar { 
-    background-color: var(--c4);
-    width: 10px;
+    background-color: transparent;
+    width: 5px;
 }
 
 .container-content::-webkit-scrollbar-thumb { 
     background-color: var(--c1);
-    border-radius: 50px;
+    border-radius: 10px;
  }
 
 /* Lista que armazena os upgrades/estruturas */
@@ -709,10 +751,6 @@ body.matrix .button-header.active {
 .tooltip li::before {
     content: "• ";
 }
-
-
-/*  */
-
 
 /* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
 @media (hover: hover) {
