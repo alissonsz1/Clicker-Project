@@ -90,7 +90,7 @@ const estruturas = [
 const bonusList = [
   {
     id: 'bn1',
-    nome: "BONUS 1",
+    nome: "CAFÉZINHO",
     descricao: "15% das linhas + 13",
     peso: 70,
     get efeito() {
@@ -101,8 +101,9 @@ const bonusList = [
   },
   {
     id: 'bn2',
-    nome: "BONUS 2",
+    nome: "CAFÉ DOCINHO",
     descricao: "LS x7",
+    type: 'matrix',
     duracao: 60,
     peso: 30,
     icon: 'placeholder.png',
@@ -114,8 +115,9 @@ const bonusList = [
   },
   {
     id: 'bn3',
-    nome: "BONUS 3",
+    nome: "CAFÉ PERFEITO",
     descricao: "LS x777",
+    type: 'matrix',
     duracao: 15,
     peso: 10,
     icon: 'placeholder.png',
@@ -127,8 +129,9 @@ const bonusList = [
   },
   {
     id: 'bn4',
-    nome: "BONUS 4",
+    nome: "CAFÉ DIVINO",
     descricao: "LS x1111",
+    type: 'matrix',
     duracao: 10,
     peso: 2,
     icon: 'placeholder.png',
@@ -140,19 +143,18 @@ const bonusList = [
   },
   {
     id: 'bn5',
-    nome: "BONUS 5",
-    descricao: 'Café para todo lado!',
+    nome: "TEMPESTADE DE CAFÉ",
     peso: 5,
     get efeito() {
         var coffeeStorm = setInterval(() => {
-            spawnCoffe('STORM BONUS')
+            spawnCoffe('bn6')
         }, 400)
 
         setTimeout(() => {
             clearInterval(coffeeStorm)
         }, 7000)
 
-        return "Tempestade de café!"
+        return "Café para todo lado!"
     },
   },
   // STORM BONUS SÓ É ATIVADO PELO BONUS 5
@@ -172,8 +174,38 @@ const bonusList = [
     descricao: 'Não faz nada...',
     peso: 1,
     get efeito() {
-      return 'Não faz nada... Literalmente.'
+      return 'Não faz nada... Absolutamente nada. Tipo: NADA!'
     },
+  },
+  {
+    id: 'bn8',
+    nome: 'CAFÉ DO MAL',
+    type: 'evil',
+    icon: 'placeholder.png',
+    peso: 10,
+    duracao: 30,
+    get efeito() {
+      lsMultiplier *= .5
+      coffeeProb *= .5
+      return `LS x0.5 por ${this.duracao} segundos...`
+    },
+    reverter: () => {
+      coffeeProb /= .5
+      lsMultiplier /= .5
+    },
+  },
+    {
+    id: 'bn9',
+    nome: 'CAFÉ DEMONÍACO',
+    type: 'evil',
+    icon: 'placeholder.png',
+    peso: 10,
+    duracao: 6,
+    get efeito() {
+      lsMultiplier *= 666
+      return `LS x666 por ${this.duracao} segundos...`
+    },
+    reverter: () => lsMultiplier /= 666,
   }
 ]
 
@@ -345,6 +377,8 @@ function triggerAnimation() {
   keyboard.classList.add('pulinho')    // adiciona novamente
 }
 
+
+
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
 buttonsHeader.forEach((btn) => {
@@ -424,7 +458,7 @@ const renderEstruturas = () => {
     }
 
     else div.classList.add('hidden')
-    div.setAttribute('data-id', item.id)
+    div.setAttribute('data-tooltipId', item.id)
     div.addEventListener('click', () => buyEstrutura(i))
     addEventListenerForEstruturasTooltip(div)
     contentList.appendChild(div)
@@ -451,7 +485,7 @@ const renderUpgrades = () => {
         div.className = "content-item upgrade"
         if (pontos >= item.custo) div.classList.add('unlocked')
 
-        div.setAttribute('data-id', item.id)
+        div.setAttribute('data-tooltipId', item.id)
         div.addEventListener('click', () => buyUpgrade(item.index))
         addEventListenerForUpgradesTooltip(div)
         contentList.appendChild(div)
@@ -464,7 +498,7 @@ function addEventListenerForEstruturasTooltip(el) {
   const tooltipRect = tooltip.getBoundingClientRect()
 
   el.addEventListener("mousemove", (e) => {
-    const id = el.getAttribute("data-id")
+    const id = el.getAttribute("data-tooltipId")
     const data = estruturas.find(es => es.id === id)
 
     const LS = 2 // BOTAR NUMERO REAL DE LS PARA CADA ESTRUTURA
@@ -513,7 +547,7 @@ function addEventListenerForUpgradesTooltip(el) {
   const tooltipRect = tooltip.getBoundingClientRect()
 
   el.addEventListener("mousemove", (e) => {
-    const id = el.getAttribute("data-id")
+    const id = el.getAttribute("data-tooltipId")
     const data = upgrades.find(up => up.id === id)
 
     tooltip.innerHTML = `
@@ -581,7 +615,7 @@ const triggerCoffeeEvent = () => {
 }
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-const spawnCoffe = (bonusName = null) => {
+const spawnCoffe = (bonusId = null) => {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -621,7 +655,7 @@ const spawnCoffe = (bonusName = null) => {
       const cookieSizeValue = parseInt(cookieSize)
       // ADICIONAR ALGUM SOM
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
-      const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
+      const bonus = bonusList.find(b => b.id == bonusId) ?? escolherBonusComPeso(bonusList)
       const efeito = bonus.efeito // Trigga o efeito do bônus
       setBonus(bonus, efeito) // Coloca o bônus na tela
       
@@ -703,7 +737,7 @@ function setBonus(bonus, efeito) {
 
     // E inicia um novo
     active.timeoutId = setTimeout(() => {
-      removeBoost(bonus.nome)
+      removeBoost(bonus)
     }, bonus.duracao * 1000)
 
     const boostDiv = document.querySelector(`[data-nome="${bonus.nome}"]`)
@@ -717,7 +751,7 @@ function setBonus(bonus, efeito) {
 
   // Inicia um timer pro bonus baseado na sua duracao
   const timeoutId = setTimeout(() => {
-    removeBoost(bonus.nome)
+    removeBoost(bonus)
   }, bonus.duracao * 1000)
 
   // Adiciona na array de bonus ativos
@@ -725,16 +759,17 @@ function setBonus(bonus, efeito) {
     id: bonus.id,
     nome: bonus.nome,
     descricao: bonus.descricao,
+    type: bonus.type,
     timeoutId,
     expiresIn: Date.now() + bonus.duracao * 1000,
     reverter: bonus.reverter,
   })
 
-  startMatrix(bonus.id)
+  startMatrix(bonus.id, bonus.type)
 
   const div = document.createElement("div")
   div.className = `boost cooldown`
-  div.setAttribute('data-id', bonus.id)
+  div.setAttribute('data-tooltipId', bonus.id)
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('./assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
@@ -743,8 +778,8 @@ function setBonus(bonus, efeito) {
 }
 
 // Remove o bonus do café
-function removeBoost(nome) {
-  const index = boostsActive.findIndex(b => b.nome === nome)
+function removeBoost({nome, id}) {
+  const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
     if (boost.reverter) boost.reverter() // Desfaz o efeito
@@ -760,7 +795,7 @@ function addEventListenerForCoffeesTooltip(el, efeito) {
   const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()
   
   el.addEventListener("mousemove", (e) => {
-    const id = el.getAttribute("data-id")
+    const id = el.getAttribute("data-tooltipId")
     const data = bonusList.find(bn => bn.id === id)
     
     tooltip.classList.add('bonus')
@@ -793,7 +828,7 @@ triggerCoffeeEvent()
 // Armazena todas os efeitos MATRIX ativos (id e elemento DOM)
 const matrices = {}
 
-const startMatrix = (id = 0) => {
+const startMatrix = (id = 0, type = 'matrix') => {
   if (matrices[id]) return
 
    // Cria canvas
@@ -812,13 +847,13 @@ const startMatrix = (id = 0) => {
   const drops = Array.from({ length: columns }, () => 1)
 
   function drawMatrix(){
-    ctx.fillStyle = 'rgba(0, 41, 10, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#0F0';
+    ctx.fillStyle = type == 'matrix' ? '#00290a0d' : '#29000a0d'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = type == 'matrix' ? '#0F0' : '#F00'
     ctx.font = fontSize + 'px Doto';
     for (let i = 0; i < drops.length; i++){
-        var text = texts[Math.floor(Math.random() * texts.length)];
-        ctx.fillText(text, i * fontSize, drops[i]*fontSize);
+        var text = texts[Math.floor(Math.random() * texts.length)]
+        ctx.fillText(text, i * fontSize, drops[i]*fontSize)
 
         if (drops[i] * fontSize > canvas.height || Math.random() > 0.95){
             drops[i] = 0;
@@ -839,7 +874,9 @@ const startMatrix = (id = 0) => {
   })
 
   const interval = setInterval(drawMatrix, 33)
-  document.body.classList.add('matrix') // adiciona a classe em 'body' pra poder customizar os elementos
+
+  document.body.className = ''
+  document.body.classList.add(type) // adiciona a classe em 'body' pra poder customizar os elementos
   matrices[id] = { canvas, interval }
 }
 
@@ -850,7 +887,18 @@ const stopMatrix = (id) => {
   clearInterval(matrix.interval)
   matrix.canvas.style.opacity = 0
 
-  if (boostsActive.length == 0) document.body.classList.remove('matrix')
+  if (!boostsActive.some(b => b.type === 'matrix')) {
+    document.body.classList.remove('matrix');
+  } else if (!document.body.classList.contains('matrix')) {
+    document.body.classList.add('matrix');
+  }
+
+  if (!boostsActive.some(b => b.type === 'evil')) {
+    document.body.classList.remove('evil');
+  } else if (!document.body.classList.contains('evil')) {
+    document.body.classList.add('evil');
+  }
+
 }
 
 // FIM DA FUNÇÃO MATRIX

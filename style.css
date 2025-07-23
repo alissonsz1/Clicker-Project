@@ -36,8 +36,8 @@ body {
     --c4: #111e38;
     --c5: #0E192B;
     --c6: #00162f;
-    --high: rgb(182, 55, 55);
-    --low: rgb(36, 139, 36);
+    --high: #b63737;
+    --low: #248b24;
 
     background: url("./assets/background.png");
     background-position: -3px;
@@ -61,6 +61,15 @@ body.matrix {
     --c4: #163629;
     --c5: #0e2b1b;
     --c6: #002f14;
+}
+
+body.evil {
+    --c1: #d46a6a;
+    --c2: #8a4141;
+    --c3: #401717;
+    --c4: #381111;
+    --c5: #2b0e0e;
+    --c6: #2f0000;
 }
 
 /* O elemento principal */
@@ -126,6 +135,11 @@ body.matrix .table {
 /* Muda a cor do computador apra um tom de verde */
 body.matrix .container-left--computer {
     filter: hue-rotate(300deg) contrast(0.95)
+}
+
+/* Muda a cor do computador apra um tom de verde */
+body.evil .container-left--computer {
+    filter: hue-rotate(140deg) contrast(1.2);
 }
 
 .computer-monitor { background: url("./assets/monitor.png");}
@@ -225,7 +239,7 @@ body.matrix .container-left--computer {
 }
 
 /* Quando o efeito de matrix estiver ativo, haverá uma pequena opacidade no fundo */
-body.matrix .container-right{
+body.matrix .container-right, body.evil .container-right {
     background-color: color-mix(in srgb, var(--c4) 80%, transparent);
 }
 
@@ -287,7 +301,7 @@ body.matrix .container-right{
 }
 
 /* Deixa levemente transparente enquanto está no modo matrix */
-body.matrix .content-item { background-color: color-mix(in srgb, var(--c3) 80%, transparent); }
+body.matrix .content-item, body.evil .content-item { background-color: color-mix(in srgb, var(--c3) 80%, transparent); }
 
 .item-icon {
     aspect-ratio: 1/1;
@@ -354,6 +368,7 @@ button {
 
 .notification {
     opacity: 0;
+    transition: opacity .2s linear;
 }
 
 .button-header.has-notification:not(.active) .notification {
@@ -399,7 +414,7 @@ button {
     content: '!';
 }
 
-body.matrix .button-header {
+body.matrix .button-header, body.evil .button-header {
     background-color: color-mix(in srgb, var(--c5) 80%, transparent);
 }
 
@@ -410,9 +425,7 @@ body.matrix .button-header {
     border-bottom: none;
 }
 
-body.matrix .button-header.active {
-    background-color: transparent;
-}
+body.matrix .button-header.active, body.evil .button-header.active { background-color: transparent; }
 
 .button-header.left.active { border-right: 3px solid black;} /* Se o botão da esquerda que tá ativo, cria uma bordinha na direita */
 .button-header.right.active { border-left: 3px solid black;} /* Se o botão da direita que tá ativo, cria uma bordinha na esquerda */
@@ -476,7 +489,7 @@ body.matrix .button-header.active {
 
 .alert-coffee {
     color: rgb(255, 255, 255);
-    width: 200px;
+    width: fit-content;
     display: block;
     position: absolute;
     filter: blur(0);
