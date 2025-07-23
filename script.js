@@ -1,22 +1,38 @@
 // Upgrades "place holder" só para o código funcionar
 const upgrades = [
-  { nome: "Café Forte", 
-    custo: 20, 
+  {
+    id: 'up1',
+    nome: "Café Forte", 
+    custo: 20,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { nome: "Atalho de Teclado", 
-    custo: 100, 
+  { 
+    id: 'up2',
+    nome: "Atalho de Teclado", 
+    custo: 100,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { nome: "Dupla Tela", 
-    custo: 500, 
+  { 
+    id: 'up3',
+    nome: "Dupla Tela", 
+    custo: 500,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { nome: "Modo Foco", 
-    custo: 1000, 
+  { 
+    id: 'up4',
+    nome: "Modo Foco", 
+    custo: 1000,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   }
@@ -24,34 +40,46 @@ const upgrades = [
 
 // Estruturas "place holder" só para o código funcionar
 const estruturas = [
-  { nome: "Servidor Local", 
+  { 
+    id: 'es1',
+    nome: "Servidor Local", 
     custoBase: 10, 
     comprados: 0,
-    icon: 'placeholder.png' ,
+    icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
   },
-  { nome: "Banco de Dados", 
+  { 
+    id: 'es2',
+    nome: "Banco de Dados", 
     custoBase: 100,
     comprados: 0,
     icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
   },
-  { nome: "Nuvem Privada", 
+  { 
+    id: 'es3',
+    nome: "Nuvem Privada", 
     custoBase: 1000, 
     comprados: 0,
     icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
    },
-  { nome: "Cluster de Servidores", 
+  { 
+    id: 'es4',
+    nome: "Cluster de Servidores", 
     custoBase: 10000, 
     comprados: 0,
     icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
@@ -61,16 +89,18 @@ const estruturas = [
 // Lista com os possíveis bônus do café
 const bonusList = [
   {
+    id: 'bn1',
     nome: "BONUS 1",
     descricao: "15% das linhas + 13",
     peso: 70,
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
-      pontos += ganho;
+      refresh(pontos, ganho) // Atualiza os pontos na tela
       return `Ganhou ${ganho} linhas!`
     },
   },
   {
+    id: 'bn2',
     nome: "BONUS 2",
     descricao: "LS x7",
     duracao: 60,
@@ -83,6 +113,7 @@ const bonusList = [
     reverter: () => lsMultiplier /= 7,
   },
   {
+    id: 'bn3',
     nome: "BONUS 3",
     descricao: "LS x777",
     duracao: 15,
@@ -95,6 +126,7 @@ const bonusList = [
     reverter: () => lsMultiplier /= 777,
   },
   {
+    id: 'bn4',
     nome: "BONUS 4",
     descricao: "LS x1111",
     duracao: 10,
@@ -107,6 +139,7 @@ const bonusList = [
     reverter: () => lsMultiplier /= 1111,
   },
   {
+    id: 'bn5',
     nome: "BONUS 5",
     descricao: 'Café para todo lado!',
     peso: 5,
@@ -124,6 +157,7 @@ const bonusList = [
   },
   // STORM BONUS SÓ É ATIVADO PELO BONUS 5
   {
+    id: 'bn6',
     nome: "STORM BONUS",
     descricao: "7% das linhas!", // MUDAR PARA BONUS DE LINHAS POR SEGUNDO NO FUTURO
     get efeito() {
@@ -133,6 +167,7 @@ const bonusList = [
     },
   },
   {
+    id: 'bn7',
     nome: 'CAFÉ VENCIDO',
     descricao: 'Não faz nada...',
     peso: 1,
@@ -141,6 +176,16 @@ const bonusList = [
     },
   }
 ]
+
+const desbloqueados = {
+  estruturas: new Set(),
+  upgrades: new Set()
+}
+
+const notificacoes = {
+  upgrades: new Set(),
+  estruturas: new Set()
+}
 
 // Tabela de unidades para os números
 const unidades = [
@@ -163,7 +208,7 @@ let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
 let lsMultiplier = 0 // Multiplicador apra as LS
 let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
-let tabActive = 'Estruturas' // Qual a aba ativa atualmente
+let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -173,9 +218,12 @@ const contentList = document.querySelector('.content-list') // Lista de items
 const coffeeContainer = document.getElementById('coffee-container') // Container dos cafés
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
 const clicksContainer = document.querySelector('.clicks-container')
+const tooltip = document.querySelector('.tooltip')
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
-function refresh(valorAtual) {
+function refresh(valorAtual, add) {
+  pontos = valorAtual + add
+  checarDesbloqueios(pontos)
   animarContador(valorAtual)
 
   if (tabActive == 'Estruturas') renderEstruturas()
@@ -246,6 +294,37 @@ function formatarNumero(valor) {
   }
 }
 
+function checarDesbloqueios(pontos) {
+  estruturas.forEach((estrutura, index) => {
+    if (pontos >= estrutura.custoAtual && !desbloqueados.estruturas.has(index)) {
+      console.log(`🔓 Estrutura desbloqueada: ${estrutura.nome}`)
+      desbloqueados.estruturas.add(index)
+      notificacoes.estruturas.add(index)
+      estrutura.unlocked = true
+      atualizarIndicadores()
+
+    }
+  })
+
+  upgrades.forEach((upgrade, index) => {
+    if (pontos >= upgrade.custo && !desbloqueados.upgrades.has(index)) {
+      console.log(`🆙 Upgrade disponível: ${upgrade.nome}`)
+      desbloqueados.upgrades.add(index)
+      notificacoes.upgrades.add(index)
+      atualizarIndicadores()
+    }
+  })
+}
+
+function atualizarIndicadores() {
+  const upgradesBtn = document.querySelector(".button-header.upgrades")
+  const estruturasBtn = document.querySelector(".button-header.estruturas")
+
+  upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
+  estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+}
+
+
 // Evento do botão de clicar
 // Quando o botão é clicado, adiciona pontos e atualiza o display
 button.addEventListener('click', (e) => {
@@ -263,9 +342,7 @@ button.addEventListener('click', (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
   })
 
-  const atual = pontos
-  pontos += boost
-  refresh(atual)
+  refresh(pontos, boost)
 })
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
@@ -277,8 +354,12 @@ buttonsHeader.forEach((btn) => {
         buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
         btn.classList.add('active') // Depois, adiciona somente no que foi clicado
 
+        notificacoes.upgrades.clear()
+        notificacoes.estruturas.clear()
+        atualizarIndicadores()
+
         // Através das classes, verifica se é o botão da esquerda que foi clicado
-        tabActive = btn.textContent
+        tabActive = btn.querySelector('.text').textContent
         if (tabActive == 'Upgrades') {
             renderUpgrades() // Irá renderizar UPGRADES
         } else {
@@ -352,7 +433,7 @@ const renderEstruturas = () => {
       <img src="./assets/${item.icon}" class="item-icon"/>
       <div class="item-content">
         <div class="item-text">
-          <span class="item-name">${!item.unlocked ? '????' : item.nome}</span>
+          <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
           <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
         </div>
         <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
@@ -362,10 +443,11 @@ const renderEstruturas = () => {
     if (item.unlocked) {
       div.classList.add('unlocked')
     }
+
     else div.classList.add('hidden')
-
+    div.setAttribute('data-id', item.id)
     div.addEventListener('click', () => buyEstrutura(i))
-
+    addEventListenerForEstruturasTooltip(div)
     contentList.appendChild(div)
   })
 }
@@ -391,9 +473,95 @@ const renderUpgrades = () => {
         div.className = "content-item upgrade"
         if (pontos >= item.custo) div.classList.add('unlocked')
 
+        div.setAttribute('data-id', item.id)
         div.addEventListener('click', () => buyUpgrade(item.index))
+        addEventListenerForUpgradesTooltip(div)
         contentList.appendChild(div)
     })
+}
+
+function addEventListenerForEstruturasTooltip(el) {
+  const container = document.querySelector(".container-right")
+  const containerRect = container.getBoundingClientRect()
+  const tooltipRect = tooltip.getBoundingClientRect()
+
+  el.addEventListener("mousemove", (e) => {
+    const id = el.getAttribute("data-id")
+    const data = estruturas.find(es => es.id === id)
+
+    const LS = 2 // BOTAR NUMERO REAL DE LS PARA CADA ESTRUTURA
+    const GERADO = 10
+
+    let extraInfo = ``
+
+    if (data.unlocked && data.comprados > 0) {
+      extraInfo = `
+          <ul>
+            <li>cada ${data.nome.toLocaleLowerCase()} coda <strong>${LS} LS</strong></li>
+            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} codando <strong>${data.comprados*LS} LS</strong></li>
+            <li>${GERADO} linhas geradas até agora</li>
+          </ul>
+      `
+    }
+
+    tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <div class="tooltip-header--left">
+            <img src="./assets/${data.icon}" class="tooltip-icon"/>
+            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
+          </div>
+          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
+        </div>
+        <div class="tooltip-content">
+          <span class="tooltip-description">${data.descricao}</span>
+        </div>
+        ${extraInfo}
+    `
+    tooltip.classList.remove('bonus')
+    tooltip.style.transform = 'translateY(-50%)'
+    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
+    tooltip.style.opacity = 1
+    tooltip.style.top = `min(${(e.pageY - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
+  })
+
+  el.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0
+  })
+}
+
+function addEventListenerForUpgradesTooltip(el) {
+  const container = document.querySelector(".container-right")
+  const containerRect = container.getBoundingClientRect()
+  const tooltipRect = tooltip.getBoundingClientRect()
+
+  el.addEventListener("mousemove", (e) => {
+    const id = el.getAttribute("data-id")
+    const data = upgrades.find(up => up.id === id)
+
+    tooltip.innerHTML = `
+      <div class="tooltip-header">
+        <div class="tooltip-header--left">
+          <img src="./assets/${data.icon}" class="tooltip-icon"/>
+          <strong class="tooltip-name">${data.nome}</strong>
+        </div>
+        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
+      </div>
+      <div class="tooltip-content">
+        <span class="tooltip-function">${data.funcao}</span>
+        <span class="tooltip-description">${data.descricao}</span>
+      </div>
+    `
+
+    tooltip.classList.remove('bonus')
+    tooltip.style.transform = 'translateY(-50%)'
+    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
+    tooltip.style.opacity = 1
+    tooltip.style.top = `min(${(e.pageY - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
+  })
+
+  el.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0
+  })
 }
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
@@ -402,11 +570,9 @@ const buyEstrutura = (index) => {
 
   if (pontos < estrutura.custoAtual) return
 
-  const atual = pontos
-  pontos -= estrutura.custoAtual
+  refresh(pontos, -estrutura.custoAtual)
   estrutura.comprados += 1
 
-  refresh(atual)
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -415,16 +581,14 @@ const buyUpgrade = (index) => {
 
   if (pontos < upgrade.custo || upgrade.purchased) return
 
-  const atual = pontos
-  pontos -= upgrade.custo
   upgrade.efeito()
   upgrade.purchased = true
 
-  refresh(atual)
+  refresh(pontos, -upgrade.custo)
 }
 
 // Renderiza os upgrades assim que o site inicia
-renderEstruturas(estruturas)
+renderUpgrades(upgrades)
 
 // FIM DO CONTAINER DA DIREITA
 
@@ -480,10 +644,8 @@ const spawnCoffe = (bonusName) => {
       // ADICIONAR ALGUM SOM
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
       const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
-      const atual = pontos
       const efeito = bonus.efeito // Trigga o efeito do bônus
-      setBonus(bonus) // Coloca o bônus na tela
-      refresh(atual) // Atualiza os pontos na tela
+      setBonus(bonus, efeito) // Coloca o bônus na tela
       
       // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
       const alertCoffee = document.createElement('div')
@@ -550,7 +712,7 @@ const escolherBonusComPeso = (list) => {
   }
 }
 
-const setBonus = (bonus) => {
+function setBonus(bonus, efeito) {
   if (!bonus.icon) return // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
 
   const active = boostsActive.find(b => b.nome == bonus.nome) // Verifica se já tem um boost ativo
@@ -591,10 +753,12 @@ const setBonus = (bonus) => {
 
   const div = document.createElement("div")
   div.className = `boost cooldown`
+  div.setAttribute('data-id', bonus.id)
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('./assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
+  addEventListenerForCoffeesTooltip(div, efeito)
 }
 
 function removeBoost(nome) {
@@ -608,6 +772,34 @@ function removeBoost(nome) {
     if (boostsActive.length == 0) stopMatrix() // Se não houver mais nenhum boost, para com o efeito de matrix
     boostDiv.remove()
   }
+}
+
+function addEventListenerForCoffeesTooltip(el, efeito) {
+  const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()
+  
+  el.addEventListener("mousemove", (e) => {
+    const id = el.getAttribute("data-id")
+    const data = bonusList.find(bn => bn.id === id)
+    
+    tooltip.classList.add('bonus')
+    tooltip.innerHTML = `
+      <div class="tooltip-header center">
+        <strong class="tooltip-name">${data.nome}</strong>
+      </div>
+      <div class="tooltip-content">
+        <span class="tooltip-efeito">${efeito}</span>
+      </div>
+    `
+    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
+    tooltip.style.left = `${e.pageX}px`
+    tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
+    tooltip.style.transform = `translateX(-50%)`
+    tooltip.style.opacity = 1
+  })
+
+  el.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0
+  })
 }
 
 triggerCoffeeEvent()

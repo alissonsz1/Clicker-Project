@@ -12,8 +12,9 @@
 <body>
     <!-- O coro principal do projeto -->
     <main>
-        <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
         <canvas id="canvas"></canvas> <!-- Serve para renderizar o efeito da matrix -->
+        <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
+        <div class="tooltip"></div>
         <div class="table"></div> <!-- Mesa onde fica o computador -->
         <div id="coffee-container"></div>
         <div class="clicks-container"></div>
@@ -35,8 +36,14 @@
         <!-- O container que envolver a seção da direita (upgrades + estruturas) -->
         <div class="container-right">
             <div class="container-right--header">
-                <button class="button-header left active">Estruturas</button>
-                <button class="button-header right">Upgrades</button>
+                <button class="button-header upgrades left active">
+                    <div class="notification"></div>
+                    <span class="text">Upgrades</span>
+                </button>
+                <button class="button-header estruturas right">
+                    <div class="notification"></div>
+                    <span class="text">Estruturas</span>
+                </button>
             </div>
             <div class="container-content">
                 <ul class="content-list">
