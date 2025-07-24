@@ -6,6 +6,16 @@
 ul, ol { list-style: none; }
 img { max-width: 100%; -webkit-user-drag: none; }
 
+/* Todos os botões resetam */
+button {
+    appearance: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--c1);
+    font-size: 1.1em;
+}
+
 :root {
     --cs: 86px; /* Coffee Size */
 }
@@ -28,6 +38,26 @@ html, body {
     touch-action: manipulation; /* Essa linha previne double-tap zoom no celular */
 }
 
+/* Quando está no modo matrix, as variáveis mudam para um tom de verde */
+body.matrix {
+    --c1: #6ad48a;
+    --c2: #418a59;
+    --c3: #17402d;
+    --c4: #163629;
+    --c5: #0e2b1b;
+    --c6: #002f14;
+}
+
+/* Quando está no modo evil, as variáveis mudam para um tom de vermelho */
+body.evil {
+    --c1: #d46a6a;
+    --c2: #8a4141;
+    --c3: #401717;
+    --c4: #381111;
+    --c5: #2b0e0e;
+    --c6: #2f0000;
+}
+
 /* O estilo do body, onde dentro do body tem o container */
 body {
     --c1: #6ACBD4;
@@ -36,8 +66,11 @@ body {
     --c4: #111e38;
     --c5: #0E192B;
     --c6: #00162f;
+
     --high: #b63737;
     --low: #248b24;
+
+    --c1b: 3px solid var(--c1);
 
     background: url("./assets/background.png");
     background-position: -3px;
@@ -51,25 +84,6 @@ body {
     color: var(--c1);
     height: 100vh;
     user-select: none;
-}
-
-/* Quando está no modo matrix, as variáveis mudam para um tom de verde */
-body.matrix {
-    --c1: #6ad48a;
-    --c2: #418a59;
-    --c3: #17402d;
-    --c4: #163629;
-    --c5: #0e2b1b;
-    --c6: #002f14;
-}
-
-body.evil {
-    --c1: #d46a6a;
-    --c2: #8a4141;
-    --c3: #401717;
-    --c4: #381111;
-    --c5: #2b0e0e;
-    --c6: #2f0000;
 }
 
 /* O elemento principal */
@@ -229,12 +243,12 @@ body.evil .container-left--computer {
     flex-direction: column;
     padding: 1em;
     border-radius: 10px;
-    border: 3px solid var(--c1);
+    border: var(--c1b);
 
     flex-basis: 400px;
     background-color: var(--c4);
-    height: 700px;
-    max-height: 80vh;
+    max-height: 600px;
+    height: 90dvh;
     /* overflow-y: hidden; */
 }
 
@@ -284,7 +298,7 @@ body.matrix .container-right, body.evil .container-right {
     gap: .4em;
     padding: .5em;
     border-radius: 5px;
-    border: 3px solid var(--c1);
+    border: var(--c1b);
     background-color: var(--c3);
     font-weight: bold;
     cursor: pointer;
@@ -294,11 +308,6 @@ body.matrix .container-right, body.evil .container-right {
 
 /* Deixa a opacidade normal ao ser desbloqueado (e puder ser comprado) */
 .content-item.unlocked:not(:has(.high)) { opacity: 1; }
-
-@keyframes fade-in {
-    0% { opacity: .5; }
-    100% { opacity: 1; }
-}
 
 /* Deixa levemente transparente enquanto está no modo matrix */
 body.matrix .content-item, body.evil .content-item { background-color: color-mix(in srgb, var(--c3) 80%, transparent); }
@@ -326,22 +335,26 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    gap: 5px;
     align-items: center;
     text-shadow: 3px 3px 2px black;
 }
 
 /* Textos para a estrutura */
 .item-purchased { font-size: 1.8em; color: var(--c2);}
-.item-name { font-size: 1.3em; text-align: left;}
+.item-name { font-size: 1.3em; text-align: left; }
 .high { color: var(--high);}
 .low { color: var(--low);}
 
-/* Todos os botões resetam */
-button {
-    appearance: none;
-    border: none;
-    background: none;
-    cursor: pointer;
+.info-bttn {
+    display: none;
+    visibility: hidden;
+
+    align-self: stretch;
+    /* background-color: var(--c2); */
+    padding: 0 .5em;
+    border: var(--c1b);
+    border-radius: 5px;
 }
 
 /* Os botões que ficam para trocar entre a aba de upgrades e de estruturas */
@@ -538,7 +551,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -2;
+    z-index: -100;
     opacity: 1;
     pointer-events: none;
     transition: opacity .5s ease;
@@ -622,6 +635,90 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 
 /* TOOLTIP */
 
+.mobile-tooltip {
+    pointer-events: none;
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, .6);
+    transition: opacity .2s linear;
+}
+
+.mobile-tooltip--content {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 500px;
+    width: 90dvw;
+    max-height: 500px;
+    height: 80dvh;
+    padding: 0.4em;
+    z-index: 10001;
+
+    border-radius: 5px;
+    border: var(--c1b);
+    background-color: var(--c3);
+}
+
+.mobile-tooltip--title {
+    font-size: 1.3em;
+    width: 100%;
+    padding: .2em;
+    border-bottom: 1px solid var(--c1);
+}
+
+.mobile-tooltip--header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* gap: .5em; */
+    padding: .2em;
+    border-radius: 5px;
+    border: var(--c1b);
+    width: 100%;
+}
+
+.mobile-tooltip--wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    flex: 1;
+}
+
+.mobile-tooltip--icon {
+    aspect-ratio: 1/1;
+    width: 80px;
+}
+
+.mobile-tooltip--header-text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-tooltip--name {
+    font-size: 1.5em;
+}
+
+.close-bttn {
+    width: 100%;
+    background-color: var(--c4);
+    font-size: 1.4em;
+    padding: .5em;
+    border-radius: 5px;
+}
+
 .tooltip {
     width: 320px;
     display: flex;
@@ -630,9 +727,8 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     gap: .5em;
     position: absolute;
     background-color: var(--c3);
-    color: #fff;
     padding: 8px 12px;
-    border: 2px solid var(--c1);
+    border: var(--c1b);
     border-radius: 5px;
     font-size: 1em;
     z-index: 999;
@@ -642,6 +738,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip.bonus {
+    width: 250px;
     font-size: .8em;
 }
 
@@ -658,7 +755,6 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 .tooltip-header.center {
     display: block;
 }
-
 
 .tooltip-header--left {
     display: flex;
@@ -691,7 +787,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 .tooltip-description {
     font-style: italic;
     text-align: right;
-    opacity: .8;
+    opacity: .6;
 }
 
 .tooltip-content:not(:last-child) {
@@ -705,13 +801,13 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     text-align: left;
 }
 
-.tooltip ul {
+.tooltip ul, .mobile-tooltip ul {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.tooltip li {
+.tooltip li, .mobile-tooltip li {
     text-align: left;
     font-size: .9em;
     background-color: var(--c2);
@@ -719,7 +815,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     border-radius: 10px;
 }
 
-.tooltip li::before {
+.tooltip li::before, .mobile-tooltip li::before {
     content: "• ";
 }
 
@@ -764,7 +860,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     }
 }
 
-@media (max-width: 830px) {
+@media (max-width: 800px) {
     :root {
         --cs: 64px;
     }
@@ -791,17 +887,18 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         left: 0;
         right: 0;
         top: 460px;
-        height: 210px;
+        height: 200px;
         min-height: auto;
     }
 
     .container-left--header {
         position: sticky;
-        top: 1em;
+        top: .5em;
         z-index: 50;
     }
 
     .notification {
+        right: .8em;
         width: 1.2em;
     }
 
@@ -823,22 +920,42 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         border: none;
         border-top: 3px solid var(--c1);
         width: 100%;
+        max-height: 70dvh;
+        padding: 1em .4em;
         flex: 1 0 auto;
     }
 
+    .item-purchased { 
+        display: none;
+        visibility: hidden;
+    }
+
+    .content-item.unlocked .info-bttn, .upgrade .info-bttn { 
+        display: block; 
+        visibility: visible;
+    }
+
+    .item-name {
+        font-size: clamp(.9em, 6vw,1.2em);
+    }
+
+    .mobile-tooltip {
+        display: block;
+        visibility: visible;
+    }
+
     .container-boosts {
-        left: auto;
-        bottom: auto;
-        top: 1em;
-        right: 1em;
-        transform: none;
-        flex-direction: column;
+        /* top: 1em; */
+        bottom: 1em;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
     }
 }
 
 @media (max-width: 470px) {
     .table {
         top: calc(245px + 46vw);
-        height: 42vw;
+        height: 43vw;
     }
 }
