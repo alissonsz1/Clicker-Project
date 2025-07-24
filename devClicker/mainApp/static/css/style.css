@@ -571,3 +571,10 @@ body.matrix .button-header.active {
         flex-direction: column;
     }
 }
+
+#leaderboard{
+    position: absolute;
+    z-index: 999;
+    height: 350px;
+    width:200px;
+}

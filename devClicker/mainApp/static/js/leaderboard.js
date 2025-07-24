@@ -42,25 +42,6 @@ function sampleName(min, max) {
 
 let nameCompanyInit = sampleName(1,1000)
 
-// fetch('', {
-//     method: ["POST", "GET", "PUT", "PATCH", "DELETE"],
-//     headers: {
-//         "Content-Type": "application/json", #Usado em todos, exceto o delete
-//         "X-CSRFToken": "{{ csrf_token }}" #Toda vez que atualizar o banco de dados
-//     },
-// })
-//     .then(res =>{
-//         if(!res.ok) throw new Error("Erro ao buscar o dado");
-//         return res.json()
-//     })
-//     .then(data =>{
-//         console.log(data);
-//     })
-//     .catch(error => {
-//         console.error("Erro ao inserir o player:", error);
-//     })
-
-
 function verifyIfNameExist(list, nameTest){
     const dataFound = list.find(obj => obj.companyName == nameTest);
     if(dataFound && dataFound.id != idPlayer){
@@ -209,16 +190,21 @@ function leaderboard_display(){
             return res.json()
         })
         .then( data => {
-            leaderboardDiv += `<ul>`;
+            leaderboardDiv.innerHTML += `<ul>`;
+            leaderboardDiv.innerHTML += ""
             data.forEach(name => {
-                leaderboardDiv += `<li> ${name} </li>`;
+                console.log(name)
+                leaderboardDiv.innerHTML += `<li> ${name.companyName} ${name.lsCount} </li>`;
             })
-            leaderboardDiv += `<ul>`;
+            leaderboardDiv.innerHTML += `<ul>`;
         })
         .catch( err => {
             console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
         })
 }
+
+leaderboard_display();
+
 
 socket.onmessage = function(e) {
     const data = JSON.parse(e.data);

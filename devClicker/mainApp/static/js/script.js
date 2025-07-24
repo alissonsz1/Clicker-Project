@@ -299,7 +299,7 @@ const renderUpgrades = () => {
     .forEach(item => {
         const div = document.createElement("div")
         div.innerHTML = (`
-          <img src="{% static 'assets/placeholder.png' %}" class="item-icon"/>
+          <img src={% static 'assets/placeholder.png' %} class="item-icon"/>
           <div class="item-content">
             <div class="item-text">
               <span class="item-name">${item.nome}</span>
