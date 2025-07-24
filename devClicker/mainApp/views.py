@@ -7,7 +7,14 @@ from channels.layers import get_channel_layer
 
 from .models import Companies
 
+# VARIÁVEIS GLOBAIS
+
+
 # Create your views here.
+# Renderiza as páginas html
+def devClicker(request, *args, **kwargs):
+    renderizing = render(request, "devClicker/index.html", {})
+    return renderizing
 
 # Detecta qualquer atualização no banco de dados
 def updateDetect(comp):
@@ -24,9 +31,6 @@ def updateDetect(comp):
     )
 
 
-# Renderiza as páginas html
-def devClicker(request, *args, **kwargs):
-    return render(request, "devClicker/index.html", {})
 
 # Coleta os dados do banco de dados
 def companiesGetData(request, *args, **kwargs):
@@ -37,10 +41,11 @@ def companiesGetData(request, *args, **kwargs):
     
 
 # Posta a empresa da empresa ao iniciar
-def companiesPost(request, *args, **kwargs):
+def companiesPostName(request, *args, **kwargs):
     if request.method == "POST":    
         try:
-            data = json.loads(request.body) # carrega os dados que são enviados pelo request
+            # carrega os dados que são enviados pelo request
+            data = json.loads(request.body) 
 
             # Coloca os dados em variáveis
             company_name = data.get("companyName")
@@ -56,8 +61,8 @@ def companiesPost(request, *args, **kwargs):
                 lsCount = ls_count
             )
 
-            updateDetect({"companyName": "Criado", "lsCount": "Criado"})
-
+            updateDetect(company)
+            
             #Retorna uma mensagem para o request
             return JsonResponse({
                 "message": "Empresa salva com sucesso",

@@ -1,17 +1,44 @@
 const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
 
-let company_id;
+let leaderboardDiv = document.getElementById("leaderboard");
 let companyName = document.getElementById('company-text');
-let ls_count;
+let lsCount;
+let idPlayer;
+let playerDetails;
 
 const csrfToken = document.getElementById("csrf-token").value;
+
+function setCookie(cookieName, cookieValue, expiresDays){
+    const d = new Date();
+    d.setTime(d.getTime() + (expiresDays*24*60*60*1000));
+    document.cookie = `${cookieName} = ${cookieValue}; expires = ${d.toUTCString()}; path=/`
+}
+
+function updateLsDisplay(newValue) {
+  // Dispara um evento personalizado com o novo valor
+  const event = new CustomEvent("updateLsDisplay", {
+    detail: { newPoints: newValue }
+  });
+
+  window.dispatchEvent(event); // Notifica outros scripts
+}
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(';').shift();
+  }
+  return null;
+}
+
+idPlayer = getCookie("id");
 
 
 function sampleName(min, max) {
   let num = Math.floor(Math.random() * (max - min) + min);
   return `company${num}`;
 }
-
 
 let nameCompanyInit = sampleName(1,1000)
 
@@ -36,7 +63,7 @@ let nameCompanyInit = sampleName(1,1000)
 
 function verifyIfNameExist(list, nameTest){
     const dataFound = list.find(obj => obj.companyName == nameTest);
-    if(dataFound && dataFound.id != company_id){
+    if(dataFound && dataFound.id != idPlayer){
         nameTest = sampleName(1, 1000);
         return verifyIfNameExist(list, nameTest);
     } else {
@@ -58,14 +85,21 @@ function getData(nameMethod, fetchFunction){
         return res.json();
     })
     .then(data =>{
-        console.log(data)
-        if(!company_id && data){ company_id = data[data.length-1].id + 1; }
-        if(nameMethod == "postInit"){
-            nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
-            fetchFunction({"companyName": nameCompanyInit, "lsCount": 0});
-        } else if(nameMethod == "patchNameCompany"){
-            nameCompanyInit = verifyIfNameExist(data,companyName.innerText);
-            fetchFunction({"id": company_id, "companyName": nameCompanyInit});
+        
+        if(!idPlayer){            
+            if(nameMethod == "postInit"){
+                nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
+                fetchFunction({"companyName": nameCompanyInit, "lsCount": 0});
+            }
+        } else {
+            if(nameMethod == "patchNameCompany"){
+                nameCompanyInit = verifyIfNameExist(data,companyName.innerText);
+                fetchFunction({"id": idPlayer, "companyName": nameCompanyInit});
+            } else {
+                playerDetails = data.find( obj => obj.id == idPlayer );
+                companyName.innerHTML = playerDetails.companyName;
+                updateLsDisplay(playerDetails.lsCount)
+            }
         }
         
     })
@@ -88,9 +122,11 @@ function postCompany(post){
             return res.json()
         })
         .then(data => {
-            console.log("Data postada:",data);
             companyName.innerHTML = nameCompanyInit;
-            ls_count = 0;
+            lsCount = 0;
+            setCookie("id", data.id, 8);
+            idPlayer = getCookie("id");
+            console.log("ID DO PLAYER", idPlayer)
         })
         .catch(err => {
             console.error("ERRO:",err)
@@ -155,8 +191,8 @@ companyName.addEventListener('keydown', event =>{
 
 window.addEventListener("pontosAtualizados", (event) => {
   const novoValor = event.detail.newPoints;
-  ls_count = novoValor;
-  patchLS({"id": company_id, "lsCount": ls_count})
+  lsCount = novoValor;
+  patchLS({"id": idPlayer, "lsCount": lsCount})
 
 });
 
@@ -173,7 +209,11 @@ function leaderboard_display(){
             return res.json()
         })
         .then( data => {
-            console.log(data);
+            leaderboardDiv += `<ul>`;
+            data.forEach(name => {
+                leaderboardDiv += `<li> ${name} </li>`;
+            })
+            leaderboardDiv += `<ul>`;
         })
         .catch( err => {
             console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)

@@ -171,6 +171,12 @@ const contentList = document.querySelector('.content-list') // Lista de items
 const coffeeContainer = document.getElementById('coffee-container') // Container dos cafés
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
 
+window.addEventListener("updateLsDisplay", (event)=>{
+  pontos = event.detail.newPoints;
+  display.textContent = `${pontos} linhas de código`
+})
+
+
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 function refresh(valorAtual) {
 
