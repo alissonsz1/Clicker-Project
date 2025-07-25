@@ -248,6 +248,11 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
+// const csrfToken = document.getElementById("csrf-token").value;
+
+const csrfToken = window.csrfToken
+
 // Variaveis
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
@@ -257,6 +262,7 @@ let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
+let firstRender = true
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -269,10 +275,55 @@ const clicksContainer = document.querySelector('.clicks-container') // Container
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 
+//Atualização o arquivo em outros arquivos js
+function atualizarPontos(novoValor) {
+  // Dispara um evento personalizado com o novo valor
+  const evento = new CustomEvent("pontosAtualizados", {
+    detail: { newPoints: novoValor }
+  })
+
+  window.dispatchEvent(evento); // Notifica outros scripts
+}
+
+function leaderboard_display(){
+    fetch("/leaderboard/", {
+        method:"GET",
+        headers: {
+            "Content-Type":"application/json",
+            "X-CSRFToken": csrfToken,
+        },
+    })
+        .then(res => {
+            if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
+            return res.json()
+        })
+        .then( data => {
+            console.log(data)
+        })
+        .catch( err => {
+            console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
+        })
+}
+
+// Socket para toda vez que receber uma atualização do db
+socket.onmessage = () => leaderboard_display()
+
+// Roda o leaderboard assim que inicia o site
+leaderboard_display()
+
+window.addEventListener("updateLsDisplay", (event) => {
+  refresh(0, event.detail.newPoints)
+})
+
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
 function refresh(valorAtual, add) {
   pontos = valorAtual + add
+  if (firstRender) {
+    firstRender = false
+  } else {
+    atualizarPontos(pontos)
+  }
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   
@@ -450,7 +501,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
         <div class="tooltip-header">
           <div class="tooltip-header--left">
-            <img src="./assets/${data.icon}" class="tooltip-icon"/>
+            <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
             <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
           </div>
           <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
@@ -472,7 +523,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
       <div class="tooltip-header">
         <div class="tooltip-header--left">
-          <img src="./assets/${data.icon}" class="tooltip-icon"/>
+          <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
           <strong class="tooltip-name">${data.nome}</strong>
         </div>
         <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
@@ -532,7 +583,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
               <span>Comprados: ${item.comprados}</span>
@@ -552,7 +603,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -565,7 +616,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -652,7 +703,7 @@ const renderEstruturas = () => {
     const div = document.createElement("div")
     div.id = id
     div.innerHTML = (`
-      <img src="./assets/${item.icon}" class="item-icon"/>
+      <img src="/static/assets/${item.icon}" class="item-icon"/>
       <div class="item-content">
         <div class="item-text">
           <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
@@ -692,7 +743,7 @@ const renderUpgrades = () => {
       const div = document.createElement("div")
 
       div.innerHTML = (`
-        <img src="./assets/${item.icon}" class="item-icon"/>
+        <img src="/static/assets/${item.icon}" class="item-icon"/>
         <div class="item-content">
           <div class="item-text">
             <span class="item-name">${item.nome}</span>
@@ -924,7 +975,7 @@ function setBonus(bonus, efeito) {
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
-  div.style.backgroundImage = `url('./assets/${bonus.icon}')` // Coloca dire
+  div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   div.addEventListener('touchend', () => showMobileTooltip('bn', bonusActive))
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts

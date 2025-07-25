@@ -1,3 +1,4 @@
+{% load static %} 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Dev Clicker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body>
-    <!-- O coro principal do projeto -->
+    <!-- O corpo principal do projeto -->
     <main>
+        <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}"/>
+
+        <div class="leaderboard-wrapper" id="leaderboard">
+            <p>LEADERBOARD</p>
+            <div id="detailsPlayers"></div>
+        </div>
         <div class="mobile-tooltip"></div>
         <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
         <div class="tooltip"></div>
@@ -21,7 +28,7 @@
         <!-- O container que envolve a seção da esquerda (computador) -->
         <div class="container-left">
             <div class="container-left--header">
-                <span class="company-text">NOME DA EMPRESA</span>
+                <span class="company-text" contenteditable="true" spellcheck="false">NOME DA EMPRESA</span>
                 <span class="ls-text" id="pontos">0 linhas de código</span>
                 <span>por segundo: 0</span>
             </div>
@@ -55,7 +62,8 @@
         </div>
     </main>
 
-    <script src="script.js"></script> <!-- O script que contém a lógica do jogo -->
+    <script src="{% static 'leaderboard.js' %}"></script>
+    <script src="{% static 'script.js' %}"></script> <!-- O script que contém a lógica do jogo -->
 </body>
 
 </html>

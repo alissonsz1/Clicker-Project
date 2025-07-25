@@ -861,6 +861,12 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     content: "• ";
 }
 
+/* LEADERBOARD */
+
+.leaderboard-wrapper {
+    display: none;
+}
+
 /* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
 @media (hover: hover) {
     .button-header:hover {
