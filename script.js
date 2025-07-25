@@ -47,6 +47,8 @@ const estruturas = [
     comprados: 0,
     icon: 'placeholder.png',
     descricao: 'DESCREVA',
+    ls: 2,
+    gerado: 0,
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
@@ -58,6 +60,8 @@ const estruturas = [
     comprados: 0,
     icon: 'placeholder.png',
     descricao: 'DESCREVA',
+    ls: 2,
+    gerado: 0,
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
@@ -69,6 +73,8 @@ const estruturas = [
     comprados: 0,
     icon: 'placeholder.png',
     descricao: 'DESCREVA',
+    ls: 2,
+    gerado: 0,
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
@@ -80,6 +86,8 @@ const estruturas = [
     comprados: 0,
     icon: 'placeholder.png',
     descricao: 'DESCREVA',
+    ls: 2,
+    gerado: 0,
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
@@ -90,7 +98,7 @@ const estruturas = [
 const bonusList = [
   {
     id: 'bn1',
-    nome: "BONUS 1",
+    nome: "CAFÉZINHO",
     descricao: "15% das linhas + 13",
     peso: 70,
     get efeito() {
@@ -101,8 +109,9 @@ const bonusList = [
   },
   {
     id: 'bn2',
-    nome: "BONUS 2",
+    nome: "CAFÉ DOCINHO",
     descricao: "LS x7",
+    type: 'matrix',
     duracao: 60,
     peso: 30,
     icon: 'placeholder.png',
@@ -114,8 +123,9 @@ const bonusList = [
   },
   {
     id: 'bn3',
-    nome: "BONUS 3",
+    nome: "CAFÉ PERFEITO",
     descricao: "LS x777",
+    type: 'matrix',
     duracao: 15,
     peso: 10,
     icon: 'placeholder.png',
@@ -127,8 +137,9 @@ const bonusList = [
   },
   {
     id: 'bn4',
-    nome: "BONUS 4",
+    nome: "CAFÉ DIVINO",
     descricao: "LS x1111",
+    type: 'matrix',
     duracao: 10,
     peso: 2,
     icon: 'placeholder.png',
@@ -140,19 +151,18 @@ const bonusList = [
   },
   {
     id: 'bn5',
-    nome: "BONUS 5",
-    descricao: 'Café para todo lado!',
+    nome: "TEMPESTADE DE CAFÉ",
     peso: 5,
     get efeito() {
         var coffeeStorm = setInterval(() => {
-            spawnCoffe('STORM BONUS')
+            spawnCoffe('bn6')
         }, 400)
 
         setTimeout(() => {
             clearInterval(coffeeStorm)
         }, 7000)
 
-        return "Tempestade de café!"
+        return "Café para todo lado!"
     },
   },
   // STORM BONUS SÓ É ATIVADO PELO BONUS 5
@@ -172,8 +182,38 @@ const bonusList = [
     descricao: 'Não faz nada...',
     peso: 1,
     get efeito() {
-      return 'Não faz nada... Literalmente.'
+      return 'Não faz nada... Absolutamente nada. Tipo: NADA!'
     },
+  },
+  {
+    id: 'bn8',
+    nome: 'CAFÉ DO MAL',
+    type: 'evil',
+    icon: 'placeholder.png',
+    peso: 10,
+    duracao: 30,
+    get efeito() {
+      lsMultiplier *= .5
+      coffeeProb *= .5
+      return `LS x0.5 por ${this.duracao} segundos...`
+    },
+    reverter: () => {
+      coffeeProb /= .5
+      lsMultiplier /= .5
+    },
+  },
+    {
+    id: 'bn9',
+    nome: 'CAFÉ DEMONÍACO',
+    type: 'evil',
+    icon: 'placeholder.png',
+    peso: 10,
+    duracao: 6,
+    get efeito() {
+      lsMultiplier *= 666
+      return `LS x666 por ${this.duracao} segundos...`
+    },
+    reverter: () => lsMultiplier /= 666,
   }
 ]
 
@@ -211,10 +251,12 @@ function randomBetween(min, max) {
 // Variaveis
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
-let lsMultiplier = 0 // Multiplicador apra as LS
+let lsMultiplier = 1 // Multiplicador para as LS
 let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Upgrades' // Qual a aba ativa atualmente
+let mouseX = 0 // Coordenada x do mouse
+let mouseY = 0 // Coordenada y do mouse
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -225,6 +267,7 @@ const coffeeContainer = document.getElementById('coffee-container') // Container
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
 const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
+const mobileTooltip = document.querySelector('.mobile-tooltip')
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
@@ -234,7 +277,8 @@ function refresh(valorAtual, add) {
   animarContador(valorAtual)
   
   if (tabActive == 'Estruturas') renderEstruturas()
-  else renderUpgrades()
+  else if (tabActive == 'Upgrades') renderUpgrades()
+  showTooltip()
 }
 
 // Anima os numerozinhos para eles subirem de pouco em pouco
@@ -364,34 +408,214 @@ function triggerAnimation() {
   keyboard.classList.add('pulinho')    // adiciona novamente
 }
 
+document.body.addEventListener('mousemove', (e) => {
+  // Essa condição verifica se é um dispositivo com suporte a toque ou não
+  if (!window.matchMedia('(pointer: coarse)').matches) {
+    mouseX = e.clientX
+    mouseY = e.clientY
+  
+    showTooltip()
+  }
+})
+
+function showTooltip(x = mouseX, y = mouseY) {
+  const el = document.elementsFromPoint(x, y).find(el => el.hasAttribute('data-tooltipid'))
+
+  if (!el) {
+    if (getComputedStyle(tooltip).opacity !== 0) tooltip.style.opacity = 0
+    return
+  }
+
+  const container = document.querySelector(".container-right")
+  const containerRect = container.getBoundingClientRect()
+  const tooltipRect = tooltip.getBoundingClientRect()
+  const id = el.getAttribute('data-tooltipid')
+  const atributtePre = id.slice(0, 2)
+
+  if (atributtePre === 'es') {
+    const data = estruturas.find(es => es.id === id)
+
+    let extraInfo = ``
+
+    if (data.unlocked && data.comprados > 0) {
+      extraInfo = `
+          <ul>
+            <li>cada ${data.nome.toLocaleLowerCase()} gera <strong>${data.ls} LS</strong></li>
+            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} gerando <strong>${data.comprados*data.ls*lsMultiplier} LS</strong></li>
+            <li>${data.gerado} linhas geradas até agora</li>
+          </ul>
+      `
+    }
+
+    tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <div class="tooltip-header--left">
+            <img src="./assets/${data.icon}" class="tooltip-icon"/>
+            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
+          </div>
+          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
+        </div>
+        <div class="tooltip-content">
+          <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
+        </div>
+        ${extraInfo}
+    `
+    tooltip.classList.remove('bonus')
+    tooltip.style.transform = 'translateY(-50%)'
+    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
+    tooltip.style.opacity = 1
+    tooltip.style.top = `min(${(y - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
+  }
+  else if (atributtePre === 'up') {
+    const data = upgrades.find(up => up.id === id)
+
+    tooltip.innerHTML = `
+      <div class="tooltip-header">
+        <div class="tooltip-header--left">
+          <img src="./assets/${data.icon}" class="tooltip-icon"/>
+          <strong class="tooltip-name">${data.nome}</strong>
+        </div>
+        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
+      </div>
+      <div class="tooltip-content">
+        <span class="tooltip-function">${data.funcao}</span>
+        <span class="tooltip-description">${data.descricao}</span>
+      </div>
+    `
+
+    tooltip.classList.remove('bonus')
+    tooltip.style.transform = 'translateY(-50%)'
+    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
+    tooltip.style.opacity = 1
+    tooltip.style.top = `min(${(y - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
+
+  }
+  else if (atributtePre === 'bn') {
+    const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()  
+    const data = boostsActive.find(bn => bn.id === id)
+    
+    tooltip.classList.add('bonus')
+    tooltip.innerHTML = `
+      <div class="tooltip-header center">
+        <strong class="tooltip-name">${data.nome}</strong>
+      </div>
+      <div class="tooltip-content">
+        <span class="tooltip-efeito">${data.efeito}</span>
+      </div>
+    `
+    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
+    tooltip.style.left = `${x}px`
+    tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
+    tooltip.style.transform = `translateX(-50%)`
+    tooltip.style.opacity = 1
+  }
+}
+
+function showMobileTooltip(type, item) {
+  const titles = {
+    es: 'Estruturas',
+    up: 'Upgrades',
+    bn: 'Bônus'
+  }
+
+  const content = document.createElement('div')
+  const close = document.createElement('button')
+
+  mobileTooltip.innerHTML = ''
+  mobileTooltip.style.opacity = 1
+  mobileTooltip.style.pointerEvents = 'all'
+
+  content.className = 'mobile-tooltip--content'
+  content.innerHTML = `<div class="mobile-tooltip--title">${titles[type]}</div>`
+
+  if (type == 'es') {
+    content.innerHTML += `
+      <div class="mobile-tooltip--wrapper">
+        <div class="mobile-tooltip--header">
+          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name">${item.nome}</span>
+              <span>Comprados: ${item.comprados}</span>
+          </div>
+        </div>
+        <div class="monile-tootltip--items">
+            <ul>
+              <li>cada ${item.nome.toLocaleLowerCase()} gera <strong>${item.ls} LS</strong></li>
+              <li>${item.comprados} ${item.nome.toLocaleLowerCase()} gerando <strong>${item.comprados * item.ls * lsMultiplier} LS</strong></li>
+              <li>${item.gerado} linhas geradas até agora</li>
+            </ul>
+        </div>
+          <span class="tooltip-description">${item.descricao}</span>
+      </div>
+    `
+  } else if (type == 'up') {
+    content.innerHTML += `
+      <div class="mobile-tooltip--wrapper">
+        <div class="mobile-tooltip--header">
+          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name">${item.nome}</span>
+          </div>
+        </div>
+        <span class="tooltip-function">${item.funcao}</span>
+        <span class="tooltip-description">${item.descricao}</span>
+      </div>
+    `
+  } else if (type == 'bn') {
+    content.innerHTML += `
+      <div class="mobile-tooltip--wrapper">
+        <div class="mobile-tooltip--header">
+          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name">${item.nome}</span>
+          </div>
+        </div>
+        <span class="tooltip-function">${item.efeito}</span>
+        <span class="tooltip-description">${item.descricao}</span>
+      </div>
+    `
+  }
+
+  close.className = 'close-bttn'
+  close.textContent = 'Fechar'
+
+  close.addEventListener('touchend', closeMobileTootip)
+
+  content.appendChild(close)
+  mobileTooltip.appendChild(content)
+}
+
+function closeMobileTootip() {
+  mobileTooltip.style.opacity = 0
+  mobileTooltip.style.pointerEvents = 'none'
+}
+
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
 buttonsHeader.forEach((btn) => {
     btn.addEventListener("click", () => {
-        if (btn.classList.contains('active')) return
+      if (btn.classList.contains('active')) return
 
-        buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
-        btn.classList.add('active') // Depois, adiciona somente no que foi clicado
+      buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
+      btn.classList.add('active') // Depois, adiciona somente no que foi clicado
 
-        // Limpas as notificações e atualiza o indicador vermelho
-        notificacoes.upgrades.clear()
-        notificacoes.estruturas.clear()
-        atualizarIndicadores()
+      // Limpas as notificações e atualiza o indicador vermelho
+      notificacoes.upgrades.clear()
+      notificacoes.estruturas.clear()
+      atualizarIndicadores()
 
-        // Através do conteúdo, verifica qual botão foi clicado
-        tabActive = btn.querySelector('.text').textContent
-        if (tabActive == 'Upgrades') {
-            renderUpgrades() // Irá renderizar UPGRADES
-        } else {
-            renderEstruturas() // Irá renderizar ESTRUTURAS
-        }
+      // Através do conteúdo, verifica qual botão foi clicado
+      tabActive = btn.querySelector('.text').textContent
+      if (tabActive == 'Upgrades') renderUpgrades() // Irá renderizar UPGRADES
+      else if (tabActive == 'Estruturas') renderEstruturas() // Irá renderizar ESTRUTURAS
+      else return
     })
 })
 
 // Função que irá rendereizar a lista certa na seção de estruturas
 const renderEstruturas = () => {
   // Se antes, na lista, havia algum "upgrade", reseta o conteúdo da lista
-  if (contentList.querySelector('.upgrade')) contentList.innerHTML = ''
+  if (!contentList.querySelector('.estrutura')) contentList.innerHTML = ''
 
   const size = desbloqueados.estruturas.size
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
@@ -400,7 +624,7 @@ const renderEstruturas = () => {
     const id = `estrutura-${i}`
     const estrutura = document.getElementById(id)
 
-    // Se o item já está renderizado, não faça nada
+    // Se o item já está renderizado, não adiciona ele novamente, apenas atualiza
     if (estrutura) {
       const custo = estrutura.querySelector('.cust')
       const itemName = estrutura.querySelector('.item-name')
@@ -435,6 +659,7 @@ const renderEstruturas = () => {
           <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
         </div>
         <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
+        <button class="info-bttn">INFO</button>
       </div>
     `)
     div.className = "content-item estrutura"
@@ -443,122 +668,60 @@ const renderEstruturas = () => {
     }
 
     else div.classList.add('hidden')
-    div.setAttribute('data-id', item.id)
-    div.addEventListener('click', () => buyEstrutura(i))
-    addEventListenerForEstruturasTooltip(div)
+    div.setAttribute('data-tooltipId', item.id)
+    div.addEventListener('click', (e) => {
+      const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
+      if (hasClickedInfo) return
+  
+      buyEstrutura(i)
+    })
+
+    div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
+
     contentList.appendChild(div)
+
   })
 }
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
   contentList.innerHTML = "" // Limpa o conteúdo para renderizar certinho
-  upgrades
-    .map((item, i) => ({...item, index: i}))
-    .filter(item => !item.purchased) // Retira os items que já foram comprados (no caso dos upgrades)
-    .forEach(item => {
-        const div = document.createElement("div")
-        div.innerHTML = (`
-          <img src="./assets/${item.icon}" class="item-icon"/>
-          <div class="item-content">
-            <div class="item-text">
-              <span class="item-name">${item.nome}</span>
-              <span class="cust ${item.custo > pontos ? 'high' : 'low'}">${item.custo}</span>
-            </div>
-          </div>
-        `)
-        div.className = "content-item upgrade"
-        if (pontos >= item.custo) div.classList.add('unlocked')
+  const upgradesFiltered = upgrades.map((item, i) => ({...item, index: i})).filter(item => !item.purchased) // Retira os items que já foram comprados (no caso dos upgrades)
+  if (upgradesFiltered.length > 0) {
+    upgradesFiltered.forEach(item => {
+      const div = document.createElement("div")
 
-        div.setAttribute('data-id', item.id)
-        div.addEventListener('click', () => buyUpgrade(item.index))
-        addEventListenerForUpgradesTooltip(div)
-        contentList.appendChild(div)
+      div.innerHTML = (`
+        <img src="./assets/${item.icon}" class="item-icon"/>
+        <div class="item-content">
+          <div class="item-text">
+            <span class="item-name">${item.nome}</span>
+            <span class="cust ${item.custo > pontos ? 'high' : 'low'}">${item.custo}</span>
+          </div>
+          <button class="info-bttn">INFO</button>
+        </div>
+      `)
+      div.className = "content-item upgrade"
+      if (pontos >= item.custo) div.classList.add('unlocked')
+
+      div.setAttribute('data-tooltipId', item.id)
+      div.addEventListener('click', (e) => {
+        const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
+        if (hasClickedInfo) return
+          
+        buyUpgrade(item.index)
+      })
+
+      div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
+      contentList.appendChild(div)
     })
-}
+  } else {
+    const span = document.createElement("span")
 
-function addEventListenerForEstruturasTooltip(el) {
-  const container = document.querySelector(".container-right")
-  const containerRect = container.getBoundingClientRect()
-  const tooltipRect = tooltip.getBoundingClientRect()
-
-  el.addEventListener("mousemove", (e) => {
-    const id = el.getAttribute("data-id")
-    const data = estruturas.find(es => es.id === id)
-
-    const LS = 2 // BOTAR NUMERO REAL DE LS PARA CADA ESTRUTURA
-    const GERADO = 10
-
-    let extraInfo = ``
-
-    if (data.unlocked && data.comprados > 0) {
-      extraInfo = `
-          <ul>
-            <li>cada ${data.nome.toLocaleLowerCase()} coda <strong>${LS} LS</strong></li>
-            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} codando <strong>${data.comprados*LS} LS</strong></li>
-            <li>${GERADO} linhas geradas até agora</li>
-          </ul>
-      `
-    }
-
-    tooltip.innerHTML = `
-        <div class="tooltip-header">
-          <div class="tooltip-header--left">
-            <img src="./assets/${data.icon}" class="tooltip-icon"/>
-            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
-          </div>
-          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
-        </div>
-        <div class="tooltip-content">
-          <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
-        </div>
-        ${extraInfo}
-    `
-    tooltip.classList.remove('bonus')
-    tooltip.style.transform = 'translateY(-50%)'
-    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
-    tooltip.style.opacity = 1
-    tooltip.style.top = `min(${(e.pageY - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
-  })
-
-  el.addEventListener("mouseleave", () => {
-    tooltip.style.opacity = 0
-  })
-}
-
-function addEventListenerForUpgradesTooltip(el) {
-  const container = document.querySelector(".container-right")
-  const containerRect = container.getBoundingClientRect()
-  const tooltipRect = tooltip.getBoundingClientRect()
-
-  el.addEventListener("mousemove", (e) => {
-    const id = el.getAttribute("data-id")
-    const data = upgrades.find(up => up.id === id)
-
-    tooltip.innerHTML = `
-      <div class="tooltip-header">
-        <div class="tooltip-header--left">
-          <img src="./assets/${data.icon}" class="tooltip-icon"/>
-          <strong class="tooltip-name">${data.nome}</strong>
-        </div>
-        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-function">${data.funcao}</span>
-        <span class="tooltip-description">${data.descricao}</span>
-      </div>
-    `
-
-    tooltip.classList.remove('bonus')
-    tooltip.style.transform = 'translateY(-50%)'
-    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
-    tooltip.style.opacity = 1
-    tooltip.style.top = `min(${(e.pageY - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
-  })
-
-  el.addEventListener("mouseleave", () => {
-    tooltip.style.opacity = 0
-  })
+    span.style.fontSize = '1.2em'
+    span.textContent = 'Você comprou tudo :('
+    contentList.appendChild(span)
+  }
 }
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
@@ -600,7 +763,7 @@ const triggerCoffeeEvent = () => {
 }
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-const spawnCoffe = (bonusName = null) => {
+const spawnCoffe = (bonusId = null) => {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -640,7 +803,7 @@ const spawnCoffe = (bonusName = null) => {
       const cookieSizeValue = parseInt(cookieSize)
       // ADICIONAR ALGUM SOM
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
-      const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
+      const bonus = bonusList.find(b => b.id == bonusId) ?? escolherBonusComPeso(bonusList)
       const efeito = bonus.efeito // Trigga o efeito do bônus
       setBonus(bonus, efeito) // Coloca o bônus na tela
       
@@ -722,7 +885,7 @@ function setBonus(bonus, efeito) {
 
     // E inicia um novo
     active.timeoutId = setTimeout(() => {
-      removeBoost(bonus.nome)
+      removeBoost(bonus)
     }, bonus.duracao * 1000)
 
     const boostDiv = document.querySelector(`[data-nome="${bonus.nome}"]`)
@@ -736,34 +899,40 @@ function setBonus(bonus, efeito) {
 
   // Inicia um timer pro bonus baseado na sua duracao
   const timeoutId = setTimeout(() => {
-    removeBoost(bonus.nome)
+    removeBoost(bonus)
   }, bonus.duracao * 1000)
 
-  // Adiciona na array de bonus ativos
-  boostsActive.push({
+  const expiresIn = Date.now() + bonus.duracao * 1000
+
+  const bonusActive = {
     id: bonus.id,
     nome: bonus.nome,
     descricao: bonus.descricao,
-    timeoutId,
-    expiresIn: Date.now() + bonus.duracao * 1000,
+    type: bonus.type,
     reverter: bonus.reverter,
-  })
+    icon: bonus.icon,
+    efeito,
+    timeoutId,
+    expiresIn,
+  }
+  // Adiciona na array de bonus ativos
+  boostsActive.push(bonusActive)
 
-  startMatrix(bonus.id)
+  startMatrix(bonus.id, bonus.type, expiresIn)
 
   const div = document.createElement("div")
   div.className = `boost cooldown`
-  div.setAttribute('data-id', bonus.id)
+  div.setAttribute('data-tooltipId', bonus.id)
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('./assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
+  div.addEventListener('touchend', () => showMobileTooltip('bn', bonusActive))
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
-  addEventListenerForCoffeesTooltip(div, efeito)
 }
 
 // Remove o bonus do café
-function removeBoost(nome) {
-  const index = boostsActive.findIndex(b => b.nome === nome)
+function removeBoost({nome, id}) {
+  const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
     if (boost.reverter) boost.reverter() // Desfaz o efeito
@@ -772,35 +941,8 @@ function removeBoost(nome) {
     const boostDiv = document.querySelector(`[data-nome="${nome}"]`) // Pega a div com o boost ativo
     stopMatrix(boost.id) // Para com a respectiva matrix
     boostDiv.remove()
+    showTooltip()
   }
-}
-
-function addEventListenerForCoffeesTooltip(el, efeito) {
-  const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()
-  
-  el.addEventListener("mousemove", (e) => {
-    const id = el.getAttribute("data-id")
-    const data = bonusList.find(bn => bn.id === id)
-    
-    tooltip.classList.add('bonus')
-    tooltip.innerHTML = `
-      <div class="tooltip-header center">
-        <strong class="tooltip-name">${data.nome}</strong>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-efeito">${efeito}</span>
-      </div>
-    `
-    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
-    tooltip.style.left = `${e.pageX}px`
-    tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
-    tooltip.style.transform = `translateX(-50%)`
-    tooltip.style.opacity = 1
-  })
-
-  el.addEventListener("mouseleave", () => {
-    tooltip.style.opacity = 0
-  })
 }
 
 triggerCoffeeEvent()
@@ -812,13 +954,14 @@ triggerCoffeeEvent()
 // Armazena todas os efeitos MATRIX ativos (id e elemento DOM)
 const matrices = {}
 
-const startMatrix = (id = 0) => {
+const startMatrix = (id = 0, type = 'matrix', expiresIn) => {
   if (matrices[id]) return
 
    // Cria canvas
   const canvas = document.createElement('canvas')
   canvas.id = `matrix-${id}`
   canvas.classList.add('matrix-canvas')
+  canvas.style.zIndex = -100 + Object.values(matrices).length
   document.body.appendChild(canvas)
 
   canvas.height = window.innerHeight
@@ -831,13 +974,13 @@ const startMatrix = (id = 0) => {
   const drops = Array.from({ length: columns }, () => 1)
 
   function drawMatrix(){
-    ctx.fillStyle = 'rgba(0, 41, 10, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#0F0';
+    ctx.fillStyle = type == 'matrix' ? '#00290a0d' : '#29000a0d'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = type == 'matrix' ? '#0F0' : '#F00'
     ctx.font = fontSize + 'px Doto';
     for (let i = 0; i < drops.length; i++){
-        var text = texts[Math.floor(Math.random() * texts.length)];
-        ctx.fillText(text, i * fontSize, drops[i]*fontSize);
+        var text = texts[Math.floor(Math.random() * texts.length)]
+        ctx.fillText(text, i * fontSize, drops[i]*fontSize)
 
         if (drops[i] * fontSize > canvas.height || Math.random() > 0.95){
             drops[i] = 0;
@@ -858,8 +1001,10 @@ const startMatrix = (id = 0) => {
   })
 
   const interval = setInterval(drawMatrix, 33)
-  document.body.classList.add('matrix') // adiciona a classe em 'body' pra poder customizar os elementos
-  matrices[id] = { canvas, interval }
+
+  document.body.className = ''
+  document.body.classList.add(type) // adiciona a classe em 'body' pra poder customizar os elementos
+  matrices[id] = { canvas, interval, expiresIn, type }
 }
 
 const stopMatrix = (id) => {
@@ -869,7 +1014,9 @@ const stopMatrix = (id) => {
   clearInterval(matrix.interval)
   matrix.canvas.style.opacity = 0
 
-  if (boostsActive.length == 0) document.body.classList.remove('matrix')
+  const type = boostsActive[boostsActive.length-1]?.type
+  document.body.classList.toggle('matrix', type === 'matrix')
+  document.body.classList.toggle('evil', type === 'evil')
 }
 
 // FIM DA FUNÇÃO MATRIX
