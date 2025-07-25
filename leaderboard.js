@@ -192,8 +192,6 @@ function leaderboard_display(){
         .then( data => {
             console.log(data);
             data.forEach((item, p) => {
-                console.log(item)
-                console.log(p)
                 const existingName = document.getElementById(`name${p}`);
                 const existingPoint = document.getElementById(`point${p}`);
                 if( existingName && existingPoint ){

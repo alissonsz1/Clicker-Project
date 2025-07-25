@@ -273,7 +273,7 @@ const renderEstruturas = () => {
   estruturasFixed.forEach((item, i) => {
       const div = document.createElement("div")
       div.innerHTML = (`
-        <img src="{% static 'assets/placeholder.png' %}" class="item-icon ${!item.unlocked ? 'hidden' : ''}"/>
+        <img src="" class="item-icon ${!item.unlocked ? 'hidden' : ''}"/>
         <div class="item-content">
           <div class="item-text">
             <span class="item-name">${!item.unlocked ? '????' : item.nome}</span>

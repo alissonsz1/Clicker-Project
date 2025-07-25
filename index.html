@@ -12,11 +12,12 @@
 </head>
 
 <body>
+    <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
+    <input type="hidden" id="static-assets" class="static-assets" value="{{ % static '' % }}">
     <div id="leaderboard">
         <p>LEADERBOARD</p>
         <div id="detailsPlayers"></div>
     </div>
-    <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
     <!-- O coro principal do projeto -->
     <main>
         <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
