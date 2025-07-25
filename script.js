@@ -558,7 +558,7 @@ function showMobileTooltip(type, item) {
   }
 
   close.className = 'close-bttn'
-  close.textContent = 'Close'
+  close.textContent = 'Fechar'
 
   close.addEventListener('touchend', closeMobileTootip)
 
