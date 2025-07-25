@@ -6,3 +6,5 @@ from django.db import models
 class Companies(models.Model):
     companyName = models.TextField()
     lsCount = models.BigIntegerField()
+    upgrade = models.JSONField(default=list, blank=True)
+    structures = models.JSONField(default=list, blank=True)

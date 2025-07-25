@@ -8,6 +8,39 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
+const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
+const csrfToken = document.getElementById("csrf-token").value;
+
+
+function leaderboard_display(){
+
+    fetch("/leaderboard/", {
+        method:"GET",
+        headers: {
+            "Content-Type":"application/json",
+            "X-CSRFToken": csrfToken,
+        },
+    })
+        .then(res => {
+            if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
+            return res.json()
+        })
+        .then( data => {
+            console.log(data)
+        })
+        .catch( err => {
+            console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
+        })
+}
+
+leaderboard_display();
+
+
+socket.onmessage = function(e) {
+    leaderboard_display();
+};
+
+let staticPath = document.getElementById("static-assets");
 
 // Upgrades "place holder" só para o código funcionar
 const upgrades = [

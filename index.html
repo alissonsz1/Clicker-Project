@@ -13,7 +13,7 @@
 
 <body>
     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
-    <input type="hidden" id="static-assets" class="static-assets" value="{{ % static '' % }}">
+    <input type="hidden" id="static-assets" class="static-assets" value="{ % static 'assets/' % }">
     <div id="leaderboard">
         <p>LEADERBOARD</p>
         <div id="detailsPlayers"></div>

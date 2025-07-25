@@ -1,10 +1,10 @@
-const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
-
 let leaderboardDiv = document.getElementById("detailsPlayers");
 let companyName = document.getElementById('company-text');
 let lsCount;
 let idPlayer;
 let playerDetails;
+
+
 
 const csrfToken = document.getElementById("csrf-token").value;
 
@@ -176,55 +176,3 @@ window.addEventListener("pontosAtualizados", (event) => {
   patchLS({"id": idPlayer, "lsCount": lsCount})
 
 });
-
-function leaderboard_display(){
-    fetch("/leaderboard/", {
-        method:"GET",
-        headers: {
-            "Content-Type":"application/json",
-            "X-CSRFToken": csrfToken,
-        },
-    })
-        .then(res => {
-            if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
-            return res.json()
-        })
-        .then( data => {
-            console.log(data);
-            data.forEach((item, p) => {
-                const existingName = document.getElementById(`name${p}`);
-                const existingPoint = document.getElementById(`point${p}`);
-                if( existingName && existingPoint ){
-                    existingName.textContent = item.companyName;
-                    existingPoint.textContent = item.lsCount;
-                } else {
-                    const divPlayer = document.createElement("div");
-                    divPlayer.id = `position${p}`
-                    
-                    const namePlayer = document.createElement("p");
-                    namePlayer.textContent = item.companyName;
-                    namePlayer.id = `name${p}`;
-                    divPlayer.appendChild(namePlayer);    
-                    
-                    const pointPlayer = document.createElement("p");
-                    pointPlayer.textContent = item.lsCount;
-                    pointPlayer.id = `point${p}`;
-                    divPlayer.appendChild(pointPlayer);
-
-                    leaderboardDiv.appendChild(divPlayer);
-                }
-            });
-        })
-        .catch( err => {
-            console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
-        })
-}
-
-leaderboard_display();
-
-
-socket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    console.log("Leaderboard atualizado:", data);
-    leaderboard_display()
-};
