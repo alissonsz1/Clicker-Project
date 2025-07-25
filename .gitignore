@@ -1,24 +1,66 @@
-# Logs
-logs
+# Byte-compiled / cache / logs
+__pycache__/
+*.py[cod]
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+*.pot
+*.pyc
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment
+.env
+.venv/
+venv/
+env/
+ENV/
+*.env
+*.venv
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Django stuff:
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+
+# Migrations (se você quiser ignorar elas, mas geralmente é melhor versionar)
+# **Descomente abaixo se quiser ignorar**
+# */migrations/
+# !*/migrations/__init__.py
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+
+# OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# Test coverage
+htmlcov/
+.coverage
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.cache
+
+# Node.js (se usar frontend com Node)
+node_modules/
+package-lock.json
+
+# Build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Yarn
+yarn.lock
+
+# JetBrains IDE
+*.iml
+*.ipr
+*.iws

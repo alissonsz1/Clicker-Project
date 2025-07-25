@@ -8,6 +8,27 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
+//Atualização o arquivo em outros arquivos js
+function atualizarUpdate(newUpdate) {
+  // Dispara um evento personalizado com o novo valor
+  const evento = new CustomEvent("atualizarUpdate", {
+    detail: { update: newUpdate }
+  });
+
+  window.dispatchEvent(evento); // Notifica outros scripts
+}
+
+//Atualização o arquivo em outros arquivos js
+function atualizarEstrutura(newStrutuct) {
+  // Dispara um evento personalizado com o novo valor
+  const evento = new CustomEvent("atualizarEstrutura", {
+    detail: { struct: newStrutuct }
+  });
+
+  window.dispatchEvent(evento); // Notifica outros scripts
+}
+
+
 const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
 const csrfToken = document.getElementById("csrf-token").value;
 
@@ -40,7 +61,8 @@ socket.onmessage = function(e) {
     leaderboard_display();
 };
 
-let staticPath = document.getElementById("static-assets");
+let staticPath = document.getElementById("contentList").dataset.placeholder;
+
 
 // Upgrades "place holder" só para o código funcionar
 const upgrades = [
@@ -332,7 +354,7 @@ const renderUpgrades = () => {
     .forEach(item => {
         const div = document.createElement("div")
         div.innerHTML = (`
-          <img src="{% static 'assets/placeholder.png' %}" class="item-icon"/>
+          <img src="/static/assets/${item.icon}" class="item-icon"/>
           <div class="item-content">
             <div class="item-text">
               <span class="item-name">${item.nome}</span>
