@@ -13,7 +13,7 @@ from .models import Companies
 # Create your views here.
 # Renderiza as páginas html
 def devClicker(request, *args, **kwargs):
-    renderizing = render(request, "devClicker/index.html", {})
+    renderizing = render(request, "index.html", {})
     return renderizing
 
 # Detecta qualquer atualização no banco de dados

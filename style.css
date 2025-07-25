@@ -33,7 +33,7 @@ body {
     --high: rgb(182, 55, 55);
     --low: rgb(36, 139, 36);
 
-    background: url("../assets/background.png");
+    background: url("./assets/background.png");
     background-size: 50%;
     display: flex;
     align-items: center;
@@ -118,9 +118,9 @@ body.matrix .container-left--computer {
     filter: hue-rotate(300deg) contrast(0.95)
 }
 
-.computer-monitor { background: url("../assets/monitor.png");}
-.computer-back { background: url("../assets/fundo_monitor.png"); }
-.computer-keyboard { background: url("../assets/teclado.png"); transition: all .1s ease;}
+.computer-monitor { background: url("./assets/monitor.png");}
+.computer-back { background: url("./assets/fundo_monitor.png"); }
+.computer-keyboard { background: url("./assets/teclado.png"); transition: all .1s ease;}
 
 /* Ainda será implementado algum tipo de luz saindo do monitor */
 
@@ -376,7 +376,7 @@ body.matrix .button-header.active {
     height: 96px;
     cursor: pointer;
     background-size: 96px 96px;
-    background-image: url('../assets/coffee.png');
+    background-image: url('./assets/coffee.png');
     background-position: 0 0;
 
     pointer-events: auto;

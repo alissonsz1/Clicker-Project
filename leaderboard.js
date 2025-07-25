@@ -1,6 +1,6 @@
 const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
 
-let leaderboardDiv = document.getElementById("leaderboard");
+let leaderboardDiv = document.getElementById("detailsPlayers");
 let companyName = document.getElementById('company-text');
 let lsCount;
 let idPlayer;
@@ -190,13 +190,32 @@ function leaderboard_display(){
             return res.json()
         })
         .then( data => {
-            leaderboardDiv.innerHTML += `<ul>`;
-            leaderboardDiv.innerHTML += ""
-            data.forEach(name => {
-                console.log(name)
-                leaderboardDiv.innerHTML += `<li> ${name.companyName} ${name.lsCount} </li>`;
-            })
-            leaderboardDiv.innerHTML += `<ul>`;
+            console.log(data);
+            data.forEach((item, p) => {
+                console.log(item)
+                console.log(p)
+                const existingName = document.getElementById(`name${p}`);
+                const existingPoint = document.getElementById(`point${p}`);
+                if( existingName && existingPoint ){
+                    existingName.textContent = item.companyName;
+                    existingPoint.textContent = item.lsCount;
+                } else {
+                    const divPlayer = document.createElement("div");
+                    divPlayer.id = `position${p}`
+                    
+                    const namePlayer = document.createElement("p");
+                    namePlayer.textContent = item.companyName;
+                    namePlayer.id = `name${p}`;
+                    divPlayer.appendChild(namePlayer);    
+                    
+                    const pointPlayer = document.createElement("p");
+                    pointPlayer.textContent = item.lsCount;
+                    pointPlayer.id = `point${p}`;
+                    divPlayer.appendChild(pointPlayer);
+
+                    leaderboardDiv.appendChild(divPlayer);
+                }
+            });
         })
         .catch( err => {
             console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)

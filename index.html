@@ -7,12 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Dev Clicker</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="shortcut icon" href="{% static 'assets/placeholder.png' %}" type="image/x-icon">
 </head>
 
 <body>
-    <div id="leaderboard"></div>
+    <div id="leaderboard">
+        <p>LEADERBOARD</p>
+        <div id="detailsPlayers"></div>
+    </div>
     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}">
     <!-- O coro principal do projeto -->
     <main>
@@ -49,8 +52,8 @@
         <div class="container-boosts">
         </div>
     </main>
-    <script src="{% static 'js/script.js' %}" type="module"></script> <!-- O script que contém a lógica do jogo -->
-    <script src="{% static 'js/leaderboard.js' %}" type="module"></script>
+    <script src="{% static 'script.js' %}" type="module"></script> <!-- O script que contém a lógica do jogo -->
+    <script src="{% static 'leaderboard.js' %}" type="module"></script>
 </body>
 
 </html>
