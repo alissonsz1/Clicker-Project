@@ -16,7 +16,6 @@ img { max-width: 100%; -webkit-user-drag: none; }
     padding: 0;
     box-sizing: border-box;
     font-family: "Jersey 15", sans-serif;
-    font-weight: 400;
     font-style: normal;
 
     -webkit-tap-highlight-color: transparent;
@@ -176,6 +175,48 @@ body.matrix .container-left--computer {
 /* .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.05); } */
 .pulinho { animation: pop .2s ease; }
 
+
+/* SALSICHINHAS */
+
+.computer-codelines {
+    pointer-events: all;
+    top: 10.5%;
+    max-width: 270px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-line-wrapper {
+    --fs: .2em;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.code-line {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    margin-left: 0;
+}
+
+.line-number {
+    flex-basis: calc(var(--fs)*15);
+    text-align: right;
+    font-family: monospace;
+    font-size: var(--fs);
+    color: var(--c2);
+}
+
+.code-block {
+    height: calc(var(--fs)/2);
+    background-color: #008080;
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
 @keyframes pop {
   0% {
     transform: scale(1);
@@ -222,7 +263,7 @@ body.matrix .container-left--computer {
     background-color: var(--c4);
     height: 700px;
     max-height: 80vh;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 /* Quando o efeito de matrix estiver ativo, haverá uma pequena opacidade no fundo */
@@ -245,13 +286,13 @@ body.matrix .container-right{
 
 /* Modifica a barra de rolagem */
 .container-content::-webkit-scrollbar { 
-    background-color: var(--c4);
-    width: 10px;
+    background-color: transparent;
+    width: 5px;
 }
 
 .container-content::-webkit-scrollbar-thumb { 
     background-color: var(--c1);
-    border-radius: 50px;
+    border-radius: 10px;
  }
 
 /* Lista que armazena os upgrades/estruturas */
@@ -334,6 +375,7 @@ button {
 /* Os botões que ficam para trocar entre a aba de upgrades e de estruturas */
 /* Todos eles, no principio, ficam com essa aparência de "apagados" */
 .button-header {
+    position: relative;
     font-size: 1.2em;
     text-transform: uppercase;
     flex-grow: 1;
@@ -342,6 +384,61 @@ button {
     background-color: var(--c5);
     border-bottom: 3px solid black;
     transition: color .2s ease;
+}
+
+.button-header.left {
+    border-radius: 10px 0 0 0;
+}
+
+.button-header.right {
+    border-radius: 0 10px 0 0;
+}
+
+.notification {
+    opacity: 0;
+}
+
+.button-header.has-notification:not(.active) .notification {
+    opacity: 1;
+    animation: bounce 1s;
+}
+
+/* Bounce effect para a notificaçãozinha */
+/* @keyframes bounce {
+    0%   { transform: scale(1,1)    translateY(0); }
+    10%  { transform: scale(1.1,.9) translateY(0); }
+    30%  { transform: scale(.9,1.1) translateY(-20px); }
+    50%  { transform: scale(1,1)    translateY(0); }
+    57%  { transform: scale(1,1)    translateY(-7px); }
+    64%  { transform: scale(1,1)    translateY(0); }
+    100% { transform: scale(1,1)    translateY(0); }
+} */
+
+@keyframes bounce {
+	0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+	40% {transform: translateY(-15px);}
+	60% {transform: translateY(-8px);}
+}
+
+.notification {
+    aspect-ratio: 1/1;
+    width: .8em;
+    border-radius: 50%;
+    background-color: #ad0909;
+    right: 5px;
+    top: 5px;
+    position: absolute;
+}
+
+.notification::after {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: .7em;
+    content: '!';
 }
 
 body.matrix .button-header {
@@ -362,26 +459,6 @@ body.matrix .button-header.active {
 .button-header.left.active { border-right: 3px solid black;} /* Se o botão da esquerda que tá ativo, cria uma bordinha na direita */
 .button-header.right.active { border-left: 3px solid black;} /* Se o botão da direita que tá ativo, cria uma bordinha na esquerda */
 
-/* O estilo do botão, que é o botão de clicar e o botão de upgrade */
-.button-left {
-    padding: 15px 25px;
-    font-size: 1.2rem;
-    background-color: #ffcc66;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, ease-in-out 0.2s;
-}
-
-/* As animações */
-.button-left:hover {
-    transform: scale(1.1);
-}
-
-.button-left:active {
-    transform: scale(1);
-}
-
 /* EVENTO ALEATÓRIO DO CAFÉ */
 
 #coffee-container {
@@ -392,7 +469,7 @@ body.matrix .button-header.active {
     bottom: 0;
     overflow: hidden; /* garante que cafés não escapem */
     pointer-events: none;
-    z-index: 10000;
+    z-index: 1000;
 }
 
 .coffee-wrapper {
@@ -485,14 +562,19 @@ body.matrix .button-header.active {
 
 /* MATRIX */
 
-#canvas {
-    /* width: 100vw; */
+.matrix-canvas {
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     z-index: -2;
+    opacity: 1;
+    pointer-events: none;
     transition: opacity .5s ease;
+}
+
+@starting-style {
+    .matrix-canvas { opacity: 0; }
 }
 
 /* MODAL */
@@ -567,6 +649,109 @@ body.matrix .button-header.active {
   }
 }
 
+/* TOOLTIP */
+
+.tooltip {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .5em;
+    position: absolute;
+    background-color: var(--c3);
+    color: #fff;
+    padding: 8px 12px;
+    border: 2px solid var(--c1);
+    border-radius: 5px;
+    font-size: 1em;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.tooltip.bonus {
+    font-size: .8em;
+}
+
+.tooltip-header {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--c1);
+    padding-bottom: 5px;
+}
+
+.tooltip-header.center {
+    display: block;
+}
+
+
+.tooltip-header--left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.tooltip-icon {
+    aspect-ratio: 1/1;
+    width: 40px;
+}
+
+.tooltip-name {
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.tooltip-header.center .tooltip-name {
+    text-align: center;
+}
+
+.tooltip-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tooltip-description {
+    font-style: italic;
+    text-align: right;
+    opacity: .8;
+}
+
+.tooltip-content:not(:last-child) {
+    border-bottom: 1px solid var(--c1);
+}
+
+.tooltip-description::before { content: '"'; }
+.tooltip-description::after { content: '"'; }
+
+.tooltip-function {
+    text-align: left;
+}
+
+.tooltip ul {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tooltip li {
+    text-align: left;
+    font-size: .9em;
+    background-color: var(--c2);
+    background-size: 50%;
+    border-radius: 10px;
+}
+
+.tooltip li::before {
+    content: "• ";
+}
+
 /* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
 @media (hover: hover) {
     .button-header:hover {
@@ -633,6 +818,20 @@ body.matrix .button-header.active {
         top: 460px;
         height: 210px;
         min-height: auto;
+    }
+
+    .container-left--header {
+        position: sticky;
+        top: 1em;
+        z-index: 50;
+    }
+
+    .notification {
+        width: 1.2em;
+    }
+
+    .notification::after {
+        font-size: 1.1em;
     }
 
     .container-left--computer {

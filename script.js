@@ -1,22 +1,38 @@
 // Upgrades "place holder" só para o código funcionar
 const upgrades = [
-  { nome: "Café Forte", 
-    custo: 20, 
+  {
+    id: 'up1',
+    nome: "Café Forte", 
+    custo: 20,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { nome: "Atalho de Teclado", 
-    custo: 100, 
+  { 
+    id: 'up2',
+    nome: "Atalho de Teclado", 
+    custo: 100,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { nome: "Dupla Tela", 
-    custo: 500, 
+  { 
+    id: 'up3',
+    nome: "Dupla Tela", 
+    custo: 500,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { nome: "Modo Foco", 
-    custo: 1000, 
+  { 
+    id: 'up4',
+    nome: "Modo Foco", 
+    custo: 1000,
+    descricao: 'DESCREVA',
+    funcao: 'FAZ TAL COISA',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   }
@@ -24,34 +40,46 @@ const upgrades = [
 
 // Estruturas "place holder" só para o código funcionar
 const estruturas = [
-  { nome: "Servidor Local", 
+  { 
+    id: 'es1',
+    nome: "Servidor Local", 
     custoBase: 10, 
     comprados: 0,
-    icon: 'placeholder.png' ,
+    icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
   },
-  { nome: "Banco de Dados", 
+  { 
+    id: 'es2',
+    nome: "Banco de Dados", 
     custoBase: 100,
     comprados: 0,
     icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
   },
-  { nome: "Nuvem Privada", 
+  { 
+    id: 'es3',
+    nome: "Nuvem Privada", 
     custoBase: 1000, 
     comprados: 0,
     icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
    },
-  { nome: "Cluster de Servidores", 
+  { 
+    id: 'es4',
+    nome: "Cluster de Servidores", 
     custoBase: 10000, 
     comprados: 0,
     icon: 'placeholder.png',
+    descricao: 'DESCREVA',
     get custoAtual() {
       return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
     }
@@ -61,16 +89,18 @@ const estruturas = [
 // Lista com os possíveis bônus do café
 const bonusList = [
   {
+    id: 'bn1',
     nome: "BONUS 1",
     descricao: "15% das linhas + 13",
     peso: 70,
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
-      pontos += ganho;
-      return `Ganhou ${ganho} linhas!`
+      refresh(pontos, ganho) // Atualiza os pontos na tela
+      return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
   {
+    id: 'bn2',
     nome: "BONUS 2",
     descricao: "LS x7",
     duracao: 60,
@@ -78,11 +108,12 @@ const bonusList = [
     icon: 'placeholder.png',
     get efeito() {
       lsMultiplier *= 7;
-      return `Linhas de código x7 por ${this.duracao} segundos!`
+      return `LS x7 por ${this.duracao} segundos!`
     },
     reverter: () => lsMultiplier /= 7,
   },
   {
+    id: 'bn3',
     nome: "BONUS 3",
     descricao: "LS x777",
     duracao: 15,
@@ -90,11 +121,12 @@ const bonusList = [
     icon: 'placeholder.png',
     get efeito() {
       lsMultiplier *= 777;
-      return "LS multiplicado por 777!!"
+      return `LS x777 por ${this.duracao} segundos!!!`
     },
     reverter: () => lsMultiplier /= 777,
   },
   {
+    id: 'bn4',
     nome: "BONUS 4",
     descricao: "LS x1111",
     duracao: 10,
@@ -102,11 +134,12 @@ const bonusList = [
     icon: 'placeholder.png',
     get efeito() {
       lsMultiplier *= 1111;
-      return "LS multiplicado por 1111!!!"
+      return `LS x1111 por ${this.duracao} segundos!!!`
     },
     reverter: () => lsMultiplier /= 1111,
   },
   {
+    id: 'bn5',
     nome: "BONUS 5",
     descricao: 'Café para todo lado!',
     peso: 5,
@@ -124,15 +157,17 @@ const bonusList = [
   },
   // STORM BONUS SÓ É ATIVADO PELO BONUS 5
   {
+    id: 'bn6',
     nome: "STORM BONUS",
     descricao: "7% das linhas!", // MUDAR PARA BONUS DE LINHAS POR SEGUNDO NO FUTURO
     get efeito() {
         const ganho = Math.floor(pontos * 0.07 + 13);
-        pontos += ganho;
-        return `Ganhou ${ganho} linhas!`
+        refresh(pontos, ganho)
+        return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
   {
+    id: 'bn7',
     nome: 'CAFÉ VENCIDO',
     descricao: 'Não faz nada...',
     peso: 1,
@@ -141,6 +176,18 @@ const bonusList = [
     },
   }
 ]
+
+// Um array que conterá todos os upgrades e estruturas que foram sendo desbloqueados
+const desbloqueados = {
+  estruturas: new Set(),
+  upgrades: new Set()
+}
+
+// Um array que conterá uma lista de desbloqueados, que será limpa quando a respectiva aba for acessada
+const notificacoes = {
+  upgrades: new Set(),
+  estruturas: new Set()
+}
 
 // Tabela de unidades para os números
 const unidades = [
@@ -157,13 +204,17 @@ const unidades = [
   { limite: 1e3, nome: 'mil', plural: 'mil' }
 ]
 
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Variaveis
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
 let lsMultiplier = 0 // Multiplicador apra as LS
 let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
-let tabActive = 'Estruturas' // Qual a aba ativa atualmente
+let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -172,12 +223,16 @@ const buttonsHeader = document.querySelectorAll(".button-header") // Botões par
 const contentList = document.querySelector('.content-list') // Lista de items
 const coffeeContainer = document.getElementById('coffee-container') // Container dos cafés
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
-const clicksContainer = document.querySelector('.clicks-container')
+const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
+const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
-function refresh(valorAtual) {
+// valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
+function refresh(valorAtual, add) {
+  pontos = valorAtual + add
+  checarDesbloqueios(pontos)
   animarContador(valorAtual)
-
+  
   if (tabActive == 'Estruturas') renderEstruturas()
   else renderUpgrades()
 }
@@ -185,29 +240,44 @@ function refresh(valorAtual) {
 // Anima os numerozinhos para eles subirem de pouco em pouco
 function animarContador(valorInicial, duracao = 700) {
   const valorFinal = pontos
+  const add = valorFinal - valorInicial
 
-  if (Math.abs(valorFinal - valorInicial == 1)) {
+  if (Math.abs(add) == 1) {
     display.textContent = `${pontos} linhas de código`
+    if (add > 0) generateCodeLine()
     return
   }
 
-  let start = null;
+  const MAX_LINHAS_POR_FRAME = 10;
   const range = valorFinal - valorInicial;
+  let start = null;
+  let lastValue = valorInicial
 
-  // Função de easing (easeOutQuad)
-  function easeOutQuint(x) {
-    return 1 - Math.pow(1 - x, 5);
+  // Função de easing
+  function ease(x) {
+    return Math.sqrt(1 - Math.pow(x - 1, 2));
   }
 
   function step(timestamp) {
     if (!start) start = timestamp
     const tempoDecorrido = timestamp - start
     const progresso = Math.min(tempoDecorrido / duracao, 1) // entre 0 e 1
-    const eased = easeOutQuint(progresso) // aplica easing
+    const eased = ease(progresso) // aplica easing
 
     const valorInterpolado = Math.floor(valorInicial + range * eased)
     const valorFormatado = formatarNumero(valorInterpolado)
+
     display.textContent = `${valorFormatado} linhas de código`
+
+    // Gera code lines para cada valor novo que passou
+    const diff = valorInterpolado - lastValue;
+    if (diff > 0) {
+      const linhasAGerar = Math.min(diff, MAX_LINHAS_POR_FRAME);
+      for (let i = 0; i < linhasAGerar; i++) {
+        lastValue++;
+        generateCodeLine(1);
+      }
+    }
 
     if (progresso < 1) {
       requestAnimationFrame(step);
@@ -217,17 +287,7 @@ function animarContador(valorInicial, duracao = 700) {
   requestAnimationFrame(step);
 }
 
-// No celular, active fica muito bugado, portanto iremos colocar uma animação manualmente
-button.addEventListener("touchstart", () => {
-  triggerAnimation()
-})
-
-function triggerAnimation() {
-  keyboard.classList.remove('pulinho') // remove a classe
-  void keyboard.offsetWidth             // força reflow (reinicia a animação)
-  keyboard.classList.add('pulinho')    // adiciona novamente
-}
-
+// Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
 function formatarNumero(valor) {
   if (valor < 1000000) return valor.toString()
 
@@ -246,8 +306,37 @@ function formatarNumero(valor) {
   }
 }
 
-// Evento do botão de clicar
-// Quando o botão é clicado, adiciona pontos e atualiza o display
+// Essa função é chamada sempre que os pontos são atualizados para verificar se algo foi desbloqueado
+function checarDesbloqueios(pontos) {
+  estruturas.forEach((estrutura, index) => {
+    if (pontos >= estrutura.custoAtual && !desbloqueados.estruturas.has(index)) {
+      desbloqueados.estruturas.add(index)
+      notificacoes.estruturas.add(index)
+      estrutura.unlocked = true
+      atualizarIndicadores()
+
+    }
+  })
+
+  upgrades.forEach((upgrade, index) => {
+    if (pontos >= upgrade.custo && !desbloqueados.upgrades.has(index)) {
+      desbloqueados.upgrades.add(index)
+      notificacoes.upgrades.add(index)
+      atualizarIndicadores()
+    }
+  })
+}
+
+// Essa função é chamada sempre que há um desbloqueio, para atualizar o iconezinho vermelho de "notificação"
+function atualizarIndicadores() {
+  const upgradesBtn = document.querySelector(".button-header.upgrades")
+  const estruturasBtn = document.querySelector(".button-header.estruturas")
+
+  upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
+  estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+}
+
+// Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
@@ -263,10 +352,17 @@ button.addEventListener('click', (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
   })
 
-  const atual = pontos
-  pontos += boost
-  refresh(atual)
+  refresh(pontos, boost)
 })
+
+// No celular, 'active' fica muito bugado, portanto iremos colocar uma animação manualmente de pulo no teclado ao ser clicado
+button.addEventListener("touchstart", triggerAnimation)
+
+function triggerAnimation() {
+  keyboard.classList.remove('pulinho') // remove a classe
+  void keyboard.offsetWidth             // força reflow (reinicia a animação)
+  keyboard.classList.add('pulinho')    // adiciona novamente
+}
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
@@ -277,8 +373,13 @@ buttonsHeader.forEach((btn) => {
         buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
         btn.classList.add('active') // Depois, adiciona somente no que foi clicado
 
-        // Através das classes, verifica se é o botão da esquerda que foi clicado
-        tabActive = btn.textContent
+        // Limpas as notificações e atualiza o indicador vermelho
+        notificacoes.upgrades.clear()
+        notificacoes.estruturas.clear()
+        atualizarIndicadores()
+
+        // Através do conteúdo, verifica qual botão foi clicado
+        tabActive = btn.querySelector('.text').textContent
         if (tabActive == 'Upgrades') {
             renderUpgrades() // Irá renderizar UPGRADES
         } else {
@@ -291,31 +392,9 @@ buttonsHeader.forEach((btn) => {
 const renderEstruturas = () => {
   // Se antes, na lista, havia algum "upgrade", reseta o conteúdo da lista
   if (contentList.querySelector('.upgrade')) contentList.innerHTML = ''
-  let firstIndex= -1
 
-  // Acha a primeira estrutura cujo custo é menor que o total de pontos
-  for (let i = 0; i < estruturas.length; i++) {
-    const estrutura = estruturas[i]
-
-    if (pontos >= estrutura.custoAtual || estrutura.unlocked) {
-      estrutura.unlocked = true
-      continue
-    } else {
-      firstIndex = i - 1
-      break
-    }
-  }
-
-  // Se todas são compráveis, pega todas
-  let estruturasFixed
-  if (firstIndex === -1 && estruturas.every(e => e.unlocked)) {
-    estruturasFixed = estruturas
-  } else if (firstIndex === -1 || firstIndex === undefined) { // Se nenhuma é comprável, pega só as duas primeiras
-    estruturasFixed = estruturas.slice(0, 2)
-  } else {
-    const finalIndex = Math.min(Number(firstIndex) + 2, estruturas.length - 1) // Caso contrário, pega todas as compráveis + duas
-    estruturasFixed = estruturas.slice(0, finalIndex + 1)
-  }
+  const size = desbloqueados.estruturas.size
+  const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
   estruturasFixed.forEach((item, i) => {
     const id = `estrutura-${i}`
@@ -352,7 +431,7 @@ const renderEstruturas = () => {
       <img src="./assets/${item.icon}" class="item-icon"/>
       <div class="item-content">
         <div class="item-text">
-          <span class="item-name">${!item.unlocked ? '????' : item.nome}</span>
+          <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
           <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
         </div>
         <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
@@ -362,14 +441,14 @@ const renderEstruturas = () => {
     if (item.unlocked) {
       div.classList.add('unlocked')
     }
+
     else div.classList.add('hidden')
-
+    div.setAttribute('data-id', item.id)
     div.addEventListener('click', () => buyEstrutura(i))
-
+    addEventListenerForEstruturasTooltip(div)
     contentList.appendChild(div)
   })
 }
-
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
@@ -391,9 +470,95 @@ const renderUpgrades = () => {
         div.className = "content-item upgrade"
         if (pontos >= item.custo) div.classList.add('unlocked')
 
+        div.setAttribute('data-id', item.id)
         div.addEventListener('click', () => buyUpgrade(item.index))
+        addEventListenerForUpgradesTooltip(div)
         contentList.appendChild(div)
     })
+}
+
+function addEventListenerForEstruturasTooltip(el) {
+  const container = document.querySelector(".container-right")
+  const containerRect = container.getBoundingClientRect()
+  const tooltipRect = tooltip.getBoundingClientRect()
+
+  el.addEventListener("mousemove", (e) => {
+    const id = el.getAttribute("data-id")
+    const data = estruturas.find(es => es.id === id)
+
+    const LS = 2 // BOTAR NUMERO REAL DE LS PARA CADA ESTRUTURA
+    const GERADO = 10
+
+    let extraInfo = ``
+
+    if (data.unlocked && data.comprados > 0) {
+      extraInfo = `
+          <ul>
+            <li>cada ${data.nome.toLocaleLowerCase()} coda <strong>${LS} LS</strong></li>
+            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} codando <strong>${data.comprados*LS} LS</strong></li>
+            <li>${GERADO} linhas geradas até agora</li>
+          </ul>
+      `
+    }
+
+    tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <div class="tooltip-header--left">
+            <img src="./assets/${data.icon}" class="tooltip-icon"/>
+            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
+          </div>
+          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
+        </div>
+        <div class="tooltip-content">
+          <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
+        </div>
+        ${extraInfo}
+    `
+    tooltip.classList.remove('bonus')
+    tooltip.style.transform = 'translateY(-50%)'
+    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
+    tooltip.style.opacity = 1
+    tooltip.style.top = `min(${(e.pageY - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
+  })
+
+  el.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0
+  })
+}
+
+function addEventListenerForUpgradesTooltip(el) {
+  const container = document.querySelector(".container-right")
+  const containerRect = container.getBoundingClientRect()
+  const tooltipRect = tooltip.getBoundingClientRect()
+
+  el.addEventListener("mousemove", (e) => {
+    const id = el.getAttribute("data-id")
+    const data = upgrades.find(up => up.id === id)
+
+    tooltip.innerHTML = `
+      <div class="tooltip-header">
+        <div class="tooltip-header--left">
+          <img src="./assets/${data.icon}" class="tooltip-icon"/>
+          <strong class="tooltip-name">${data.nome}</strong>
+        </div>
+        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
+      </div>
+      <div class="tooltip-content">
+        <span class="tooltip-function">${data.funcao}</span>
+        <span class="tooltip-description">${data.descricao}</span>
+      </div>
+    `
+
+    tooltip.classList.remove('bonus')
+    tooltip.style.transform = 'translateY(-50%)'
+    tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
+    tooltip.style.opacity = 1
+    tooltip.style.top = `min(${(e.pageY - 10)}px, calc(100vh - ${tooltipRect.height/2}px))`
+  })
+
+  el.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0
+  })
 }
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
@@ -402,11 +567,10 @@ const buyEstrutura = (index) => {
 
   if (pontos < estrutura.custoAtual) return
 
-  const atual = pontos
-  pontos -= estrutura.custoAtual
+  const custo = estrutura.custoAtual
   estrutura.comprados += 1
+  refresh(pontos, -custo)
 
-  refresh(atual)
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -415,16 +579,14 @@ const buyUpgrade = (index) => {
 
   if (pontos < upgrade.custo || upgrade.purchased) return
 
-  const atual = pontos
-  pontos -= upgrade.custo
   upgrade.efeito()
   upgrade.purchased = true
 
-  refresh(atual)
+  refresh(pontos, -upgrade.custo)
 }
 
 // Renderiza os upgrades assim que o site inicia
-renderEstruturas(estruturas)
+renderUpgrades(upgrades)
 
 // FIM DO CONTAINER DA DIREITA
 
@@ -433,13 +595,12 @@ renderEstruturas(estruturas)
 const triggerCoffeeEvent = () => {
     // A cada um segundo, verificar se o número aleatorizado é menor que a probabilidade, para então spawnar o coffee
     setInterval(() => {
-        if (Math.random() < coffeeProb) {
-            spawnCoffe()
-        }
+        if (Math.random() < coffeeProb) spawnCoffe()
     }, 1000)
 }
 
-const spawnCoffe = (bonusName) => {
+// Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
+const spawnCoffe = (bonusName = null) => {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -480,10 +641,8 @@ const spawnCoffe = (bonusName) => {
       // ADICIONAR ALGUM SOM
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
       const bonus = bonusList.find(b => b.nome == bonusName) ?? escolherBonusComPeso(bonusList)
-      const atual = pontos
       const efeito = bonus.efeito // Trigga o efeito do bônus
-      setBonus(bonus) // Coloca o bônus na tela
-      refresh(atual) // Atualiza os pontos na tela
+      setBonus(bonus, efeito) // Coloca o bônus na tela
       
       // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
       const alertCoffee = document.createElement('div')
@@ -536,6 +695,7 @@ const randomCoord = (el) => {
   return { x: `${x}vw`, y: `${y}vh` }
 }
 
+// Ao invés de usar porcentagens, utilzamos pesos (pois teríamos que recalcular sempre que um café novo fosse adicionado): quantos maior, mais provável de ser escolhido
 const escolherBonusComPeso = (list) => {
   const listFiltered = list.filter(l => l?.peso)
   const totalPeso = listFiltered.reduce((soma, b) => soma + b.peso, 0) // Essa linha soma TODOS os pesos
@@ -550,7 +710,8 @@ const escolherBonusComPeso = (list) => {
   }
 }
 
-const setBonus = (bonus) => {
+// Faz o bonus do café funcionar de fato
+function setBonus(bonus, efeito) {
   if (!bonus.icon) return // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
 
   const active = boostsActive.find(b => b.nome == bonus.nome) // Verifica se já tem um boost ativo
@@ -580,6 +741,7 @@ const setBonus = (bonus) => {
 
   // Adiciona na array de bonus ativos
   boostsActive.push({
+    id: bonus.id,
     nome: bonus.nome,
     descricao: bonus.descricao,
     timeoutId,
@@ -587,16 +749,19 @@ const setBonus = (bonus) => {
     reverter: bonus.reverter,
   })
 
-  startMatrix()
+  startMatrix(bonus.id)
 
   const div = document.createElement("div")
   div.className = `boost cooldown`
+  div.setAttribute('data-id', bonus.id)
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('./assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
+  addEventListenerForCoffeesTooltip(div, efeito)
 }
 
+// Remove o bonus do café
 function removeBoost(nome) {
   const index = boostsActive.findIndex(b => b.nome === nome)
   if (index !== -1) {
@@ -605,9 +770,37 @@ function removeBoost(nome) {
     boostsActive.splice(index, 1) // Retira o boost da lista
 
     const boostDiv = document.querySelector(`[data-nome="${nome}"]`) // Pega a div com o boost ativo
-    if (boostsActive.length == 0) stopMatrix() // Se não houver mais nenhum boost, para com o efeito de matrix
+    stopMatrix(boost.id) // Para com a respectiva matrix
     boostDiv.remove()
   }
+}
+
+function addEventListenerForCoffeesTooltip(el, efeito) {
+  const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()
+  
+  el.addEventListener("mousemove", (e) => {
+    const id = el.getAttribute("data-id")
+    const data = bonusList.find(bn => bn.id === id)
+    
+    tooltip.classList.add('bonus')
+    tooltip.innerHTML = `
+      <div class="tooltip-header center">
+        <strong class="tooltip-name">${data.nome}</strong>
+      </div>
+      <div class="tooltip-content">
+        <span class="tooltip-efeito">${efeito}</span>
+      </div>
+    `
+    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
+    tooltip.style.left = `${e.pageX}px`
+    tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
+    tooltip.style.transform = `translateX(-50%)`
+    tooltip.style.opacity = 1
+  })
+
+  el.addEventListener("mouseleave", () => {
+    tooltip.style.opacity = 0
+  })
 }
 
 triggerCoffeeEvent()
@@ -616,48 +809,143 @@ triggerCoffeeEvent()
 
 // FUNÇÃO EFEITO MATRIX (https://github.com/resolvendobug/efeito-matrix)
 
-const canvas = document.getElementById('canvas')
-let ctx = canvas.getContext('2d')
-let matrix
+// Armazena todas os efeitos MATRIX ativos (id e elemento DOM)
+const matrices = {}
 
-canvas.height = window.innerHeight
-canvas.width = 2000 // Se alguém tiver um monitor maior que isso...
+const startMatrix = (id = 0) => {
+  if (matrices[id]) return
 
-const texts = '0123456789'.split('')
-const fontSize = 16;
-const columns = canvas.width/fontSize
-let drops = Array.from({ length: columns }, () => 1)
+   // Cria canvas
+  const canvas = document.createElement('canvas')
+  canvas.id = `matrix-${id}`
+  canvas.classList.add('matrix-canvas')
+  document.body.appendChild(canvas)
 
-function drawMatrix(){
+  canvas.height = window.innerHeight
+  canvas.width = 2000 // Se alguém tiver um monitor maior que isso...
+
+  const ctx = canvas.getContext('2d')
+  const texts = '0123456789'.split('')
+  const fontSize = 16;
+  const columns = canvas.width / fontSize
+  const drops = Array.from({ length: columns }, () => 1)
+
+  function drawMatrix(){
     ctx.fillStyle = 'rgba(0, 41, 10, 0.05)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#0F0';
-    ctx.font = fontSize+ 'px Doto';
+    ctx.font = fontSize + 'px Doto';
     for (let i = 0; i < drops.length; i++){
-        var text = texts[Math.floor(Math.random()*texts.length)];
-        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        var text = texts[Math.floor(Math.random() * texts.length)];
+        ctx.fillText(text, i * fontSize, drops[i]*fontSize);
 
-        if (drops[i]*fontSize > canvas.height || Math.random() > 0.95){
+        if (drops[i] * fontSize > canvas.height || Math.random() > 0.95){
             drops[i] = 0;
         }
 
         drops[i]++;
     }
+  }
+
+  // Quando a matrix chegar em opacidade 0 é que ela deverá ser removida do DOM
+  canvas.addEventListener("transitionend", (e) => {
+    const opacity = getComputedStyle(canvas).opacity
+
+    if (opacity == 0) {
+      canvas.remove()
+      delete matrices[id]
+    }
+  })
+
+  const interval = setInterval(drawMatrix, 33)
+  document.body.classList.add('matrix') // adiciona a classe em 'body' pra poder customizar os elementos
+  matrices[id] = { canvas, interval }
 }
 
-const startMatrix = () => {
-  matrix = setInterval(drawMatrix, 33)
-  canvas.style.opacity = 1
-  document.body.classList.add('matrix')
-}
+const stopMatrix = (id) => {
+  const matrix = matrices[id]
+  if (!matrix) return
 
-const stopMatrix = () => {
-  clearInterval(matrix)
-  canvas.style.opacity = 0
-    document.body.classList.remove('matrix')
-  setTimeout(() => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }, 500)
+  clearInterval(matrix.interval)
+  matrix.canvas.style.opacity = 0
+
+  if (boostsActive.length == 0) document.body.classList.remove('matrix')
 }
 
 // FIM DA FUNÇÃO MATRIX
+
+// INÍCIO FUNÇÃO DAS "SALSICHINHAS" (os códigos passando pela tela kk)
+
+
+const container = document.querySelector(".computer-codelines");
+
+let currentIndentLevel = 0
+let isFirstLine = true
+let currentLineNumber = 1
+
+const draculaColors = [
+  '#ff79c6', // keyword
+  '#f1fa8c', // string
+  '#bd93f9', // number
+  '#50fa7b', // function/variable
+  '#8be9fd', // operator
+  '#6272a4', // comment
+];
+
+function generateCodeLine(add = 1) {
+  const wrapper = document.createElement("div")
+  wrapper.className = 'code-line-wrapper'
+
+  const lineNumber = document.createElement("div");
+  lineNumber.className = 'line-number'
+  lineNumber.textContent = currentLineNumber
+  currentLineNumber += add
+
+  const line = document.createElement("div")
+  line.className = "code-line"
+
+  if (isFirstLine) {
+    currentIndentLevel = 0
+    isFirstLine = false
+  } else {
+    // Atualiza o nível de identação com base na regra
+    const weightedChange = [-1, -1, -1, 0, 0, 0, 1, 1]
+    // const change = weightedChange[randomBetween(0, weightedChange.length-1)]
+    const change = randomBetween(-1, 1);
+    const newIndentLevel = currentIndentLevel + change
+   
+    // Garante que o novo nível é válido (0 a 3)
+    currentIndentLevel = Math.max(0, Math.min(newIndentLevel, currentIndentLevel + 1, 3))
+  }
+
+  line.style.marginLeft = `${currentIndentLevel * 15}px`;
+
+  // Quantidade de blocos aleatória
+  const weightedBlockCounts = [3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9];
+  const blockCount = weightedBlockCounts[randomBetween(0, weightedBlockCounts.length-1)]
+
+  for (let i = 0; i < blockCount; i++) {
+    const block = document.createElement("div")
+    block.className = "code-block"
+
+    // Largura aleatória 
+    const width = randomBetween(4, 15)
+    block.style.width = `${width}%`
+
+    const color = draculaColors[Math.floor(Math.random() * draculaColors.length)]
+    // block.style.backgroundColor = color
+
+    line.appendChild(block);
+  }
+
+  wrapper.appendChild(lineNumber);
+  wrapper.appendChild(line);
+  container.appendChild(wrapper);
+
+  // Reduz o número máximo de linhas visíveis
+  if (container.children.length > 34) {
+    container.removeChild(container.children[0]);
+  }
+}
+
+// FIM DA FUNÇÃO DAS SALSICHINHAS
