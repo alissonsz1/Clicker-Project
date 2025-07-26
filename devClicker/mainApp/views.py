@@ -10,38 +10,40 @@ from .models import Companies
 # VARIÁVEIS GLOBAIS
 
 
-# Create your views here.
-# Renderiza as páginas html
-def devClicker(request, *args, **kwargs):
-    renderizing = render(request, "index.html", {})
-    return renderizing
+# FUNÇÕES
 
-# Detecta qualquer atualização no banco de dados
+# Detecta qualquer atualização no banco de dados (por exemplo, pontuação de uma empresa mudou)
 def updateDetect(comp):
+    # Obtém o "channel layer" configurado no settings (Redis ou InMemory)
     channel_layer = get_channel_layer()
+
+    # Envia uma mensagem para todos os clientes conectados ao grupo "leaderboard"
     async_to_sync(channel_layer.group_send)(
-        "leaderboard",
+        "leaderboard",            # nome do grupo para broadcast
         {
-            "type": "leaderboard.update",
+            "type": "leaderboard.update",       # tipo da mensagem → invoca leaderboard_update no consumer
             "data": {
-                "companyName": comp.companyName,
+                "companyName": comp.companyName,  # dados que serão enviados no payload
                 "lsCount": comp.lsCount
             }
         }
     )
 
-
+# FETCH
 
 # Coleta os dados do banco de dados
 def companiesGetData(request, *args, **kwargs):
+    # Verifica se foi chamado pelo método get
     if request.method == "GET":
-        companies = Companies.objects.all()
-        listCompanies = list(companies.values())
-        return JsonResponse(listCompanies, safe=False)
+        companies = Companies.objects.all() # pega todos os dados
+        listCompanies = list(companies.values()) # tranforma em uma lista
+        return JsonResponse(listCompanies, safe=False) # retorna uma lista
     
+
 
 # Posta a empresa da empresa ao iniciar
 def companiesPostName(request, *args, **kwargs):
+    # verifica se o método chamado é o post
     if request.method == "POST":    
         try:
             # carrega os dados que são enviados pelo request
@@ -75,6 +77,7 @@ def companiesPostName(request, *args, **kwargs):
             return JsonResponse({"error": str(e)}, status=500)
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
+
 
 
 # Atualiza o nome da empresa
@@ -114,6 +117,7 @@ def companyPatchName(request, *args, **kwargs):
 
     return JsonResponse({"error": "Método não permitido."}, status=405)
 
+
 # atualiza as linhas no banco de dados
 def lsPatch(request, *args, **kwargs):
     if request.method == "PATCH":
@@ -147,6 +151,7 @@ def lsPatch(request, *args, **kwargs):
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
+
 # Requisita os dados para o leaderboard
 def leaderboard_data(request, *args, **kwargs):
     if request.method == "GET":
@@ -155,3 +160,11 @@ def leaderboard_data(request, *args, **kwargs):
         # converte em lista
         data = list(players.values("companyName", "lsCount"))
         return JsonResponse(data, safe=False)
+
+
+# Create your views here.
+
+# Renderiza as páginas html
+def devClicker(request, *args, **kwargs):
+    renderizing = render(request, "index.html", {})
+    return renderizing

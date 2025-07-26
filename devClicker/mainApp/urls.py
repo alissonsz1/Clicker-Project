@@ -15,8 +15,8 @@ from .views import (
 urlpatterns = [
     path('', devClicker, name='home'), # index
     path('get-data/', companiesGetData, name="companies-get-data"), # coletar os dados do backend
-    path('post-data/', companiesPostName, name="companies-post-data"),
-    path('patch-name-data/', companyPatchName, name="companies-patch-name"),
-    path('patch-ls-data/', lsPatch, name="companies-patch-ls"),
-    path('leaderboard/', leaderboard_data,name="leaderboard-get")    
+    path('post-data/', companiesPostName, name="companies-post-data"), # postar os dados iniciais
+    path('patch-name-data/', companyPatchName, name="companies-patch-name"), # atualizar o nome do player
+    path('patch-ls-data/', lsPatch, name="companies-patch-ls"),  # atualizar as linhas de código
+    path('leaderboard/', leaderboard_data,name="leaderboard-get"), # trazer os 10 com mais pontos
 ]
