@@ -69,14 +69,14 @@ E ao chamar os arquivos:
 <script src="{ % staic "script.js" % }"></script.js>
 ```
 
-## HTML SEM O {% LOAD STATIC %} (NÃO RECOMENDÁVEL)
+### HTML SEM O {% LOAD STATIC %} (NÃO RECOMENDÁVEL)
 Pode-se usar:
 ```
 <img src="/static/assets/placeholder.png" />
 <img src="/static/placeholder.png"/>
 ```
 
-## JAVASCRIPT
+### JAVASCRIPT
 
 Aqui, de maneira mais rápida e sem ajuste técnico, pode-se:
 
@@ -95,7 +95,7 @@ Sem modificar o html, pode-se usar direto:
 ```
 ** Só não pode usar o dois pontos, caso o arquivo esteja na raiz, pois irá para o endereço do servidor, não encontrando nenhum arquivo estático **
 
-## CSS
+### CSS
 Se o código não adicionar nenhum endereço no html, pode-se
 
 ```
