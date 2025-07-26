@@ -254,6 +254,8 @@ const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/"
 const csrfToken = window.csrfToken
 
 // Variaveis
+let id = -1
+let company = ''
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
 let lsMultiplier = 1 // Multiplicador para as LS
@@ -262,7 +264,6 @@ let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
-let firstRender = true
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -274,6 +275,7 @@ const boostsContainer = document.querySelector('.container-boosts') // Container
 const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 const mobileTooltip = document.querySelector('.mobile-tooltip')
+const companyNameContainer = document.querySelector('.company-text')
 
 //Atualização o arquivo em outros arquivos js
 function atualizarPontos(novoValor) {
@@ -285,45 +287,114 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
-function leaderboard_display(){
+function leaderboardDisplay(){
     fetch("/leaderboard/", {
-        method:"GET",
-        headers: {
-            "Content-Type":"application/json",
-            "X-CSRFToken": csrfToken,
-        },
+      method:"GET",
+      headers: {
+          "Content-Type":"application/json",
+          "X-CSRFToken": csrfToken,
+      },
     })
-        .then(res => {
-            if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
-            return res.json()
-        })
-        .then( data => {
-            console.log(data)
-        })
-        .catch( err => {
-            console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
-        })
+      .then(res => {
+        if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
+        return res.json()
+      })
+      .then( data => {
+        renderLeaderboard(data, 0, companyName, pontos)
+        // console.log(data)
+      })
+      .catch( err => {
+        console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
+      })
+}
+
+function renderLeaderboard(jogadores, idAtual = id) {
+  jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
+  const yourPlayer = jogadores.find(j => j.companyName === company);
+
+  const container = document.querySelector(".leaderboard-content>ul");
+  const prevPos = document.querySelector('.lb--prev-pos')
+
+  prevPos.textContent = yourPlayer?.pos
+  prevPos.className = `lb--prev-pos lb-${yourPlayer?.pos}`
+
+  let topJogadores = jogadores.slice(0, Math.min(jogadores.length, 11))
+
+  const hasPlayerInTop = topJogadores.some(j => j.companyName == company)
+  if (!hasPlayerInTop) {
+    const newPlayer = {
+      companyName: company,
+      lsCount: pontos,
+      pos: yourPlayer?.pos
+    }
+    topJogadores = [...topJogadores.slice(0, Math.min(jogadores.length, 10)), newPlayer]
+  }
+
+  container.childNodes.forEach(j => {
+    const jName = j.id.replace("lb-jogador", "")
+    if (!topJogadores.find(tj => tj.companyName.replace(' ', '') == jName.replace(' ', ''))) j.remove()
+  })
+
+  topJogadores.map((_, id) => ({..._, id})).forEach((jogador, index) => {
+    const jogadorEl = document.getElementById(`lb-jogador${jogador.companyName.replace(' ', '')}`)
+    const isVoce = jogador.companyName == company
+    const pos = jogador.pos
+
+    if (jogadorEl) {
+      const pointsEl = jogadorEl.querySelector('.lb-number')
+      const posEl = jogadorEl.querySelector('.lb-pos')
+
+      jogadorEl.style.order = pos
+      jogadorEl.style.transform = `translateY(${index*100}%)`
+      jogadorEl.style.zIndex = pos >= 11 ? 200 : 200-pos
+      pointsEl.textContent = jogador.lsCount
+      posEl.textContent = pos
+      posEl.className = `lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}`
+
+      return
+    }
+
+    const li = document.createElement("li");
+    // const isVoce = jogador.id === idAtual;
+
+    li.id = `lb-jogador${jogador.companyName.replace(' ', '')}`
+    li.style.order = pos
+    li.style.zIndex = pos >= 11 ? 200 : 200-pos
+    li.innerHTML = `
+      <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
+      <span class="lb-name">${jogador.companyName}${isVoce ? ' <strong>(VOCÊ)</strong>' : ''}</span>
+      <span class="lb-number">${jogador.lsCount}</span>
+    `
+
+    container.appendChild(li);
+
+    li.style.transform = `translateY(2000%)`
+    void li.offsetWidth
+    li.style.transform = `translateY(${index*100}%)`
+  })
 }
 
 // Socket para toda vez que receber uma atualização do db
-socket.onmessage = () => leaderboard_display()
+socket.onmessage = (e) => {
+  leaderboardDisplay()
+}
 
-// Roda o leaderboard assim que inicia o site
-leaderboard_display()
-
-window.addEventListener("updateLsDisplay", (event) => {
-  refresh(0, event.detail.newPoints)
+window.addEventListener("updateCompany", (e) => {
+  company = e.detail.company
+  companyName.textContent = company
+  leaderboardDisplay()
 })
+
+window.addEventListener("updateLsDisplay", (event) => refresh(0, event.detail.newPoints, true))
+window.addEventListener("setID", (event) => id = event.detail.id)
+
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
-function refresh(valorAtual, add) {
+function refresh(valorAtual, add, isEvent = false) {
   pontos = valorAtual + add
-  if (firstRender) {
-    firstRender = false
-  } else {
-    atualizarPontos(pontos)
-  }
+
+  if (!isEvent) atualizarPontos(pontos)
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   
@@ -338,7 +409,7 @@ function animarContador(valorInicial, duracao = 700) {
   const add = valorFinal - valorInicial
 
   if (Math.abs(add) == 1) {
-    display.textContent = `${pontos} linhas de código`
+    display.textContent = `${formatarNumero(pontos)} linhas de código`
     if (add > 0) generateCodeLine()
     return
   }
@@ -396,7 +467,7 @@ function formatarNumero(valor) {
     if (valor >= unidade.limite) {
       const valorDividido = valor / unidade.limite
       const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
-      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
+      return `${valorDividido.toFixed(1).replace('.', ',')} ${nome}`
     }
   }
 }
@@ -630,7 +701,11 @@ function showMobileTooltip(type, item) {
   close.className = 'close-bttn'
   close.textContent = 'Fechar'
 
-  close.addEventListener('touchend', closeMobileTootip)
+  close.addEventListener('touchend', (e) => {
+    e.stopPropagation(); // impede que o clique vá para outros elementos
+    e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
+    closeMobileTootip()
+  })
 
   content.appendChild(close)
   mobileTooltip.appendChild(content)

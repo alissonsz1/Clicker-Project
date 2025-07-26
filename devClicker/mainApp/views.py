@@ -150,7 +150,7 @@ def lsPatch(request, *args, **kwargs):
 # Requisita os dados para o leaderboard
 def leaderboard_data(request, *args, **kwargs):
     if request.method == "GET":
-        players = Companies.objects.order_by('-lsCount')[:10] # carrega os 10 primeiros dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
+        players = Companies.objects.order_by('-lsCount') # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
 
         # converte em lista
         data = list(players.values("companyName", "lsCount"))

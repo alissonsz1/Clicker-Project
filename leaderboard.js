@@ -34,10 +34,10 @@ idPlayer = getCookie("id");
 
 function sampleName(min, max) {
   let num = Math.floor(Math.random() * (max - min) + min);
-  return `company${num}`;
+  return `DEV${num}`;
 }
 
-let nameCompanyInit = sampleName(1,1000)
+let nameCompanyInit = sampleName(1,10000)
 
 function verifyIfNameExist(list, nameTest){
     const dataFound = list.find(obj => obj.companyName == nameTest);
@@ -47,6 +47,14 @@ function verifyIfNameExist(list, nameTest){
     } else {
         return nameTest;
     }
+}
+
+function dispatchNewName(name) {
+    const event = new CustomEvent("updateCompany", {
+        detail: { company: name }
+    })
+
+    window.dispatchEvent(event);
 }
 
 
@@ -68,14 +76,16 @@ function getData(nameMethod, fetchFunction){
             if(nameMethod == "postInit"){
                 nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
                 fetchFunction({"companyName": nameCompanyInit, "lsCount": 0});
+                dispatchNewName(nameCompanyInit)
             }
         } else {
             if(nameMethod == "patchNameCompany"){
                 nameCompanyInit = verifyIfNameExist(data,companyName.innerText);
                 fetchFunction({"id": idPlayer, "companyName": nameCompanyInit});
+                dispatchNewName(nameCompanyInit)
             } else {
                 playerDetails = data.find( obj => obj.id == idPlayer );
-                companyName.innerHTML = playerDetails.companyName;
+                dispatchNewName(playerDetails.companyName)
                 updateLsDisplay(playerDetails.lsCount)
             }
         }
@@ -100,11 +110,10 @@ function postCompany(post){
             return res.json()
         })
         .then(data => {
-            companyName.innerHTML = nameCompanyInit;
+            dispatchNewName(nameCompanyInit)
             lsCount = 0;
             setCookie("id", data.id, 8);
             idPlayer = getCookie("id");
-            console.log("ID DO PLAYER", idPlayer)
         })
         .catch(err => {
             console.error("ERRO:",err)
@@ -125,7 +134,7 @@ function patchCompanyName(patch){
         return res.json()
     })
     .then(data => {
-        companyName.innerHTML = nameCompanyInit;
+        dispatchNewName(nameCompanyInit)
     })
     .catch(err => {
         console.error("ERRO:", err)
@@ -146,10 +155,10 @@ function patchLS(patch){
         return res.json()
     })
     .then( data => {
-        console.log("Linhas atualizadas")
+        // console.log("Linhas atualizadas")
     })
     .catch( err => {
-        console.err("Error ", err )
+        console.error("Error ", err )
     })
 }
 
