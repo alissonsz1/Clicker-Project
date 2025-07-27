@@ -78,6 +78,7 @@ function getData(nameMethod, fetchFunction){
         return res.json();
     })
     .then(data =>{
+        console.log(data);
         // caso o idPlayer não tenha valor, ele executa o código abaixo.
         if(!idPlayer){            
             if(nameMethod == "postInit"){
@@ -170,7 +171,7 @@ function patchLS(patch){
         return res.json()
     })
     .then( data => {
-        // console.log("Linhas atualizadas")
+        console.log("Linhas atualizadas")
     })
     .catch( err => {
         console.error("Error ", err )
@@ -202,3 +203,15 @@ window.addEventListener("pontosAtualizados", (event) => {
   patchLS({"id": idPlayer, "lsCount": lsCount})
 
 });
+
+// CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)
+function deleteCookie(name){
+    setCookie(name, "", -1);
+}
+
+// Resetar os pontos ambeintes de teste
+function resetPoints(){
+    patchLS({"id": idPlayer, "lsCount": 1});
+    lsCount = 1;
+    updateLsDisplay(lsCount)
+}

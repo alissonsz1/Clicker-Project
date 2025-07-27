@@ -129,6 +129,7 @@ def lsPatch(request, *args, **kwargs):
             # Coloca os dados no body em variáveis
             company_id = data.get("id")
             new_ls = data.get("lsCount")
+            print(new_ls)
 
             # requisita os campos em relação ao id
             company = Companies.objects.get(id=company_id)
