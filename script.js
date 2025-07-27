@@ -277,6 +277,8 @@ const tooltip = document.querySelector('.tooltip') // Container que armazenas as
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
 
+// ESTRUTURAS QUE MANDA EVENTOS
+
 //Atualização o arquivo em outros arquivos js
 function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
@@ -285,6 +287,24 @@ function atualizarPontos(novoValor) {
   })
 
   window.dispatchEvent(evento); // Notifica outros scripts
+}
+
+// Notifica quem um upgrade foi comprado
+function notifiedUgradeBuy(index){
+  const event = new CustomEvent("notifiedUgradeBuy", {
+    detail: {newUpdate: index}
+  });
+
+  window.dispatchEvent(event);
+}
+
+// Notifica a estrutura comprada
+function notifiedStructBuy(struct){
+  const event = new CustomEvent("notifiedStructBuy", {
+    detail: struct,
+  });
+
+  window.dispatchEvent(event);
 }
 
 function leaderboardDisplay(){
@@ -301,7 +321,6 @@ function leaderboardDisplay(){
       })
       .then( data => {
         renderLeaderboard(data, 0, companyName, pontos)
-        // console.log(data)
       })
       .catch( err => {
         console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
@@ -379,15 +398,30 @@ socket.onmessage = (e) => {
   leaderboardDisplay()
 }
 
+// Atualiza o leaderboard
 window.addEventListener("updateCompany", (e) => {
   company = e.detail.company
   companyName.textContent = company
   leaderboardDisplay()
 })
 
+// Atualiza os pontos na tela
 window.addEventListener("updateLsDisplay", (event) => refresh(0, event.detail.newPoints, true))
+
+// Atualizar o id
 window.addEventListener("setID", (event) => id = event.detail.id)
 
+// Atualizar os upgrades, puxar as estruturas salvas no banco de dados
+window.addEventListener("dispatchUpdateList", (event) => { 
+  let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
+  console.log(loadingUpdateList);
+})
+
+// Atualiza as estruturas, puxar as estruturas salvas do banco de dados
+window.addEventListener("dispatchStructList", (event)=> {
+  let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
+  console.log(loadingStructList);
+})
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
@@ -859,6 +893,10 @@ const buyEstrutura = (index) => {
   const custo = estrutura.custoAtual
   estrutura.comprados += 1
   refresh(pontos, -custo)
+  notifiedStructBuy({
+    "index": index,
+    "comprados": estruturas[index].comprados
+  })
 
 }
 
@@ -872,6 +910,7 @@ const buyUpgrade = (index) => {
   upgrade.purchased = true
 
   refresh(pontos, -upgrade.custo)
+  notifiedUgradeBuy(index);
 }
 
 // Renderiza os upgrades assim que o site inicia

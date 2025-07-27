@@ -9,6 +9,32 @@ function updateLsDisplay(newValue) {
   window.dispatchEvent(event); // Notifica outros scripts
 }
 
+function dispatchNewName(name) {
+    const event = new CustomEvent("updateCompany", {
+        detail: { company: name }
+    })
+
+    window.dispatchEvent(event);
+}
+
+function dispatchUpdateList(list) {
+    const event = new CustomEvent("dispatchUpdateList", {
+        detail: { updateList: list }
+    })
+
+    window.dispatchEvent(event);
+}
+
+
+function dispatchStructList(list) {
+    const event = new CustomEvent("dispatchStructList", {
+        detail: { structList: list }
+    })
+
+    window.dispatchEvent(event);
+}
+
+
 // Para setar os cookie do usuário
 function setCookie(cookieName, cookieValue, expiresDays){
     const d = new Date(); // pega o dia de hoje
@@ -43,13 +69,6 @@ function verifyIfNameExist(list, nameTest){
     }
 }
 
-function dispatchNewName(name) {
-    const event = new CustomEvent("updateCompany", {
-        detail: { company: name }
-    })
-
-    window.dispatchEvent(event);
-}
 
 // VARIÁVIES GLOBAIS
 let companyName = document.querySelector('.company-text'); // Nome do player
@@ -57,6 +76,9 @@ let nameCompanyInit = sampleName(1,10000); // Nome inicial do gerado
 let idPlayer = getCookie("id"); // pega o id do player caso tenha salvo
 let playerDetails; // vai armazenar os dados do player através de seu id
 let lsCount; // coleta os pontos do player
+let upgradesList = [];
+let structList = [];
+
 
 // variáveis em csrftoken
 window.csrfToken = document.getElementById("csrf-token").value;
@@ -78,12 +100,11 @@ function getData(nameMethod, fetchFunction){
         return res.json();
     })
     .then(data =>{
-        console.log(data);
         // caso o idPlayer não tenha valor, ele executa o código abaixo.
         if(!idPlayer){            
             if(nameMethod == "postInit"){
                 nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
-                fetchFunction({"companyName": nameCompanyInit, "lsCount": 0});
+                fetchFunction({"companyName": nameCompanyInit});
                 dispatchNewName(nameCompanyInit)
             }
         } else {
@@ -98,12 +119,14 @@ function getData(nameMethod, fetchFunction){
                 playerDetails = data.find( obj => obj.id == idPlayer );
                 dispatchNewName(playerDetails.companyName)
                 updateLsDisplay(playerDetails.lsCount)
+                dispatchUpdateList(playerDetails.upgrades)
+                dispatchStructList(playerDetails.structures)
             }
         }
         
     })
     .catch(err =>{
-        console.log("Error", err)
+        console.error("Error", err)
     })
 }
 
@@ -170,11 +193,44 @@ function patchLS(patch){
         if(!res.ok) throw new Error("Erro ao atualizar as LS no BD")
         return res.json()
     })
-    .then( data => {
-        console.log("Linhas atualizadas")
-    })
     .catch( err => {
         console.error("Error ", err )
+    })
+}
+
+function updatePlayerUpgrades(patch){
+    fetch("/patch-upgrades-data/", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+        },
+        body: JSON.stringify(patch)
+    })
+    .catch( res => {
+        if(!res.ok) throw new Error("Erro ao mandar o upgrade")
+        return res.json()
+    })
+    .catch( err => {
+        console.error("Error", err )
+    })
+}
+
+function updatePlayerStructs(patch){
+    fetch("/patch-struct-data/", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+        },
+        body: JSON.stringify(patch)
+    })
+    .catch( res => {
+        if(!res.ok) throw new Error("Erro ao mandar o upgrade")
+        return res.json()
+    })
+    .catch( err => {
+        console.error("Error", err )
     })
 }
 
@@ -203,6 +259,22 @@ window.addEventListener("pontosAtualizados", (event) => {
   patchLS({"id": idPlayer, "lsCount": lsCount})
 
 });
+
+window.addEventListener("notifiedUgradeBuy", (event)=>{
+    const newUpgradeBuy = event.detail.newUpdate;
+    upgradesList.push(newUpgradeBuy);
+    upgradesList.sort()
+    updatePlayerUpgrades({"id": idPlayer, "update":upgradesList})
+})
+
+window.addEventListener("notifiedStructBuy", (event)=>{
+    const newStructBuy = event.detail;
+    const index = newStructBuy.index
+    structList[index] = newStructBuy;
+    updatePlayerStructs({"id": idPlayer, "struct": structList})
+    
+})
+
 
 // CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)
 function deleteCookie(name){

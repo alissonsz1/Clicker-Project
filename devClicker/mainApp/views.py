@@ -51,17 +51,16 @@ def companiesPostName(request, *args, **kwargs):
 
             # Coloca os dados em variáveis
             company_name = data.get("companyName")
-            ls_count = data.get("lsCount")
 
             #Se elas estiverem vazios, vai retornar um erro
-            if not company_name or ls_count is None:
+            if not company_name:
                 return JsonResponse({"error": "Dados incompletos"}, status=400)
             
             # Posta nos banco de dados
             company = Companies.objects.create(
                 companyName = company_name,
-                lsCount = ls_count
             )
+
 
             updateDetect(company)
             
@@ -70,7 +69,6 @@ def companiesPostName(request, *args, **kwargs):
                 "message": "Empresa salva com sucesso",
                 "id": company.id,
                 "companyName": company.companyName,
-                "lsCount": company.lsCount
             }, status=201)
         
         except Exception as e:
@@ -129,17 +127,75 @@ def lsPatch(request, *args, **kwargs):
             # Coloca os dados no body em variáveis
             company_id = data.get("id")
             new_ls = data.get("lsCount")
-            print(new_ls)
 
             # requisita os campos em relação ao id
             company = Companies.objects.get(id=company_id)
 
-            if new_ls:
+            if new_ls or new_ls >= 0:
                 company.lsCount = new_ls
             
             company.save()
 
             updateDetect(company)
+
+            return JsonResponse({
+                "menssage":"OK",
+            }, status=200)
+        except Companies.DoesNotExist:
+            return JsonResponse({"erros": "Empresa não encontrada"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+        
+    return JsonResponse({"error": "Método não permitido"}, status=405)
+
+def upgradePatch(request, *args, **kwargs):
+    if request.method == "PATCH":
+        try:
+
+            # Carrega os dados para atualizar
+            data = json.loads(request.body)
+
+            # Coloca os dados no body em variáveis
+            company_id = data.get("id")
+            new_update = data.get("update")
+
+            # requisita os campos em relação ao id
+            company = Companies.objects.get(id=company_id)
+
+            if new_update:
+                company.upgrades = new_update
+            
+            company.save()
+
+            return JsonResponse({
+                "menssage":"OK",
+            }, status=200)
+        except Companies.DoesNotExist:
+            return JsonResponse({"erros": "Empresa não encontrada"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+        
+    return JsonResponse({"error": "Método não permitido"}, status=405)
+
+
+def structPatch(request, *args, **kwargs):
+    if request.method == "PATCH":
+        try:
+
+            # Carrega os dados para atualizar
+            data = json.loads(request.body)
+
+            # Coloca os dados no body em variáveis
+            company_id = data.get("id")
+            new_struct = data.get("struct")
+
+            # requisita os campos em relação ao id
+            company = Companies.objects.get(id=company_id)
+
+            if new_struct:
+                company.structures = new_struct
+            
+            company.save()
 
             return JsonResponse({
                 "menssage":"OK",
