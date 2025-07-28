@@ -1078,10 +1078,10 @@ function setBonus(bonus, efeito) {
 
     // E inicia um novo
     active.timeoutId = setTimeout(() => {
-      removeBoost(bonus)
+      removeBoost(bonus.id)
     }, bonus.duracao * 1000)
 
-    const boostDiv = document.querySelector(`[data-nome="${bonus.nome}"]`)
+    const boostDiv = document.querySelector(`[data-id="${bonus.id}"]`)
     boostDiv.classList = 'boost'
     void boostDiv.offsetHeight // Essa linha serve para 'atualizar' o elemento, ou seja, identificar que houver a mudança em 'classList'
     boostDiv.classList = 'boost cooldown'
@@ -1092,7 +1092,7 @@ function setBonus(bonus, efeito) {
 
   // Inicia um timer pro bonus baseado na sua duracao
   const timeoutId = setTimeout(() => {
-    removeBoost(bonus)
+    removeBoost(bonus.id)
   }, bonus.duracao * 1000)
 
   const expiresIn = Date.now() + bonus.duracao * 1000
@@ -1116,7 +1116,7 @@ function setBonus(bonus, efeito) {
   const div = document.createElement("div")
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
-  div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
+  div.dataset.id = bonus.id // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   div.addEventListener('touchend', () => {
@@ -1127,15 +1127,15 @@ function setBonus(bonus, efeito) {
 }
 
 // Remove o bonus do café
-function removeBoost({nome, id}) {
+function removeBoost(id) {
   const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
     if (boost.reverter) boost.reverter() // Desfaz o efeito
     boostsActive.splice(index, 1) // Retira o boost da lista
 
-    const boostDiv = document.querySelector(`[data-nome="${nome}"]`) // Pega a div com o boost ativo
-    stopMatrix(boost.id) // Para com a respectiva matrix
+    const boostDiv = document.querySelector(`[data-id="${id}"]`) // Pega a div com o boost ativo
+    stopMatrix(id) // Para com a respectiva matrix
     boostDiv.remove()
     showTooltip()
   }
@@ -1163,7 +1163,7 @@ const startMatrix = (id = 0, type = 'matrix', expiresIn) => {
   const canvas = document.createElement('canvas')
   canvas.id = `matrix-${id}`
   canvas.classList.add('matrix-canvas')
-  canvas.style.zIndex = -100 + Object.values(matrices).length
+  canvas.style.zIndex = -100 + matricesLength
   document.body.appendChild(canvas)
 
   canvas.height = window.innerHeight
@@ -1226,9 +1226,6 @@ const stopMatrix = (id) => {
 
 // INÍCIO FUNÇÃO DAS "SALSICHINHAS" (os códigos passando pela tela kk)
 
-
-const container = document.querySelector(".computer-codelines");
-
 let currentIndentLevel = 0
 let isFirstLine = true
 let currentLineNumber = 1
@@ -1268,7 +1265,7 @@ function generateCodeLine(add = 1) {
     currentIndentLevel = Math.max(0, Math.min(newIndentLevel, currentIndentLevel + 1, 3))
   }
 
-  line.style.marginLeft = `${currentIndentLevel * 15}px`;
+  line.style.marginLeft = `calc(${String(currentLineNumber).length} * 0.41 * var(--fs) + 8px + ${currentIndentLevel} * 15px)`;
 
   // Quantidade de blocos aleatória
   const weightedBlockCounts = [3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 9];
@@ -1283,18 +1280,18 @@ function generateCodeLine(add = 1) {
     block.style.width = `${width}%`
 
     const color = draculaColors[Math.floor(Math.random() * draculaColors.length)]
-    // block.style.backgroundColor = color
+    block.style.backgroundColor = color
 
     line.appendChild(block);
   }
 
   wrapper.appendChild(lineNumber);
   wrapper.appendChild(line);
-  container.appendChild(wrapper);
+  computerCodelinesContainer.appendChild(wrapper);
 
   // Reduz o número máximo de linhas visíveis
-  if (container.children.length > 34) {
-    container.removeChild(container.children[0]);
+  if (computerCodelinesContainer.children.length > 30) {
+    computerCodelinesContainer.removeChild(computerCodelinesContainer.children[0]);
   }
 }
 
