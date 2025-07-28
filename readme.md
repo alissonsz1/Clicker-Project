@@ -5,7 +5,7 @@
 ### Criação e ativação do ambiente
 Executar no terminal na pasta do projeto
 ```
-python -m venv .venv
+python3 -m venv .venv
 
 source .venv/bin/activate # ativar no linux ou mac
 .\.venv\Scripts\activate  # ativer no windows

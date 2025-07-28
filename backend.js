@@ -98,6 +98,7 @@ function getData(nameMethod, fetchFunction){
             if(nameMethod == "postInit"){
                 nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
                 fetchFunction({"companyName": nameCompanyInit});
+                dispatchNewName(nameCompanyInit);
             }
         } else {
             //Se existir ip, ele vai ou atualizar o nome do player quando ele socilitar
