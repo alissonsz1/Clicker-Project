@@ -1119,7 +1119,7 @@ function setBonus(bonus, efeito) {
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
-  div.querySelector('.info-bttn').addEventListener('touchend', () => {
+  div.addEventListener('touchend', () => {
     showMobileTooltip('es', item)
     playSound('/static/assets/sounds/open.ogg', .4)
   })
