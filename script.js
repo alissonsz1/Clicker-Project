@@ -249,7 +249,6 @@ function randomBetween(min, max) {
 }
 
 const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
-// const csrfToken = document.getElementById("csrf-token").value;
 
 const csrfToken = window.csrfToken
 
@@ -264,6 +263,7 @@ let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
+let listDataLeaderboard; // guarda os dados do leaderboard
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -289,47 +289,19 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
-// Notifica quem um upgrade foi comprado
-function notifiedUgradeBuy(index){
-  const event = new CustomEvent("notifiedUgradeBuy", {
-    detail: {newUpdate: index}
+// Notifica para atualizar os dados de structures e upgrades
+function notifiedReload(bought){
+  const event = new CustomEvent("notifiedReload", {
+    detail: bought,
   });
 
   window.dispatchEvent(event);
-}
-
-// Notifica a estrutura comprada
-function notifiedStructBuy(struct){
-  const event = new CustomEvent("notifiedStructBuy", {
-    detail: struct,
-  });
-
-  window.dispatchEvent(event);
-}
-
-function leaderboardDisplay(){
-    fetch("/leaderboard/", {
-      method:"GET",
-      headers: {
-          "Content-Type":"application/json",
-          "X-CSRFToken": csrfToken,
-      },
-    })
-      .then(res => {
-        if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
-        return res.json()
-      })
-      .then( data => {
-        renderLeaderboard(data, 0, companyName, pontos)
-      })
-      .catch( err => {
-        console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
-      })
 }
 
 function renderLeaderboard(jogadores, idAtual = id) {
   jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
   const yourPlayer = jogadores.find(j => j.companyName === company);
+
 
   const container = document.querySelector(".leaderboard-content>ul");
   const prevPos = document.querySelector('.lb--prev-pos')
@@ -395,33 +367,53 @@ function renderLeaderboard(jogadores, idAtual = id) {
 
 // Socket para toda vez que receber uma atualização do db
 socket.onmessage = (e) => {
-  leaderboardDisplay()
+  // ESTRUTURA = {id, companyName, lsCount}
+  listDataLeaderboard = JSON.parse(e.data).player;
+
+  listDataLeaderboard.find(obj => {
+    if(obj.id == id){
+      company = obj.companyName;
+    }
+  })
+
+  renderLeaderboard(listDataLeaderboard, 0, companyName, pontos);
 }
 
-// Atualiza o leaderboard
+// Pega o nome do player
 window.addEventListener("updateCompany", (e) => {
-  company = e.detail.company
-  companyName.textContent = company
-  leaderboardDisplay()
+  company = e.detail.company;
+  companyName.textContent = company;
 })
 
-// Atualiza os pontos na tela
-window.addEventListener("updateLsDisplay", (event) => refresh(0, event.detail.newPoints, true))
+// PEGA DO BACKEND TODOS OS DADOS DO PLAYER
 
-// Atualizar o id
-window.addEventListener("setID", (event) => id = event.detail.id)
+window.addEventListener("dispatchPlayerData", (event) => {
+  let loadingPlayer = event.detail.player;
 
-// Atualizar os upgrades, puxar as estruturas salvas no banco de dados
-window.addEventListener("dispatchUpdateList", (event) => { 
-  let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
-  console.log(loadingUpdateList);
+  company = loadingPlayer.companyName
+
+  companyName.textContent = company;
+
+  id = loadingPlayer.id;
+
+  let listUpgrades = loadingPlayer.upgrades;
+
+  let listStructures = loadingPlayer.structures
+
+  console.log("ESTRUTURAS", listStructures);
+
+  console.log("UPGRADES", listUpgrades);
+
+  refresh(0, loadingPlayer.lsCount, true)
 })
 
-// Atualiza as estruturas, puxar as estruturas salvas do banco de dados
-window.addEventListener("dispatchStructList", (event)=> {
-  let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
-  console.log(loadingStructList);
+// Traz os dados do leaderboard do backend na primeira execução
+window.addEventListener("dispatchLearderboardData", (event)=>{
+  // ESTRUTURA = {id, companyName, lsCount}
+  let leaderboardInfo = event.detail.leaderboardData;
+  renderLeaderboard(leaderboardInfo, 0, companyName, pontos);
 })
+
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
@@ -893,10 +885,6 @@ const buyEstrutura = (index) => {
   const custo = estrutura.custoAtual
   estrutura.comprados += 1
   refresh(pontos, -custo)
-  notifiedStructBuy({
-    "index": index,
-    "comprados": estruturas[index].comprados
-  })
 
 }
 
@@ -910,7 +898,6 @@ const buyUpgrade = (index) => {
   upgrade.purchased = true
 
   refresh(pontos, -upgrade.custo)
-  notifiedUgradeBuy(index);
 }
 
 // Renderiza os upgrades assim que o site inicia
@@ -1261,3 +1248,51 @@ function generateCodeLine(add = 1) {
 }
 
 // FIM DA FUNÇÃO DAS SALSICHINHAS
+// VERIFICAR SE A PÁGINA FOI CARREGADA
+
+// Função para setas os dados em variáveis e notificar
+function setData(){
+  let listPatchUpgrades = [];
+  upgrades.forEach((element, index) => {
+    if(element.purchased) listPatchUpgrades.push(index)
+  })
+  
+  let listPatchStructures = [];
+  
+  estruturas.forEach((element, index)=>{
+    if(element.comprados > 0) listPatchStructures.push({
+      "index": index,
+      "comprados": element.comprados,
+    });
+  })
+  
+  notifiedReload({
+    "upgrades": listPatchUpgrades,
+    "structures": listPatchStructures,
+  });
+
+}
+
+// Toda vez que atualizar a página, ele atualiza os dados
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    setData()
+  }
+});
+
+
+// Detectar o usuário recarregando a página no mobile
+let touchStartY = 0;
+
+document.addEventListener('touchstart', e => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: false });
+
+document.addEventListener('touchmove', e => {
+  const touchY = e.touches[0].clientY;
+  const diff = touchY - touchStartY;
+  if (diff > 50 && window.scrollY === 0) {
+    setData()
+    // aqui você pode executar lógica antes de chamar reload
+  }
+}, { passive: false });

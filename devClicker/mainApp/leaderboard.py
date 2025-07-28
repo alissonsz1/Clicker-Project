@@ -21,3 +21,4 @@ class LeaderboardConsumer(AsyncWebsocketConsumer):
         # este método é chamado automaticamente com o payload em event["data"]
         # Envia os dados como texto JSON de volta ao cliente WebSocket
         await self.send(text_data=json.dumps(event["data"]))
+
