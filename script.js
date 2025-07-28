@@ -772,8 +772,8 @@ const renderEstruturas = () => {
   const size = desbloqueados.estruturas.size
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
-  estruturasFixed.forEach((item, i) => {
-    const id = `estrutura-${i}`
+  estruturasFixed.forEach((item) => {
+    const id = `estrutura-${item.id}`
     const estrutura = document.getElementById(id)
 
     // Se o item já está renderizado, não adiciona ele novamente, apenas atualiza
@@ -825,7 +825,7 @@ const renderEstruturas = () => {
       const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
       if (hasClickedInfo) return
   
-      buyEstrutura(i)
+      buyEstrutura(item.id)
     })
 
     div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
@@ -838,7 +838,7 @@ const renderEstruturas = () => {
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
   contentList.innerHTML = "" // Limpa o conteúdo para renderizar certinho
-  const upgradesFiltered = upgrades.map((item, i) => ({...item, index: i})).filter(item => !item.purchased) // Retira os items que já foram comprados (no caso dos upgrades)
+  const upgradesFiltered = upgrades.filter(item => !item.purchased)
   if (upgradesFiltered.length > 0) {
     upgradesFiltered.forEach(item => {
       const div = document.createElement("div")
@@ -861,7 +861,7 @@ const renderUpgrades = () => {
         const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
         if (hasClickedInfo) return
           
-        buyUpgrade(item.index)
+        buyUpgrade(item.id)
       })
 
       div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
@@ -877,8 +877,8 @@ const renderUpgrades = () => {
 }
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
-const buyEstrutura = (index) => {
-  const estrutura = estruturas[index]
+const buyEstrutura = (id) => {
+  const estrutura = estruturas.fint( e => e.id == id )
 
   if (pontos < estrutura.custoAtual) return
 
@@ -889,8 +889,8 @@ const buyEstrutura = (index) => {
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
-const buyUpgrade = (index) => {
-  const upgrade = upgrades[index]
+const buyUpgrade = (id) => {
+  const upgrade = upgrades.find(e => e.id == id)
 
   if (pontos < upgrade.custo || upgrade.purchased) return
 
@@ -1251,26 +1251,47 @@ function generateCodeLine(add = 1) {
 // VERIFICAR SE A PÁGINA FOI CARREGADA
 
 // Função para setas os dados em variáveis e notificar
+// function setData(){
+//   let listPatchUpgrades = [];
+//   upgrades.forEach((element, index) => {
+//     if(element.purchased) listPatchUpgrades.push(index)
+//   })
+  
+//   let listPatchStructures = [];
+  
+//   estruturas.forEach((element, index)=>{
+//     if(element.comprados > 0) listPatchStructures.push({
+//       "index": index,
+//       "comprados": element.comprados,
+//     });
+//   })
+  
+//   notifiedReload({
+//     "upgrades": listPatchUpgrades,
+//     "structures": listPatchStructures,
+//   });
+
+// }
+
 function setData(){
+
   let listPatchUpgrades = [];
-  upgrades.forEach((element, index) => {
-    if(element.purchased) listPatchUpgrades.push(index)
+  upgrades.forEach((element) => {
+    if(element.purchased) listPatchUpgrades.push(element.id)
   })
   
   let listPatchStructures = [];
   
-  estruturas.forEach((element, index)=>{
+  estruturas.forEach((element)=>{
     if(element.comprados > 0) listPatchStructures.push({
-      "index": index,
+      "id": element.id,
       "comprados": element.comprados,
     });
   })
-  
-  notifiedReload({
-    "upgrades": listPatchUpgrades,
-    "structures": listPatchStructures,
-  });
 
+  localStorage.setItem("upgrades", listPatchUpgrades);
+
+  console.log(localStorage.getItem("upgrades"));
 }
 
 // Toda vez que atualizar a página, ele atualiza os dados
