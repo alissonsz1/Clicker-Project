@@ -18,6 +18,7 @@ button {
 
 :root {
     --cs: 86px; /* Coffee Size */
+    --bs: rgba(0, 0, 0, .6); /* BOX SHADOW */
 }
 
 /* Põe a fonte global */
@@ -535,7 +536,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     transform: translate(-50%, -50%);
     width: 140%;
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.6); /* fundo escuro com transparência */
+    background-color: var(--bs); /* fundo escuro com transparência */
     border-radius: 50px;
     filter: blur(10px);
     opacity: .7;
@@ -612,7 +613,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, .2);
+    background-color: var(--bs);
 }
 
 .modal.disabled {
@@ -689,7 +690,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     right: 0;
     bottom: 0;
     z-index: 10000;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: var(--bs);
     transition: opacity .2s linear;
 }
 
@@ -953,6 +954,11 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     border-bottom: 2px solid var(--c4);
 }
 
+.leaderboard-content li.you {
+    background-color: var(--c4);
+    /* filter: brightness(1.1); */
+}
+
 .lb-pos { 
     flex-basis: .8em;
     text-align: right;
@@ -1001,7 +1007,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     /* Adiciona um pequeno brilho quando hover */
     .company-text:hover {
         color: white;
-        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2);
+        /* text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2); */
     }
 
     .leaderboard-wrapper:hover {
@@ -1042,6 +1048,51 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         padding-top: 5rem;
         flex-direction: column;
         width: 100%;
+    }
+
+    .leaderboard-wrapper {
+        --cont-w: auto;
+        transform: none;
+        transition: background .2s ease;
+    }
+
+    .leaderboard-content ul {
+        font-size: 1.3em;
+    }
+
+    .leaderboard-content {
+        display: none;
+        visibility: hidden;
+
+        --cont-w: 90%;
+        --cont-h: 378px;
+        max-width: 320px;
+        border: var(--c1b);
+        border-radius: 5px;
+        inset: 1em;
+        opacity: 0;
+        transition: opacity .2s linear;
+    }
+
+    .leaderboard-wrapper.enabled {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        inset: 0;
+        transform: none;
+        touch-action: none;
+        z-index: 100000;
+    }
+
+    .leaderboard-wrapper.enabled .leaderboard-content {
+        display: block;
+        visibility: visible;
+    }
+
+    .leaderboard-wrapper.enabled  .leaderboard-icon {
+        display: none;
+        visibility: hidden;
     }
 
     .table {
@@ -1106,6 +1157,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     }
 
     .mobile-tooltip {
+        touch-action: none;
         display: block;
         visibility: visible;
     }

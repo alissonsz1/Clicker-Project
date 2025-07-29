@@ -1,14 +1,6 @@
 // Funções
 
-function updateLsDisplay(newValue) {
-  // Dispara um evento personalizado com o novo valor
-  const event = new CustomEvent("updateLsDisplay", {
-    detail: { newPoints: newValue }
-  });
-
-  window.dispatchEvent(event); // Notifica outros scripts
-}
-
+// Manda o nome para o script.js
 function dispatchNewName(name) {
     const event = new CustomEvent("updateCompany", {
         detail: { company: name }
@@ -17,19 +9,20 @@ function dispatchNewName(name) {
     window.dispatchEvent(event);
 }
 
-function dispatchUpdateList(list) {
-    const event = new CustomEvent("dispatchUpdateList", {
-        detail: { updateList: list }
+// Manda os dados do Player para o 
+function dispatchPlayerData(playerData){
+    const event = new CustomEvent("dispatchPlayerData", {
+        detail: { player: playerData }
     })
 
     window.dispatchEvent(event);
 }
 
-
-function dispatchStructList(list) {
-    const event = new CustomEvent("dispatchStructList", {
-        detail: { structList: list }
-    })
+// Manda os dados iniciais do learderboard para script.js
+function dispatchLearderboardData(data){
+    const event = new CustomEvent("dispatchLearderboardData", {
+        detail: {leaderboardData: data}
+    });
 
     window.dispatchEvent(event);
 }
@@ -105,6 +98,7 @@ function getData(nameMethod, fetchFunction){
             if(nameMethod == "postInit"){
                 nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
                 fetchFunction({"companyName": nameCompanyInit});
+                dispatchNewName(nameCompanyInit);
                 dispatchNewName(nameCompanyInit)
             }
         } else {
@@ -112,16 +106,22 @@ function getData(nameMethod, fetchFunction){
             if(nameMethod == "patchNameCompany"){
                 nameCompanyInit = verifyIfNameExist(data,companyName.innerText);
                 fetchFunction({"id": idPlayer, "companyName": nameCompanyInit});
-                dispatchNewName(nameCompanyInit)
+
             
             // ou vai pegar os dados do player no banco de dados
             } else {
                 playerDetails = data.find( obj => obj.id == idPlayer );
-                dispatchNewName(playerDetails.companyName)
-                updateLsDisplay(playerDetails.lsCount)
-                dispatchUpdateList(playerDetails.upgrades)
-                dispatchStructList(playerDetails.structures)
+                if(playerDetails){
+                    nameCompanyInit = playerDetails.companyName;
+                    dispatchPlayerData(playerDetails); // esse manda todos os dados dp player
+                } else {
+                    nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
+                    fetchFunction({"companyName": nameCompanyInit});
+                    dispatchPlayerData(playerDetails);
+                }
             }
+            data.sort((a,b)=>{ return b.lsCount - a.lsCount })
+            dispatchLearderboardData(data)
         }
         
     })
@@ -198,42 +198,6 @@ function patchLS(patch){
     })
 }
 
-function updatePlayerUpgrades(patch){
-    fetch("/patch-upgrades-data/", {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken
-        },
-        body: JSON.stringify(patch)
-    })
-    .catch( res => {
-        if(!res.ok) throw new Error("Erro ao mandar o upgrade")
-        return res.json()
-    })
-    .catch( err => {
-        console.error("Error", err )
-    })
-}
-
-function updatePlayerStructs(patch){
-    fetch("/patch-struct-data/", {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken
-        },
-        body: JSON.stringify(patch)
-    })
-    .catch( res => {
-        if(!res.ok) throw new Error("Erro ao mandar o upgrade")
-        return res.json()
-    })
-    .catch( err => {
-        console.error("Error", err )
-    })
-}
-
 // RODAR AO INICIALIZAR
 getData("postInit", postCompany)
 
@@ -260,30 +224,9 @@ window.addEventListener("pontosAtualizados", (event) => {
 
 });
 
-window.addEventListener("notifiedUgradeBuy", (event)=>{
-    const newUpgradeBuy = event.detail.newUpdate;
-    upgradesList.push(newUpgradeBuy);
-    upgradesList.sort()
-    updatePlayerUpgrades({"id": idPlayer, "update":upgradesList})
-})
-
-window.addEventListener("notifiedStructBuy", (event)=>{
-    const newStructBuy = event.detail;
-    const index = newStructBuy.index
-    structList[index] = newStructBuy;
-    updatePlayerStructs({"id": idPlayer, "struct": structList})
-    
-})
 
 
 // CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)
 function deleteCookie(name){
     setCookie(name, "", -1);
-}
-
-// Resetar os pontos ambeintes de teste
-function resetPoints(){
-    patchLS({"id": idPlayer, "lsCount": 1});
-    lsCount = 1;
-    updateLsDisplay(lsCount)
 }
