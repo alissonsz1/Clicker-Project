@@ -244,14 +244,6 @@ companyName.addEventListener('blur', ()=>{
     getData("patchNameCompany", patchCompanyName)
 })
 
-// Quando o usuário aperta o enter, ele deseleciona o campo
-companyName.addEventListener('keydown', event =>{
-    if(event.key == "Enter"){
-        event.preventDefault()
-        companyName.blur()
-    }
-})
-
 // Traz os pontos do script.js através do evento criado
 window.addEventListener("pontosAtualizados", (event) => {
   const novoValor = event.detail.newPoints;

@@ -267,6 +267,7 @@ let mouseY = 0 // Coordenada y do mouse
 let currentMusic = null // Controla qual música está tocando no momento
 let fadeOutInterval = null;
 let fadeInInterval = null;
+let modalErrorMessage = ''
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -281,6 +282,10 @@ const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
 const leadeboardContainer = document.querySelector('.leaderboard-wrapper')
 const computerCodelinesContainer = document.querySelector(".computer-codelines");
+const modalContainer = document.querySelector('.modal')
+const modalInput = document.querySelector('.modal-input')
+const modalForm = document.querySelector('.modal-form')
+const modalErrorContainer = document.querySelector('.modal-error')
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -574,7 +579,7 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (!window.matchMedia('(pointer: coarse)').matches) {
+  if (!window.matchMedia('(pointer: coarse)').matches && modalContainer.classList.contains('disabled')) {
     mouseX = e.clientX
     mouseY = e.clientY
   
@@ -1400,3 +1405,43 @@ function stopMusic(useFade = true, fadeDuration = 1000) {
     currentMusic = null;
   }
 }
+
+// INICIO DO MODAL
+
+modalContainer.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "opacity" && !modalContainer.classList.contains("disabled")) modalContainer.classList.add('disabled')
+})
+
+function closeModal() {
+  if (modalInput.value == '') {
+    modalContainer.classList.add('disabled')
+  } else {
+    modalInput.value = ''
+    modalContainer.style.opacity = 0
+  }
+}
+
+modalForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  const inputName = modalInput.value
+
+  const event = new CustomEvent("submitName", {
+    detail: { newName: inputName }
+  });
+
+  window.dispatchEvent(event); // Notifica outros scripts
+})
+
+window.addEventListener('submitError', (e) => {
+  modalErrorMessage = e.detail.error
+  modalInput.value = ''
+})
+
+window.addEventListener('submitSucess', (e) => {
+  company = e.detail.companyName
+  modalErrorMessage = ''
+  closeModal()
+})
+
+estruturas[index].unlocked

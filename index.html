@@ -29,7 +29,17 @@
             </div>
         </div>
         <div class="mobile-tooltip"></div>
-        <div class="modal disabled"></div> <!-- Modal que servirá para trocar o nome da empresa -->
+        <div class="modal">
+            <div class="modal-content">
+                <span class="modal-title">Qual será o seu nome DEV?</span>
+                <span class="modal-warning">(Aparecerá no leaderboard e não será possível alterar depois)</span>
+                <form class="modal-form" action="" method="post">
+                    <span class="modal-error"></span>
+                    <input class="modal-input" type="text" autocomplete="nickname" placeholder="Ex: Bill Gates 123">
+                    <input class="modal-submit" type="submit" value="OK">
+                </form>
+            </div>
+        </div> <!-- Modal que servirá para trocar o nome da empresa -->
         <div class="tooltip"></div>
         <div class="table"></div> <!-- Mesa onde fica o computador -->
         <div id="coffee-container"></div>
@@ -37,7 +47,7 @@
         <!-- O container que envolve a seção da esquerda (computador) -->
         <div class="container-left">
             <div class="container-left--header">
-                <span class="company-text" contenteditable="true" spellcheck="false">Loading...</span>
+                <span class="company-text">Loading...</span>
                 <span class="ls-text" id="pontos">0 linhas de código</span>
                 <span>por segundo: 0</span>
             </div>
