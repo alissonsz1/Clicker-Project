@@ -208,7 +208,6 @@ def structPatch(request, *args, **kwargs):
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
-
 # Requisita os dados para o leaderboard
 def leaderboard_data(request, *args, **kwargs):
     if request.method == "GET":

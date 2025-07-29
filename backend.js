@@ -123,11 +123,13 @@ function getData(nameMethod, fetchFunction){
                 dispatchStructList(playerDetails.structures)
             }
         }
+
         
     })
     .catch(err =>{
         console.error("Error", err)
     })
+    
 }
 
 
@@ -207,7 +209,7 @@ function updatePlayerUpgrades(patch){
         },
         body: JSON.stringify(patch)
     })
-    .catch( res => {
+    .then( res => {
         if(!res.ok) throw new Error("Erro ao mandar o upgrade")
         return res.json()
     })
@@ -225,9 +227,51 @@ function updatePlayerStructs(patch){
         },
         body: JSON.stringify(patch)
     })
-    .catch( res => {
+    .then( res => {
         if(!res.ok) throw new Error("Erro ao mandar o upgrade")
         return res.json()
+    })
+    .catch( err => {
+        console.error("Error", err )
+    })
+}
+
+// verifica se há o nome no banco de dados e manda uma mensagem para o script.js (Se há o nome, se o campo está vazio ou o próprio nome)
+function updateNamePlayer(name){
+    fetch("/get-data/", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+        },
+    })
+    .then( res => {
+        if(!res.ok) throw new Error("Erro ao mandar o upgrade")
+        return res.json()
+    })
+    .then(data => {
+
+        if(!name) return window.dispatchEvent(
+            new CustomEvent("submitError", {
+                detail: "Campo vazio",
+            })
+        )
+            
+        let existName  = data.find( item => item.companyName == name );
+        
+        if(!existName){
+            let event = new CustomEvent("submitSucess", {
+                detail: name,
+            });
+
+            window.dispatchEvent(event);
+            
+        } else {
+            let event = new CustomEvent("submitError", {
+                detail: "Nome já existente!",
+            });
+            window.dispatchEvent(event);
+        }
     })
     .catch( err => {
         console.error("Error", err )
@@ -267,6 +311,12 @@ window.addEventListener("notifiedStructBuy", (event)=>{
     
 })
 
+// Escuta caso o player acione o botão do modal
+window.addEventListener("submitName", (event)=>{
+    let newNamePlayer = event.detail.newName;
+    updateNamePlayer(newNamePlayer);
+
+})
 
 // CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)
 function deleteCookie(name){

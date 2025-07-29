@@ -1434,14 +1434,13 @@ modalForm.addEventListener('submit', (e) => {
 })
 
 window.addEventListener('submitError', (e) => {
-  modalErrorMessage = e.detail.error
+  modalErrorMessage = e.detail;
   modalInput.value = ''
 })
 
 window.addEventListener('submitSucess', (e) => {
-  company = e.detail.companyName
+  company = e.detail;
   modalErrorMessage = ''
   closeModal()
+  
 })
-
-estruturas[index].unlocked
