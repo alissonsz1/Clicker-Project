@@ -264,6 +264,9 @@ let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
 let listDataLeaderboard; // guarda os dados do leaderboard
+let listUpgrades; // lista de upgrades comprados
+let listStructures; // lista de estruturas comprados
+let debug = false; // debugar parte do código
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -289,14 +292,6 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
-// Notifica para atualizar os dados de structures e upgrades
-function notifiedReload(bought){
-  const event = new CustomEvent("notifiedReload", {
-    detail: bought,
-  });
-
-  window.dispatchEvent(event);
-}
 
 function renderLeaderboard(jogadores, idAtual = id) {
   jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
@@ -383,11 +378,13 @@ socket.onmessage = (e) => {
 window.addEventListener("updateCompany", (e) => {
   company = e.detail.company;
   companyName.textContent = company;
+  
 })
 
 // PEGA DO BACKEND TODOS OS DADOS DO PLAYER
 
 window.addEventListener("dispatchPlayerData", (event) => {
+  //Coleta os dados do player e coloca em variáveis e postam no index
   let loadingPlayer = event.detail.player;
 
   company = loadingPlayer.companyName
@@ -396,15 +393,34 @@ window.addEventListener("dispatchPlayerData", (event) => {
 
   id = loadingPlayer.id;
 
-  let listUpgrades = loadingPlayer.upgrades;
+  // Verifica quais estrutras e upgrades estão salvos e atualiza da lista principal
+  listUpgrades = JSON.parse(localStorage.getItem("upgrades"))?.salve || []
 
-  let listStructures = loadingPlayer.structures
+  listStructures = JSON.parse(localStorage.getItem("estruturas"))?.salve || []
 
-  console.log("ESTRUTURAS", listStructures);
+  listUpgrades.forEach(item => {
+    upgrades.forEach((upgrade, index) => {
+      if(upgrade.id == item){
+        upgrades[index].purchased = true;
+        upgrades[index].efeito();
+      }
+    })
+  })
 
-  console.log("UPGRADES", listUpgrades);
+  listStructures.forEach(item => {
+    estruturas.forEach((estrutura, index)=>{
+      if(estrutura.id == item.id){
+        estruturas[index].comprados = item.comprados;
+        estruturas[index].gerado = item.gerado;
+        estruturas[index].unlocked = true;
+      }
+    })
+  })
 
-  refresh(0, loadingPlayer.lsCount, true)
+
+  pontos = loadingPlayer.lsCount;
+
+  refresh(0, pontos, true)
 })
 
 // Traz os dados do leaderboard do backend na primeira execução
@@ -420,7 +436,6 @@ window.addEventListener("dispatchLearderboardData", (event)=>{
 function refresh(valorAtual, add, isEvent = false) {
   pontos = valorAtual + add
 
-  if (!isEvent) atualizarPontos(pontos)
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   
@@ -772,8 +787,8 @@ const renderEstruturas = () => {
   const size = desbloqueados.estruturas.size
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
-  estruturasFixed.forEach((item, i) => {
-    const id = `estrutura-${i}`
+  estruturasFixed.forEach((item) => {
+    const id = `estrutura-${item.id}`
     const estrutura = document.getElementById(id)
 
     // Se o item já está renderizado, não adiciona ele novamente, apenas atualiza
@@ -825,7 +840,7 @@ const renderEstruturas = () => {
       const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
       if (hasClickedInfo) return
   
-      buyEstrutura(i)
+      buyEstrutura(item.id)
     })
 
     div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
@@ -838,7 +853,7 @@ const renderEstruturas = () => {
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
   contentList.innerHTML = "" // Limpa o conteúdo para renderizar certinho
-  const upgradesFiltered = upgrades.map((item, i) => ({...item, index: i})).filter(item => !item.purchased) // Retira os items que já foram comprados (no caso dos upgrades)
+  const upgradesFiltered = upgrades.filter(item => !item.purchased)
   if (upgradesFiltered.length > 0) {
     upgradesFiltered.forEach(item => {
       const div = document.createElement("div")
@@ -860,8 +875,8 @@ const renderUpgrades = () => {
       div.addEventListener('click', (e) => {
         const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
         if (hasClickedInfo) return
-          
-        buyUpgrade(item.index)
+        
+        buyUpgrade(item.id)
       })
 
       div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
@@ -877,8 +892,8 @@ const renderUpgrades = () => {
 }
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
-const buyEstrutura = (index) => {
-  const estrutura = estruturas[index]
+const buyEstrutura = (id) => {
+  const estrutura = estruturas.find( e => e.id == id )
 
   if (pontos < estrutura.custoAtual) return
 
@@ -889,8 +904,8 @@ const buyEstrutura = (index) => {
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
-const buyUpgrade = (index) => {
-  const upgrade = upgrades[index]
+const buyUpgrade = (id) => {
+  const upgrade = upgrades.find(e => e.id == id)
 
   if (pontos < upgrade.custo || upgrade.purchased) return
 
@@ -1249,33 +1264,37 @@ function generateCodeLine(add = 1) {
 
 // FIM DA FUNÇÃO DAS SALSICHINHAS
 // VERIFICAR SE A PÁGINA FOI CARREGADA
-
-// Função para setas os dados em variáveis e notificar
+//Seta o data no localStorage
 function setData(){
+
+  if(debug) return
+
+  // verifica as upgrades compradas e armazenas
   let listPatchUpgrades = [];
-  upgrades.forEach((element, index) => {
-    if(element.purchased) listPatchUpgrades.push(index)
+  upgrades.forEach((element) => {
+    if(element.purchased) listPatchUpgrades.push(element.id)
   })
   
+  // verifica as estruturas compradas e armazenas
   let listPatchStructures = [];
-  
-  estruturas.forEach((element, index)=>{
+  estruturas.forEach((element)=>{
     if(element.comprados > 0) listPatchStructures.push({
-      "index": index,
+      "id": element.id,
       "comprados": element.comprados,
+      "gerado": element.gerado,
     });
   })
-  
-  notifiedReload({
-    "upgrades": listPatchUpgrades,
-    "structures": listPatchStructures,
-  });
 
+  localStorage.setItem("upgrades", JSON.stringify({salve: listPatchUpgrades}));
+  localStorage.setItem("estruturas", JSON.stringify({salve: listPatchStructures}));
+  
 }
 
 // Toda vez que atualizar a página, ele atualiza os dados
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
+    console.log("AQUI");
+    atualizarPontos(pontos)
     setData()
   }
 });
@@ -1291,7 +1310,14 @@ document.addEventListener('touchmove', e => {
   const touchY = e.touches[0].clientY;
   const diff = touchY - touchStartY;
   if (diff > 50 && window.scrollY === 0) {
+    atualizarPontos(pontos)
     setData()
     // aqui você pode executar lógica antes de chamar reload
   }
 }, { passive: false });
+
+// Salva os dados a cada tempo
+setInterval(() =>{
+  setData();
+  atualizarPontos(pontos);
+}, 1000 * 5);

@@ -198,25 +198,6 @@ function patchLS(patch){
     })
 }
 
-// Atualizada os dados dos Upgrades e Structures no banco de dados
-function updatePlayerStructsUpgrades(patch){
-    fetch("/patch-structandupgrade-data/", {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken
-        },
-        body: JSON.stringify(patch)
-    })
-    .catch( res => {
-        if(!res.ok) throw new Error("Erro ao mandar o struct")
-        return res.json()
-    })
-    .catch( err => {
-        console.error("Error", err )
-    })
-}
-
 // RODAR AO INICIALIZAR
 getData("postInit", postCompany)
 
@@ -243,27 +224,7 @@ window.addEventListener("pontosAtualizados", (event) => {
 
 });
 
-// Atualiza os dados das estruturas e upgrades do usuário
-window.addEventListener("notifiedReload", (event)=>{
-    // pega a estrutura
-    const newStructuresBuy = event.detail.structures;
-    newStructuresBuy.forEach((element, index)=>{
-        structList.push(element)
-    })
 
-    // pega o upgrade
-    const newUpgradesBuy = event.detail.upgrades;
-    newUpgradesBuy.forEach((element, index)=>{
-        upgradesList.push(element)
-    })
-
-
-    // se eles não estiver vazios, enviar para o banco de dados
-    if(structList.length > 0 && upgradesList.length > 0){
-        updatePlayerStructsUpgrades({"id": idPlayer,"struct": structList,"upgrades": upgradesList})
-    }
-
-})
 
 // CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)
 function deleteCookie(name){
