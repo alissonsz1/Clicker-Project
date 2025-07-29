@@ -157,37 +157,6 @@ def lsPatch(request, *args, **kwargs):
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
-def UpdateStructuresSave(request, *args, **kwargs):
-    if request.method == "PATCH":
-        try:
-
-            # Carrega os dados para atualizar
-            data = json.loads(request.body)
-
-            # Coloca os dados no body em variáveis
-            company_id = data.get("id")
-            new_upgrades = data.get("upgrades")
-            new_struct = data.get("struct")
-
-            # requisita os campos em relação ao id
-            company = Companies.objects.get(id=company_id)
-
-            if new_struct and new_upgrades:
-                company.structures = new_struct
-                company.upgrades = new_upgrades
-            
-            company.save()
-
-            return JsonResponse({
-                "menssage":"OK",
-            }, status=200)
-        except Companies.DoesNotExist:
-            return JsonResponse({"erros": "Empresa não encontrada"}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-        
-    return JsonResponse({"error": "Método não permitido"}, status=405)
-
 # Create your views here.
 
 # Renderiza as páginas html
