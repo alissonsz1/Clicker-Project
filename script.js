@@ -217,12 +217,6 @@ const bonusList = [
   }
 ]
 
-// Um array que conterá todos os upgrades e estruturas que foram sendo desbloqueados
-const desbloqueados = {
-  estruturas: new Set(),
-  upgrades: new Set()
-}
-
 // Um array que conterá uma lista de desbloqueados, que será limpa quando a respectiva aba for acessada
 const notificacoes = {
   upgrades: new Set(),
@@ -292,7 +286,6 @@ function atualizarPontos(novoValor) {
 
   window.dispatchEvent(evento); // Notifica outros scripts
 }
-
 
 // LEADERBOARD
 
@@ -536,7 +529,7 @@ function animarContador(valorInicial, duracao = 700) {
 
 // Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
 function formatarNumero(valor) {
-  if (valor < 1000000) return valor.toString()
+  if (valor < 1000000) return String(valor)
 
   // Se for maior que o maior limite conhecido
   const maiorLimite = unidades[0].limite
@@ -556,20 +549,11 @@ function formatarNumero(valor) {
 // Essa função é chamada sempre que os pontos são atualizados para verificar se algo foi desbloqueado
 function checarDesbloqueios(pontos) {
   estruturas.forEach((estrutura, index) => {
-    if (pontos >= estrutura.custoAtual && !desbloqueados.estruturas.has(index)) {
-      desbloqueados.estruturas.add(index)
+    if (pontos >= estrutura.custoAtual && !estrutura.unlocked) {
       notificacoes.estruturas.add(index)
       estrutura.unlocked = true
       atualizarIndicadores()
 
-    }
-  })
-
-  upgrades.forEach((upgrade, index) => {
-    if (pontos >= upgrade.custo && !desbloqueados.upgrades.has(index)) {
-      desbloqueados.upgrades.add(index)
-      notificacoes.upgrades.add(index)
-      atualizarIndicadores()
     }
   })
 }
@@ -847,7 +831,7 @@ const renderEstruturas = () => {
   // Se antes, na lista, havia algum "upgrade", reseta o conteúdo da lista
   if (!contentList.querySelector('.estrutura')) contentList.innerHTML = ''
 
-  const size = desbloqueados.estruturas.size
+  const size = estruturas.filter(es => es.unlocked).length
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
   estruturasFixed.forEach((item) => {
@@ -1386,4 +1370,11 @@ document.addEventListener('touchmove', e => {
 setInterval(() =>{
   setData();
   atualizarPontos(pontos);
-}, 1000 * 5);
+}, 1000 * 3);
+
+function resetItems() {
+  debug = true
+  localStorage.removeItem('upgrades')
+  localStorage.removeItem('estruturas')
+  location.reload()
+}
