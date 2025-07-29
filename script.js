@@ -267,7 +267,6 @@ let mouseY = 0 // Coordenada y do mouse
 let currentMusic = null // Controla qual música está tocando no momento
 let fadeOutInterval = null;
 let fadeInInterval = null;
-let modalErrorMessage = ''
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -1434,13 +1433,13 @@ modalForm.addEventListener('submit', (e) => {
 })
 
 window.addEventListener('submitError', (e) => {
-  modalErrorMessage = e.detail;
+  modalErrorContainer.textContent = e.detail.error;
   modalInput.value = ''
 })
 
 window.addEventListener('submitSucess', (e) => {
-  company = e.detail;
-  modalErrorMessage = ''
+  company = e.detail.companyName;
+  modalErrorContainer.textContent = ''
   closeModal()
   
 })

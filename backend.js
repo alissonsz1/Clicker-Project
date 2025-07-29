@@ -25,10 +25,17 @@ function dispatchUpdateList(list) {
     window.dispatchEvent(event);
 }
 
-
 function dispatchStructList(list) {
     const event = new CustomEvent("dispatchStructList", {
         detail: { structList: list }
+    })
+
+    window.dispatchEvent(event);
+}
+
+function dispatchNameSubmit(type, obj) {
+    const event = new CustomEvent(type, {
+        detail: obj
     })
 
     window.dispatchEvent(event);
@@ -250,27 +257,20 @@ function updateNamePlayer(name){
         return res.json()
     })
     .then(data => {
+        console.log(name)
 
-        if(!name) return window.dispatchEvent(
-            new CustomEvent("submitError", {
-                detail: "Campo vazio",
-            })
-        )
+        if(!name) {
+            dispatchNameSubmit('submitError', {error: "Campo vazio!"})
+            return
+        }
             
-        let existName  = data.find( item => item.companyName == name );
+        let existName  = data.find(item => item.companyName == name );
         
-        if(!existName){
-            let event = new CustomEvent("submitSucess", {
-                detail: name,
-            });
-
-            window.dispatchEvent(event);
-            
+        if(existName){
+            dispatchNameSubmit('submitError', {error: "Nome já existente!"})
         } else {
-            let event = new CustomEvent("submitError", {
-                detail: "Nome já existente!",
-            });
-            window.dispatchEvent(event);
+            dispatchNameSubmit('submitSucess', {companyName: name},)
+            dispatchNewName(name)
         }
     })
     .catch( err => {
@@ -283,10 +283,6 @@ getData("postInit", postCompany)
 
 
 // Eventos windows
-//Quando o span é deselecionado e chama a função para atualizar o nome 
-companyName.addEventListener('blur', ()=>{
-    getData("patchNameCompany", patchCompanyName)
-})
 
 // Traz os pontos do script.js através do evento criado
 window.addEventListener("pontosAtualizados", (event) => {
@@ -315,7 +311,6 @@ window.addEventListener("notifiedStructBuy", (event)=>{
 window.addEventListener("submitName", (event)=>{
     let newNamePlayer = event.detail.newName;
     updateNamePlayer(newNamePlayer);
-
 })
 
 // CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)
