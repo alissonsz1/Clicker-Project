@@ -82,47 +82,6 @@ def companiesPostName(request, *args, **kwargs):
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
 
-
-# Atualiza o nome da empresa
-def companyPatchName(request, *args, **kwargs):
-    if request.method == "PATCH":
-        try:
-
-            # carrega os dados informados
-            data = json.loads(request.body)
-
-            #Coloca os dados enviados em cada variáveis
-            company_id = data.get("id")
-            new_name = data.get("companyName")
-            
-            # Trás o campo que se deseja atualizar através do id
-            company = Companies.objects.get(id=company_id)
-
-            # se o novo nome existir, o código executa
-            if new_name:
-                company.companyName = new_name
-
-            company.save()
-
-            leaderboardList = leaderboardFormat()
-
-            updateDetect(leaderboardList)
-
-
-            return JsonResponse({
-                "mensage": "Atualizado o nome",
-                "new_name": company.companyName,
-                
-            }, status=200)
-        
-        except Companies.DoesNotExist:
-            return JsonResponse({"error": "Empresa não encontrada."}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Método não permitido."}, status=405)
-
-
 # atualiza as linhas no banco de dados
 def lsPatch(request, *args, **kwargs):
     if request.method == "PATCH":

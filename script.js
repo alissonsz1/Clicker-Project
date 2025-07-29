@@ -384,13 +384,6 @@ socket.onmessage = (e) => {
   renderLeaderboard(listDataLeaderboard, 0, companyName, pontos);
 }
 
-// Pega o nome do player
-window.addEventListener("updateCompany", (e) => {
-  company = e.detail.company;
-  companyName.textContent = company;
-  
-})
-
 // PEGA DO BACKEND TODOS OS DADOS DO PLAYER
 
 window.addEventListener("dispatchPlayerData", (event) => {
@@ -1439,6 +1432,7 @@ window.addEventListener('submitError', (e) => {
 
 window.addEventListener('submitSucess', (e) => {
   company = e.detail;
+  companyName.textContent = company;
   modalErrorMessage = ''
   closeModal()
   
@@ -1473,7 +1467,6 @@ function setData(){
 // Toda vez que atualizar a página, ele atualiza os dados
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
-    console.log("AQUI");
     atualizarPontos(pontos)
     setData()
   }
