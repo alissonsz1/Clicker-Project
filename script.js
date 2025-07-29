@@ -261,6 +261,9 @@ let listDataLeaderboard; // guarda os dados do leaderboard
 let listUpgrades; // lista de upgrades comprados
 let listStructures; // lista de estruturas comprados
 let debug = false; // debugar parte do código
+let currentMusic = null // Controla qual música está tocando no momento
+let fadeOutInterval = null;
+let fadeInInterval = null;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -274,6 +277,7 @@ const tooltip = document.querySelector('.tooltip') // Container que armazenas as
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
 const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
+const computerCodelinesContainer = document.querySelector(".computer-codelines");
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -462,6 +466,17 @@ window.addEventListener('popstate', (e) => {
   e.preventDefault()
   // Reempilha o estado para impedir voltar
   history.pushState(null, null, window.top.location.pathname + window.top.location.search)
+
+// Atualizar os upgrades, puxar as estruturas salvas no banco de dados
+window.addEventListener("dispatchUpdateList", (event) => { 
+  let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
+  // console.log(loadingUpdateList);
+})
+
+// Atualiza as estruturas, puxar as estruturas salvas do banco de dados
+window.addEventListener("dispatchStructList", (event)=> {
+  let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
+  // console.log(loadingStructList);
 })
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
@@ -565,6 +580,8 @@ function atualizarIndicadores() {
 
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+
+  if (notificacoes.upgrades.size > 0 || notificacoes.estruturas.size > 0) playSound('/static/assets/sounds/not.ogg', .4)
 }
 
 function addSafeTouchListener(element, onValidTouchEnd) {
@@ -602,6 +619,9 @@ button.addEventListener('click', (e) => {
   void click.offsetHeight
   click.classList.add('fading-up')
 
+
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .6)
+
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
   })
@@ -626,6 +646,14 @@ document.body.addEventListener('mousemove', (e) => {
   mouseY = e.clientY
 
   showTooltip()
+})
+
+leadeboardContainer.addEventListener('mouseenter', (e) => {
+  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+})
+
+leadeboardContainer.addEventListener('mouseleave', (e) => {
+  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
 function showTooltip(x = mouseX, y = mouseY) {
@@ -793,6 +821,7 @@ function showMobileTooltip(type, item) {
     e.stopPropagation(); // impede que o clique vá para outros elementos
     e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
     closeMobileTootip()
+    playSound('/static/assets/sounds/close.ogg', .8)
   })
 
   content.appendChild(close)
@@ -818,6 +847,7 @@ buttonsHeader.forEach((btn) => {
       notificacoes.estruturas.clear()
       atualizarIndicadores()
 
+      playSound(`/static/assets/sounds/tab.ogg`, .5)
       // Através do conteúdo, verifica qual botão foi clicado
       tabActive = btn.querySelector('.text').textContent
       if (tabActive == 'Upgrades') renderUpgrades() // Irá renderizar UPGRADES
@@ -890,9 +920,11 @@ const renderEstruturas = () => {
       buyEstrutura(item.id)
     })
 
-    addSafeTouchListener(div.querySelector('.info-bttn'), () => showMobileTooltip('es', item))
-    // div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
-
+    addSafeTouchListener(div.querySelector('.info-bttn'), () => {
+      showMobileTooltip('es', item)
+      playSound('/static/assets/sounds/open.ogg', .4)
+    })
+    
     contentList.appendChild(div)
 
   })
@@ -927,8 +959,11 @@ const renderUpgrades = () => {
         buyUpgrade(item.id)
       })
 
-      addSafeTouchListener(div.querySelector('.info-bttn'), () => showMobileTooltip('up', item))
-      // div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
+      addSafeTouchListener(div.querySelector('.info-bttn'), () => {
+        showMobileTooltip('up', item)
+        playSound('/static/assets/sounds/open.ogg', .4)
+      })
+      
       contentList.appendChild(div)
     })
   } else {
@@ -949,7 +984,8 @@ const buyEstrutura = (id) => {
   const custo = estrutura.custoAtual
   estrutura.comprados += 1
   refresh(pontos, -custo)
-
+  
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -962,6 +998,8 @@ const buyUpgrade = (id) => {
   upgrade.purchased = true
 
   refresh(pontos, -upgrade.custo)
+  
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
 }
 
 // Renderiza os upgrades assim que o site inicia
@@ -1055,6 +1093,7 @@ const spawnCoffe = (bonusId = null) => {
           if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
       })
       
+      playSound(`/static/assets/sounds/coffee.ogg`, .5)
       div.remove() // Remove o café
     })
 }
@@ -1142,8 +1181,11 @@ function setBonus(bonus, efeito) {
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
-  addSafeTouchListener(div, () => showMobileTooltip('bn', bonusActive))
-  // div.addEventListener('touchend', () => showMobileTooltip('bn', bonusActive))
+  addSafeTouchListener(div, () => {
+    showMobileTooltip('bn', bonusActive)
+    playSound('/static/assets/sounds/open.ogg', .4)
+  })
+
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 
@@ -1174,7 +1216,13 @@ const matrices = {}
 const startMatrix = (id = 0, type = 'matrix', expiresIn) => {
   if (matrices[id]) return
 
-   // Cria canvas
+  if (!currentMusic) {
+    setTimeout(() => {
+      playMusic(`/static/assets/music/matrix.mp3`, .04, true)
+    }, 200)
+  }
+  // Cria canvas
+  const matricesLength = Object.values(matrices).length
   const canvas = document.createElement('canvas')
   canvas.id = `matrix-${id}`
   canvas.classList.add('matrix-canvas')
@@ -1232,6 +1280,7 @@ const stopMatrix = (id) => {
   matrix.canvas.style.opacity = 0
 
   const type = boostsActive[boostsActive.length-1]?.type
+  if (!type) stopMusic()
   document.body.classList.toggle('matrix', type === 'matrix')
   document.body.classList.toggle('evil', type === 'evil')
 }
@@ -1313,6 +1362,7 @@ function generateCodeLine(add = 1) {
 }
 
 // FIM DA FUNÇÃO DAS SALSICHINHAS
+
 // VERIFICAR SE A PÁGINA FOI CARREGADA
 //Seta o data no localStorage
 function setData(){
@@ -1377,4 +1427,107 @@ function resetItems() {
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
   location.reload()
+
+// INÍCIO FUNÇÃO SOM
+
+const soundCache = {};            // Guarda os objetos Audio já carregados
+const soundInstances = [];        // Instâncias de áudio para tocar simultaneamente
+const MAX_INSTANCES = 12;         // Número máximo de instâncias para reutilização
+let instanceIndex = 0;            // Índice da instância atual
+
+// Cria instâncias pré-carregadas
+for (let i = 0; i < MAX_INSTANCES; i++) {
+  soundInstances.push(new Audio());
+}
+
+function playSound(url, vol = 1) {
+  const globalVolume = 1; // ou use Game.volume / Config.volume se quiser configurar
+
+  // Se o volume estiver zero ou global mutado, sai
+  if (vol <= 0 || globalVolume <= 0) return;
+
+  // Cacheia o som se ainda não foi carregado
+  if (!soundCache[url]) {
+    const audio = new Audio(url);
+    soundCache[url] = audio;
+
+    // Quando terminar de carregar, toca o som
+    audio.addEventListener('canplaythrough', () => {
+      playSound(url, vol); // Rechama quando estiver pronto
+    }, { once: true });
+
+    return;
+  }
+
+  const audioInstance = soundInstances[instanceIndex];
+  instanceIndex = (instanceIndex + 1) % MAX_INSTANCES;
+
+  audioInstance.src = soundCache[url].src;
+  audioInstance.volume = Math.pow(vol * globalVolume, 2); // curva mais natural
+
+  try {
+    audioInstance.play();
+  } catch (e) {
+    console.warn("Erro ao tocar som:", e);
+  }
+}
+
+function playMusic(url, finalVolume = 1, loop = true, fadeDuration = 2000) {
+  if (currentMusic) {
+    stopMusic(true); // interrompe a música atual com fade-out
+  }
+
+  const audio = new Audio(url);
+  audio.loop = loop;
+  audio.volume = 0;
+
+  audio.play().then(() => {
+    currentMusic = audio;
+
+    // Fade-in
+    const steps = 20;
+    const interval = fadeDuration / steps;
+    let currentStep = 0;
+
+    fadeInInterval = setInterval(() => {
+      currentStep++;
+      const newVolume = finalVolume * (currentStep / steps);
+      audio.volume = Math.min(finalVolume, newVolume);
+
+      if (currentStep >= steps) {
+        clearInterval(fadeInInterval);
+      }
+    }, interval);
+  }).catch((err) => {
+    console.error("Erro ao tocar música:", err);
+  });
+}
+
+function stopMusic(useFade = true, fadeDuration = 1000) {
+  if (!currentMusic) return;
+
+  if (fadeInInterval) clearInterval(fadeInInterval);
+  if (fadeOutInterval) clearInterval(fadeOutInterval);
+
+  if (useFade) {
+    const steps = 20;
+    const interval = fadeDuration / steps;
+    let currentStep = 0;
+    const startVolume = currentMusic.volume;
+
+    fadeOutInterval = setInterval(() => {
+      currentStep++;
+      const newVolume = startVolume * (1 - currentStep / steps);
+      currentMusic.volume = Math.max(0, newVolume);
+
+      if (currentStep >= steps) {
+        clearInterval(fadeOutInterval);
+        currentMusic.pause();
+        currentMusic = null;
+      }
+    }, interval);
+  } else {
+    currentMusic.pause();
+    currentMusic = null;
+  }
 }
