@@ -265,7 +265,7 @@ function updateNamePlayer(name){
             });
 
             window.dispatchEvent(event);
-            
+                        
         } else {
             let event = new CustomEvent("submitError", {
                 detail: "Nome já existente!",
