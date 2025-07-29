@@ -13,7 +13,7 @@ from .models import Companies
 # FUNÇÕES
 
 # Detecta qualquer atualização no banco de dados (por exemplo, pontuação de uma empresa mudou)
-def updateDetect(comp):
+def updateDetect(players):
     # Obtém o "channel layer" configurado no settings (Redis ou InMemory)
     channel_layer = get_channel_layer()
 
@@ -23,11 +23,14 @@ def updateDetect(comp):
         {
             "type": "leaderboard.update",       # tipo da mensagem → invoca leaderboard_update no consumer
             "data": {
-                "companyName": comp.companyName,  # dados que serão enviados no payload
-                "lsCount": comp.lsCount
+                "player": players,  # dados que serão enviados no payload
             }
         }
     )
+
+# Ele formata o dados para poder enviar para o leaderboard
+def leaderboardFormat():
+    return list(Companies.objects.all().order_by('-lsCount').values("id","companyName", "lsCount"))
 
 # FETCH
 
@@ -62,7 +65,9 @@ def companiesPostName(request, *args, **kwargs):
             )
 
 
-            updateDetect(company)
+            leaderboardList = leaderboardFormat()
+
+            updateDetect(leaderboardList)
             
             #Retorna uma mensagem para o request
             return JsonResponse({
@@ -99,7 +104,9 @@ def companyPatchName(request, *args, **kwargs):
 
             company.save()
 
-            updateDetect(company)
+            leaderboardList = leaderboardFormat()
+
+            updateDetect(leaderboardList)
 
 
             return JsonResponse({
@@ -119,7 +126,7 @@ def companyPatchName(request, *args, **kwargs):
 # atualiza as linhas no banco de dados
 def lsPatch(request, *args, **kwargs):
     if request.method == "PATCH":
-        try:
+        try:            
 
             # Carrega os dados para atualizar
             data = json.loads(request.body)
@@ -136,7 +143,9 @@ def lsPatch(request, *args, **kwargs):
             
             company.save()
 
-            updateDetect(company)
+            leaderboardList = leaderboardFormat()
+
+            updateDetect(leaderboardList)
 
             return JsonResponse({
                 "menssage":"OK",
@@ -147,76 +156,6 @@ def lsPatch(request, *args, **kwargs):
             return JsonResponse({"error": str(e)}, status=500)
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
-
-def upgradePatch(request, *args, **kwargs):
-    if request.method == "PATCH":
-        try:
-
-            # Carrega os dados para atualizar
-            data = json.loads(request.body)
-
-            # Coloca os dados no body em variáveis
-            company_id = data.get("id")
-            new_update = data.get("update")
-
-            # requisita os campos em relação ao id
-            company = Companies.objects.get(id=company_id)
-
-            if new_update:
-                company.upgrades = new_update
-            
-            company.save()
-
-            return JsonResponse({
-                "menssage":"OK",
-            }, status=200)
-        except Companies.DoesNotExist:
-            return JsonResponse({"erros": "Empresa não encontrada"}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-        
-    return JsonResponse({"error": "Método não permitido"}, status=405)
-
-
-def structPatch(request, *args, **kwargs):
-    if request.method == "PATCH":
-        try:
-
-            # Carrega os dados para atualizar
-            data = json.loads(request.body)
-
-            # Coloca os dados no body em variáveis
-            company_id = data.get("id")
-            new_struct = data.get("struct")
-
-            # requisita os campos em relação ao id
-            company = Companies.objects.get(id=company_id)
-
-            if new_struct:
-                company.structures = new_struct
-            
-            company.save()
-
-            return JsonResponse({
-                "menssage":"OK",
-                "ls-news": company.lsCount
-            }, status=200)
-        except Companies.DoesNotExist:
-            return JsonResponse({"erros": "Empresa não encontrada"}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-        
-    return JsonResponse({"error": "Método não permitido"}, status=405)
-
-# Requisita os dados para o leaderboard
-def leaderboard_data(request, *args, **kwargs):
-    if request.method == "GET":
-        players = Companies.objects.order_by('-lsCount') # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
-
-        # converte em lista
-        data = list(players.values("companyName", "lsCount"))
-        return JsonResponse(data, safe=False)
-
 
 # Create your views here.
 
