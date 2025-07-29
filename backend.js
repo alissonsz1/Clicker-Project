@@ -99,6 +99,7 @@ function getData(nameMethod, fetchFunction){
                 nameCompanyInit = verifyIfNameExist(data,nameCompanyInit);
                 fetchFunction({"companyName": nameCompanyInit});
                 dispatchNewName(nameCompanyInit);
+                dispatchNewName(nameCompanyInit)
             }
         } else {
             //Se existir ip, ele vai ou atualizar o nome do player quando ele socilitar
@@ -120,7 +121,7 @@ function getData(nameMethod, fetchFunction){
                 }
             }
             data.sort((a,b)=>{ return b.lsCount - a.lsCount })
-            dispatchLearderboardData(data.slice(0,10))
+            dispatchLearderboardData(data)
         }
         
     })

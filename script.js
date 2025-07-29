@@ -1280,7 +1280,6 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-
 // Detectar o usuário recarregando a página no mobile
 let touchStartY = 0;
 
