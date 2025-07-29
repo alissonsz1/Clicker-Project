@@ -299,7 +299,6 @@ const lbContentContainer = document.querySelector('.leaderboard-content')
 
 lbContentContainer.addEventListener("transitionend", (e) => {
   if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
-    console.log(getComputedStyle(lbContentContainer).opacity)
     leaderboardWrapperContainer.classList.remove('enabled')
   }
 })
@@ -466,17 +465,16 @@ window.addEventListener('popstate', (e) => {
   e.preventDefault()
   // Reempilha o estado para impedir voltar
   history.pushState(null, null, window.top.location.pathname + window.top.location.search)
+})
 
 // Atualizar os upgrades, puxar as estruturas salvas no banco de dados
 window.addEventListener("dispatchUpdateList", (event) => { 
   let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
-  // console.log(loadingUpdateList);
 })
 
 // Atualiza as estruturas, puxar as estruturas salvas do banco de dados
 window.addEventListener("dispatchStructList", (event)=> {
   let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
-  // console.log(loadingStructList);
 })
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
@@ -648,11 +646,11 @@ document.body.addEventListener('mousemove', (e) => {
   showTooltip()
 })
 
-leadeboardContainer.addEventListener('mouseenter', (e) => {
+leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
   playSound(`/static/assets/sounds/lb-in.ogg`, .4)
 })
 
-leadeboardContainer.addEventListener('mouseleave', (e) => {
+leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
   playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
@@ -1393,7 +1391,6 @@ function setData(){
 // Toda vez que atualizar a página, ele atualiza os dados
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
-    console.log("AQUI");
     atualizarPontos(pontos)
     setData()
   }
@@ -1427,6 +1424,7 @@ function resetItems() {
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
   location.reload()
+}
 
 // INÍCIO FUNÇÃO SOM
 
