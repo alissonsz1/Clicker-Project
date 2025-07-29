@@ -248,7 +248,14 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
+// const csrfToken = document.getElementById("csrf-token").value;
+
+const csrfToken = window.csrfToken
+
 // Variaveis
+let id = -1
+let company = ''
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
 let lsMultiplier = 1 // Multiplicador para as LS
@@ -257,6 +264,9 @@ let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
+let currentMusic = null // Controla qual música está tocando no momento
+let fadeOutInterval = null;
+let fadeInInterval = null;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -268,11 +278,162 @@ const boostsContainer = document.querySelector('.container-boosts') // Container
 const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 const mobileTooltip = document.querySelector('.mobile-tooltip')
+const companyNameContainer = document.querySelector('.company-text')
+const leadeboardContainer = document.querySelector('.leaderboard-wrapper')
+const computerCodelinesContainer = document.querySelector(".computer-codelines");
+
+// ESTRUTURAS QUE MANDA EVENTOS
+
+//Atualização o arquivo em outros arquivos js
+function atualizarPontos(novoValor) {
+  // Dispara um evento personalizado com o novo valor
+  const evento = new CustomEvent("pontosAtualizados", {
+    detail: { newPoints: novoValor }
+  })
+
+  window.dispatchEvent(evento); // Notifica outros scripts
+}
+
+// Notifica quem um upgrade foi comprado
+function notifiedUgradeBuy(index){
+  const event = new CustomEvent("notifiedUgradeBuy", {
+    detail: {newUpdate: index}
+  });
+
+  window.dispatchEvent(event);
+}
+
+// Notifica a estrutura comprada
+function notifiedStructBuy(struct){
+  const event = new CustomEvent("notifiedStructBuy", {
+    detail: struct,
+  });
+
+  window.dispatchEvent(event);
+}
+
+function leaderboardDisplay(){
+    fetch("/leaderboard/", {
+      method:"GET",
+      headers: {
+          "Content-Type":"application/json",
+          "X-CSRFToken": csrfToken,
+      },
+    })
+      .then(res => {
+        if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
+        return res.json()
+      })
+      .then( data => {
+        renderLeaderboard(data, 0, companyName, pontos)
+      })
+      .catch( err => {
+        console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
+      })
+}
+
+function renderLeaderboard(jogadores, idAtual = id) {
+  jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
+  const yourPlayer = jogadores.find(j => j.companyName === company);
+
+  const container = document.querySelector(".leaderboard-content>ul");
+  const prevPos = document.querySelector('.lb--prev-pos')
+
+  prevPos.textContent = yourPlayer?.pos
+  prevPos.className = `lb--prev-pos lb-${yourPlayer?.pos}`
+
+  let topJogadores = jogadores.slice(0, Math.min(jogadores.length, 11))
+
+  const hasPlayerInTop = topJogadores.some(j => j.companyName == company)
+  if (!hasPlayerInTop) {
+    const newPlayer = {
+      companyName: company,
+      lsCount: pontos,
+      pos: yourPlayer?.pos
+    }
+    topJogadores = [...topJogadores.slice(0, Math.min(jogadores.length, 10)), newPlayer]
+  }
+
+  container.childNodes.forEach(j => {
+    const jName = j.id.replace("lb-jogador", "")
+    if (!topJogadores.find(tj => tj.companyName.replace(' ', '') == jName.replace(' ', ''))) j.remove()
+  })
+
+  topJogadores.map((_, id) => ({..._, id})).forEach((jogador, index) => {
+    const jogadorEl = document.getElementById(`lb-jogador${jogador.companyName.replace(' ', '')}`)
+    const isVoce = jogador.companyName == company
+    const pos = jogador.pos
+
+    if (jogadorEl) {
+      const pointsEl = jogadorEl.querySelector('.lb-number')
+      const posEl = jogadorEl.querySelector('.lb-pos')
+
+      jogadorEl.style.order = pos
+      jogadorEl.style.transform = `translateY(${index*100}%)`
+      jogadorEl.style.zIndex = pos >= 11 ? 200 : 200-pos
+      pointsEl.textContent = jogador.lsCount
+      posEl.textContent = pos
+      posEl.className = `lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}`
+
+      return
+    }
+
+    const li = document.createElement("li");
+    // const isVoce = jogador.id === idAtual;
+
+    li.id = `lb-jogador${jogador.companyName.replace(' ', '')}`
+    li.style.order = pos
+    li.style.zIndex = pos >= 11 ? 200 : 200-pos
+    li.innerHTML = `
+      <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
+      <span class="lb-name">${jogador.companyName}${isVoce ? ' <strong>(VOCÊ)</strong>' : ''}</span>
+      <span class="lb-number">${jogador.lsCount}</span>
+    `
+
+    container.appendChild(li);
+
+    li.style.transform = `translateY(2000%)`
+    void li.offsetWidth
+    li.style.transform = `translateY(${index*100}%)`
+  })
+}
+
+// Socket para toda vez que receber uma atualização do db
+socket.onmessage = (e) => {
+  leaderboardDisplay()
+}
+
+// Atualiza o leaderboard
+window.addEventListener("updateCompany", (e) => {
+  company = e.detail.company
+  companyName.textContent = company
+  leaderboardDisplay()
+})
+
+// Atualiza os pontos na tela
+window.addEventListener("updateLsDisplay", (event) => refresh(0, event.detail.newPoints, true))
+
+// Atualizar o id
+window.addEventListener("setID", (event) => id = event.detail.id)
+
+// Atualizar os upgrades, puxar as estruturas salvas no banco de dados
+window.addEventListener("dispatchUpdateList", (event) => { 
+  let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
+  // console.log(loadingUpdateList);
+})
+
+// Atualiza as estruturas, puxar as estruturas salvas do banco de dados
+window.addEventListener("dispatchStructList", (event)=> {
+  let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
+  // console.log(loadingStructList);
+})
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
-function refresh(valorAtual, add) {
+function refresh(valorAtual, add, isEvent = false) {
   pontos = valorAtual + add
+
+  if (!isEvent) atualizarPontos(pontos)
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   
@@ -287,7 +448,7 @@ function animarContador(valorInicial, duracao = 700) {
   const add = valorFinal - valorInicial
 
   if (Math.abs(add) == 1) {
-    display.textContent = `${pontos} linhas de código`
+    display.textContent = `${formatarNumero(pontos)} linhas de código`
     if (add > 0) generateCodeLine()
     return
   }
@@ -345,7 +506,7 @@ function formatarNumero(valor) {
     if (valor >= unidade.limite) {
       const valorDividido = valor / unidade.limite
       const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
-      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
+      return `${valorDividido.toFixed(1).replace('.', ',')} ${nome}`
     }
   }
 }
@@ -378,6 +539,8 @@ function atualizarIndicadores() {
 
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+
+  if (notificacoes.upgrades.size > 0 || notificacoes.estruturas.size > 0) playSound('/static/assets/sounds/not.ogg', .4)
 }
 
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
@@ -391,6 +554,9 @@ button.addEventListener('click', (e) => {
   clicksContainer.appendChild(click)
   void click.offsetHeight
   click.classList.add('fading-up')
+
+
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .6)
 
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
@@ -416,6 +582,14 @@ document.body.addEventListener('mousemove', (e) => {
   
     showTooltip()
   }
+})
+
+leadeboardContainer.addEventListener('mouseenter', (e) => {
+  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+})
+
+leadeboardContainer.addEventListener('mouseleave', (e) => {
+  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
 function showTooltip(x = mouseX, y = mouseY) {
@@ -450,7 +624,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
         <div class="tooltip-header">
           <div class="tooltip-header--left">
-            <img src="./assets/${data.icon}" class="tooltip-icon"/>
+            <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
             <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
           </div>
           <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
@@ -472,7 +646,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
       <div class="tooltip-header">
         <div class="tooltip-header--left">
-          <img src="./assets/${data.icon}" class="tooltip-icon"/>
+          <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
           <strong class="tooltip-name">${data.nome}</strong>
         </div>
         <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
@@ -532,7 +706,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
               <span>Comprados: ${item.comprados}</span>
@@ -552,7 +726,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -565,7 +739,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="./assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -579,7 +753,12 @@ function showMobileTooltip(type, item) {
   close.className = 'close-bttn'
   close.textContent = 'Fechar'
 
-  close.addEventListener('touchend', closeMobileTootip)
+  close.addEventListener('touchend', (e) => {
+    e.stopPropagation(); // impede que o clique vá para outros elementos
+    e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
+    closeMobileTootip()
+    playSound('/static/assets/sounds/close.ogg', .8)
+  })
 
   content.appendChild(close)
   mobileTooltip.appendChild(content)
@@ -604,6 +783,7 @@ buttonsHeader.forEach((btn) => {
       notificacoes.estruturas.clear()
       atualizarIndicadores()
 
+      playSound(`/static/assets/sounds/tab.ogg`, .5)
       // Através do conteúdo, verifica qual botão foi clicado
       tabActive = btn.querySelector('.text').textContent
       if (tabActive == 'Upgrades') renderUpgrades() // Irá renderizar UPGRADES
@@ -652,7 +832,7 @@ const renderEstruturas = () => {
     const div = document.createElement("div")
     div.id = id
     div.innerHTML = (`
-      <img src="./assets/${item.icon}" class="item-icon"/>
+      <img src="/static/assets/${item.icon}" class="item-icon"/>
       <div class="item-content">
         <div class="item-text">
           <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
@@ -676,7 +856,10 @@ const renderEstruturas = () => {
       buyEstrutura(i)
     })
 
-    div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
+    div.querySelector('.info-bttn').addEventListener('touchend', () => {
+      showMobileTooltip('es', item)
+      playSound('/static/assets/sounds/open.ogg', .4)
+    })
 
     contentList.appendChild(div)
 
@@ -692,7 +875,7 @@ const renderUpgrades = () => {
       const div = document.createElement("div")
 
       div.innerHTML = (`
-        <img src="./assets/${item.icon}" class="item-icon"/>
+        <img src="/static/assets/${item.icon}" class="item-icon"/>
         <div class="item-content">
           <div class="item-text">
             <span class="item-name">${item.nome}</span>
@@ -712,7 +895,10 @@ const renderUpgrades = () => {
         buyUpgrade(item.index)
       })
 
-      div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
+      div.querySelector('.info-bttn').addEventListener('touchend', () => {
+        showMobileTooltip('es', item)
+        playSound('/static/assets/sounds/open.ogg', .4)
+      })
       contentList.appendChild(div)
     })
   } else {
@@ -733,7 +919,12 @@ const buyEstrutura = (index) => {
   const custo = estrutura.custoAtual
   estrutura.comprados += 1
   refresh(pontos, -custo)
-
+  notifiedStructBuy({
+    "index": index,
+    "comprados": estruturas[index].comprados
+  })
+  
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -746,6 +937,9 @@ const buyUpgrade = (index) => {
   upgrade.purchased = true
 
   refresh(pontos, -upgrade.custo)
+  notifiedUgradeBuy(index);
+
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
 }
 
 // Renderiza os upgrades assim que o site inicia
@@ -839,6 +1033,7 @@ const spawnCoffe = (bonusId = null) => {
           if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
       })
       
+      playSound(`/static/assets/sounds/coffee.ogg`, .5)
       div.remove() // Remove o café
     })
 }
@@ -924,9 +1119,12 @@ function setBonus(bonus, efeito) {
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
-  div.style.backgroundImage = `url('./assets/${bonus.icon}')` // Coloca dire
+  div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
-  div.addEventListener('touchend', () => showMobileTooltip('bn', bonusActive))
+  div.addEventListener('touchend', () => {
+    showMobileTooltip('es', item)
+    playSound('/static/assets/sounds/open.ogg', .4)
+  })
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 
@@ -957,7 +1155,13 @@ const matrices = {}
 const startMatrix = (id = 0, type = 'matrix', expiresIn) => {
   if (matrices[id]) return
 
-   // Cria canvas
+  if (!currentMusic) {
+    setTimeout(() => {
+      playMusic(`/static/assets/music/matrix.mp3`, .04, true)
+    }, 200)
+  }
+  // Cria canvas
+  const matricesLength = Object.values(matrices).length
   const canvas = document.createElement('canvas')
   canvas.id = `matrix-${id}`
   canvas.classList.add('matrix-canvas')
@@ -1015,6 +1219,7 @@ const stopMatrix = (id) => {
   matrix.canvas.style.opacity = 0
 
   const type = boostsActive[boostsActive.length-1]?.type
+  if (!type) stopMusic()
   document.body.classList.toggle('matrix', type === 'matrix')
   document.body.classList.toggle('evil', type === 'evil')
 }
@@ -1096,3 +1301,107 @@ function generateCodeLine(add = 1) {
 }
 
 // FIM DA FUNÇÃO DAS SALSICHINHAS
+
+// INÍCIO FUNÇÃO SOM
+
+const soundCache = {};            // Guarda os objetos Audio já carregados
+const soundInstances = [];        // Instâncias de áudio para tocar simultaneamente
+const MAX_INSTANCES = 12;         // Número máximo de instâncias para reutilização
+let instanceIndex = 0;            // Índice da instância atual
+
+// Cria instâncias pré-carregadas
+for (let i = 0; i < MAX_INSTANCES; i++) {
+  soundInstances.push(new Audio());
+}
+
+function playSound(url, vol = 1) {
+  const globalVolume = 1; // ou use Game.volume / Config.volume se quiser configurar
+
+  // Se o volume estiver zero ou global mutado, sai
+  if (vol <= 0 || globalVolume <= 0) return;
+
+  // Cacheia o som se ainda não foi carregado
+  if (!soundCache[url]) {
+    const audio = new Audio(url);
+    soundCache[url] = audio;
+
+    // Quando terminar de carregar, toca o som
+    audio.addEventListener('canplaythrough', () => {
+      playSound(url, vol); // Rechama quando estiver pronto
+    }, { once: true });
+
+    return;
+  }
+
+  const audioInstance = soundInstances[instanceIndex];
+  instanceIndex = (instanceIndex + 1) % MAX_INSTANCES;
+
+  audioInstance.src = soundCache[url].src;
+  audioInstance.volume = Math.pow(vol * globalVolume, 2); // curva mais natural
+
+  try {
+    audioInstance.play();
+  } catch (e) {
+    console.warn("Erro ao tocar som:", e);
+  }
+}
+
+function playMusic(url, finalVolume = 1, loop = true, fadeDuration = 2000) {
+  if (currentMusic) {
+    stopMusic(true); // interrompe a música atual com fade-out
+  }
+
+  const audio = new Audio(url);
+  audio.loop = loop;
+  audio.volume = 0;
+
+  audio.play().then(() => {
+    currentMusic = audio;
+
+    // Fade-in
+    const steps = 20;
+    const interval = fadeDuration / steps;
+    let currentStep = 0;
+
+    fadeInInterval = setInterval(() => {
+      currentStep++;
+      const newVolume = finalVolume * (currentStep / steps);
+      audio.volume = Math.min(finalVolume, newVolume);
+
+      if (currentStep >= steps) {
+        clearInterval(fadeInInterval);
+      }
+    }, interval);
+  }).catch((err) => {
+    console.error("Erro ao tocar música:", err);
+  });
+}
+
+function stopMusic(useFade = true, fadeDuration = 1000) {
+  if (!currentMusic) return;
+
+  if (fadeInInterval) clearInterval(fadeInInterval);
+  if (fadeOutInterval) clearInterval(fadeOutInterval);
+
+  if (useFade) {
+    const steps = 20;
+    const interval = fadeDuration / steps;
+    let currentStep = 0;
+    const startVolume = currentMusic.volume;
+
+    fadeOutInterval = setInterval(() => {
+      currentStep++;
+      const newVolume = startVolume * (1 - currentStep / steps);
+      currentMusic.volume = Math.max(0, newVolume);
+
+      if (currentStep >= steps) {
+        clearInterval(fadeOutInterval);
+        currentMusic.pause();
+        currentMusic = null;
+      }
+    }, interval);
+  } else {
+    currentMusic.pause();
+    currentMusic = null;
+  }
+}
