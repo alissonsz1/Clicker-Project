@@ -276,6 +276,7 @@ const clicksContainer = document.querySelector('.clicks-container') // Container
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
+const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -296,6 +297,36 @@ function notifiedReload(bought){
   });
 
   window.dispatchEvent(event);
+}
+
+// LEADERBOARD
+
+addSafeTouchListener(leaderboardWrapperContainer, toggleMobileLeaderboard)
+// leaderboardWrapperContainer.addEventListener('touchend', toggleMobileLeaderboard)
+const lbContentContainer = document.querySelector('.leaderboard-content')
+
+lbContentContainer.addEventListener("transitionend", (e) => {
+  if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
+    console.log(getComputedStyle(lbContentContainer).opacity)
+    leaderboardWrapperContainer.classList.remove('enabled')
+  }
+})
+
+function toggleMobileLeaderboard(e) {
+  const touchedContent = e.target.closest('.leaderboard-content')
+  if (touchedContent) return
+
+  const isEnabled = leaderboardWrapperContainer.classList.contains('enabled')
+
+  if (isEnabled) {
+    lbContentContainer.style.opacity = 0
+    leaderboardWrapperContainer.style.background = 'transparent'
+  } else {
+    leaderboardWrapperContainer.classList.toggle('enabled')
+    void lbContentContainer.offsetWidth
+    lbContentContainer.style.opacity = 1
+    leaderboardWrapperContainer.style.background = 'var(--bs)'
+  }
 }
 
 function renderLeaderboard(jogadores, idAtual = id) {
@@ -348,6 +379,7 @@ function renderLeaderboard(jogadores, idAtual = id) {
     const li = document.createElement("li");
     // const isVoce = jogador.id === idAtual;
 
+    if (isVoce) li.className = 'you'
     li.id = `lb-jogador${jogador.companyName.replace(' ', '')}`
     li.style.order = pos
     li.style.zIndex = pos >= 11 ? 200 : 200-pos
@@ -378,6 +410,8 @@ socket.onmessage = (e) => {
 
   renderLeaderboard(listDataLeaderboard, 0, companyName, pontos);
 }
+
+// FIM DO LEADERBOARD
 
 // Pega o nome do player
 window.addEventListener("updateCompany", (e) => {
@@ -414,6 +448,12 @@ window.addEventListener("dispatchLearderboardData", (event)=>{
   renderLeaderboard(leaderboardInfo, 0, companyName, pontos);
 })
 
+history.pushState(null, null, window.top.location.pathname + window.top.location.search);
+window.addEventListener('popstate', (e) => {
+  e.preventDefault()
+  // Reempilha o estado para impedir voltar
+  history.pushState(null, null, window.top.location.pathname + window.top.location.search)
+})
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
@@ -528,6 +568,29 @@ function atualizarIndicadores() {
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
 }
 
+function addSafeTouchListener(element, onValidTouchEnd) {
+  let touchValid = false;
+
+  element.addEventListener('touchstart', () => {
+    touchValid = true;
+  });
+
+  element.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    const elAtPoint = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!element.contains(elAtPoint)) {
+      touchValid = false;
+    }
+  });
+
+  element.addEventListener('touchend', (e) => {
+    if (touchValid) {
+      onValidTouchEnd(e);
+    }
+  });
+}
+
+
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
   const click = document.createElement('div')
@@ -558,12 +621,12 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (!window.matchMedia('(pointer: coarse)').matches) {
-    mouseX = e.clientX
-    mouseY = e.clientY
-  
-    showTooltip()
-  }
+  if (window.matchMedia('(pointer: coarse)').matches) return
+
+  mouseX = e.clientX
+  mouseY = e.clientY
+
+  showTooltip()
 })
 
 function showTooltip(x = mouseX, y = mouseY) {
@@ -727,7 +790,7 @@ function showMobileTooltip(type, item) {
   close.className = 'close-bttn'
   close.textContent = 'Fechar'
 
-  close.addEventListener('touchend', (e) => {
+  addSafeTouchListener(close, (e) => {
     e.stopPropagation(); // impede que o clique vá para outros elementos
     e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
     closeMobileTootip()
@@ -828,7 +891,8 @@ const renderEstruturas = () => {
       buyEstrutura(i)
     })
 
-    div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
+    addSafeTouchListener(div.querySelector('.info-bttn'), () => showMobileTooltip('es', item))
+    // div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('es', item))
 
     contentList.appendChild(div)
 
@@ -864,7 +928,8 @@ const renderUpgrades = () => {
         buyUpgrade(item.index)
       })
 
-      div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
+      addSafeTouchListener(div.querySelector('.info-bttn'), () => showMobileTooltip('up', item))
+      // div.querySelector('.info-bttn').addEventListener('touchend', () => showMobileTooltip('up', item))
       contentList.appendChild(div)
     })
   } else {
@@ -1078,7 +1143,8 @@ function setBonus(bonus, efeito) {
   div.dataset.nome = bonus.nome // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
-  div.addEventListener('touchend', () => showMobileTooltip('bn', bonusActive))
+  addSafeTouchListener(div, () => showMobileTooltip('bn', bonusActive))
+  // div.addEventListener('touchend', () => showMobileTooltip('bn', bonusActive))
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 
