@@ -273,6 +273,7 @@ body.evil .container-left--computer {
     position: absolute;
     transform: translate(-50%, -90%);
     transition: opacity var(--time) linear, transform var(--time) linear;
+    white-space: nowrap;
 }
 
 .fading-up {
@@ -385,7 +386,7 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
 
 /* Textos para a estrutura */
 .item-purchased { font-size: 1.8em; color: var(--c2);}
-.item-name { font-size: 1.3em; text-align: left; }
+.item-name { font-size: 1.2em; text-align: left; }
 .high { color: var(--high);}
 .low { color: var(--low);}
 
@@ -763,7 +764,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip {
-    width: 320px;
+    width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -831,10 +832,16 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     font-style: italic;
     text-align: right;
     opacity: .6;
+    max-width: 300px;
+    align-self: flex-end;
 }
 
 .tooltip-content:not(:last-child) {
     border-bottom: 1px solid var(--c1);
+}
+
+.tooltip-description {
+    line-height: .7em;
 }
 
 .tooltip-description::before { content: '"'; }
@@ -842,6 +849,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 
 .tooltip-function {
     text-align: left;
+    margin-bottom: .4em;
 }
 
 .tooltip ul, .mobile-tooltip ul {

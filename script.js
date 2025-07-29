@@ -274,6 +274,7 @@ const tooltip = document.querySelector('.tooltip') // Container que armazenas as
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
 const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
+const lsPersecondContainer = document.querySelector('.ls-persecond')
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -357,7 +358,7 @@ function renderLeaderboard(jogadores, idAtual = id) {
       jogadorEl.style.order = pos
       jogadorEl.style.transform = `translateY(${index*100}%)`
       jogadorEl.style.zIndex = pos >= 11 ? 200 : 200-pos
-      pointsEl.textContent = jogador.lsCount
+      pointsEl.textContent = formatarNumero(jogador.lsCount)
       posEl.textContent = pos
       posEl.className = `lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}`
 
@@ -374,7 +375,7 @@ function renderLeaderboard(jogadores, idAtual = id) {
     li.innerHTML = `
       <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
       <span class="lb-name">${jogador.companyName}${isVoce ? ' <strong>(VOCÊ)</strong>' : ''}</span>
-      <span class="lb-number">${jogador.lsCount}</span>
+      <span class="lb-number">${formatarNumero(jogador.lsCount)}</span>
     `
 
     container.appendChild(li);
@@ -529,7 +530,7 @@ function animarContador(valorInicial, duracao = 700) {
 
 // Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
 function formatarNumero(valor) {
-  if (valor < 1000000) return String(valor)
+  if (valor < 1000000) return Number(valor).toLocaleString('pt-BR')
 
   // Se for maior que o maior limite conhecido
   const maiorLimite = unidades[0].limite
@@ -541,7 +542,7 @@ function formatarNumero(valor) {
     if (valor >= unidade.limite) {
       const valorDividido = valor / unidade.limite
       const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
-      return `${valorDividido.toFixed(1).replace('.', ',')} ${nome}`
+      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
     }
   }
 }
@@ -595,7 +596,7 @@ button.addEventListener('click', (e) => {
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
   click.className = 'click'
-  click.textContent = `+${boost}`
+  click.textContent = `+${formatarNumero(boost)}`
   click.style.left = `calc(${e.pageX}px + ${randomOffset}px)`
   click.style.top = `${e.pageY}px`
   clicksContainer.appendChild(click)
@@ -652,7 +653,7 @@ function showTooltip(x = mouseX, y = mouseY) {
           <ul>
             <li>cada ${data.nome.toLocaleLowerCase()} gera <strong>${data.ls} LS</strong></li>
             <li>${data.comprados} ${data.nome.toLocaleLowerCase()} gerando <strong>${data.comprados*data.ls*lsMultiplier} LS</strong></li>
-            <li>${data.gerado} linhas geradas até agora</li>
+            <li>${formatarNumero(data.gerado)} linhas geradas até agora</li>
           </ul>
       `
     }
@@ -660,10 +661,10 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
         <div class="tooltip-header">
           <div class="tooltip-header--left">
-            <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
+            <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
             <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
           </div>
-          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
+          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${formatarNumero(data.custoAtual)}</span>
         </div>
         <div class="tooltip-content">
           <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
@@ -682,7 +683,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
       <div class="tooltip-header">
         <div class="tooltip-header--left">
-          <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
+          <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
           <strong class="tooltip-name">${data.nome}</strong>
         </div>
         <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
@@ -742,7 +743,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
               <span>Comprados: ${item.comprados}</span>
@@ -752,7 +753,7 @@ function showMobileTooltip(type, item) {
             <ul>
               <li>cada ${item.nome.toLocaleLowerCase()} gera <strong>${item.ls} LS</strong></li>
               <li>${item.comprados} ${item.nome.toLocaleLowerCase()} gerando <strong>${item.comprados * item.ls * lsMultiplier} LS</strong></li>
-              <li>${item.gerado} linhas geradas até agora</li>
+              <li>${formatarNumero(item.gerado)} linhas geradas até agora</li>
             </ul>
         </div>
           <span class="tooltip-description">${item.descricao}</span>
@@ -762,7 +763,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -775,7 +776,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -851,7 +852,7 @@ const renderEstruturas = () => {
         estrutura.classList.remove('hidden')
         estrutura.classList.add('unlocked')
       }
-      custo.textContent = item.custoAtual
+      custo.textContent = formatarNumero(item.custoAtual)
       if (item.custoAtual > pontos) {
         custo.classList.add('high')
         custo.classList.remove('low')
@@ -866,11 +867,11 @@ const renderEstruturas = () => {
     const div = document.createElement("div")
     div.id = id
     div.innerHTML = (`
-      <img src="/static/assets/${item.icon}" class="item-icon"/>
+      <img src="/static/assets/icons/${item.icon}" class="item-icon"/>
       <div class="item-content">
         <div class="item-text">
           <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
-          <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
+          <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${formatarNumero(item.custoAtual)}</span>
         </div>
         <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
         <button class="info-bttn">INFO</button>
@@ -900,22 +901,47 @@ const renderEstruturas = () => {
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
-  contentList.innerHTML = "" // Limpa o conteúdo para renderizar certinho
+  if (!contentList.querySelector('.upgrade')) contentList.innerHTML = ''
+
   const upgradesFiltered = upgrades.filter(item => !item.purchased)
   if (upgradesFiltered.length > 0) {
     upgradesFiltered.forEach(item => {
+      const id = `upgrade-${item.id}`
+      const upgrade = document.getElementById(id)
+
+      if (upgrade) {
+        const custo = upgrade.querySelector('.cust')
+
+        if (item.purchased) upgrade.remove()
+        else {
+          custo.textContent = formatarNumero(item.custo)
+          if (item.custo > pontos) {
+            upgrade.classList.toggle('unlocked', false)
+            custo.classList.add('high')
+            custo.classList.remove('low')
+          } else {
+            upgrade.classList.toggle('unlocked', true)
+            custo.classList.add('low')
+            custo.classList.remove('high')
+          }
+        }
+        return 
+      }
+
       const div = document.createElement("div")
+      div.id = id
 
       div.innerHTML = (`
-        <img src="/static/assets/${item.icon}" class="item-icon"/>
+        <img src="/static/assets/icons/${item.icon}" class="item-icon"/>
         <div class="item-content">
           <div class="item-text">
             <span class="item-name">${item.nome}</span>
-            <span class="cust ${item.custo > pontos ? 'high' : 'low'}">${item.custo}</span>
+            <span class="cust ${item.custo > pontos ? 'high' : 'low'}">${formatarNumero(item.custo)}</span>
           </div>
           <button class="info-bttn">INFO</button>
         </div>
       `)
+
       div.className = "content-item upgrade"
       if (pontos >= item.custo) div.classList.add('unlocked')
 
@@ -925,6 +951,7 @@ const renderUpgrades = () => {
         if (hasClickedInfo) return
         
         buyUpgrade(item.id)
+        div.remove()
       })
 
       addSafeTouchListener(div.querySelector('.info-bttn'), () => showMobileTooltip('up', item))
@@ -963,9 +990,6 @@ const buyUpgrade = (id) => {
 
   refresh(pontos, -upgrade.custo)
 }
-
-// Renderiza os upgrades assim que o site inicia
-renderUpgrades(upgrades)
 
 // FIM DO CONTAINER DA DIREITA
 
@@ -1372,9 +1396,34 @@ setInterval(() =>{
   atualizarPontos(pontos);
 }, 1000 * 3);
 
-function resetItems() {
+function reset(lsToo) {
   debug = true
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
+  if (lsToo) {
+    refresh(0, 0)
+    atualizarPontos(pontos);
+  }
   location.reload()
 }
+
+// LINHAS POR SEGUNDO (FINALMENTE)
+
+const timing = 0.1
+
+function gerarPassivamente() {
+  let totalGerado = 0;
+
+  estruturas.forEach(estrutura => {
+    const geradoPorEssa = estrutura.ls * estrutura.comprados * lsMultiplier * timing
+    estrutura.gerado += geradoPorEssa
+    totalGerado += geradoPorEssa
+  })
+
+
+  if (totalGerado == 0) return
+  lsPersecondContainer.textContent = `por segundo: ${formatarNumero(totalGerado / timing)}` 
+  refresh(pontos, totalGerado)
+}
+
+setInterval(gerarPassivamente, 1000*timing);
