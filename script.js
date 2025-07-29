@@ -539,6 +539,8 @@ function atualizarIndicadores() {
 
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+
+  if (notificacoes.upgrades.size > 0 || notificacoes.estruturas.size > 0) playSound('/static/assets/sounds/not.ogg', .4)
 }
 
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
