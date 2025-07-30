@@ -7,9 +7,6 @@ from channels.layers import get_channel_layer
 
 from .models import Companies
 
-# VARIÁVEIS GLOBAIS
-
-
 # FUNÇÕES
 
 # Detecta qualquer atualização no banco de dados (por exemplo, pontuação de uma empresa mudou)
