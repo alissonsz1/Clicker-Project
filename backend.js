@@ -71,24 +71,20 @@ function getData(){
         return res.json();
     })
     .then(data =>{
-        // caso o idPlayer não tenha valor, ele executa o código abaixo.
-        if(!idPlayer){
-            // O PLAYER NÃO TEM UM ID AINDA, PRECISAR CADASTRAR
-            console.log("Dev não cadastrado!");
-            modalContainer.classList.remove('disabled');
-        } else {
+        if(idPlayer){
+            // caso o idPlayer não tenha valor, ele executa o código abaixo.
             playerDetails = data.find( obj => obj.id == idPlayer );
             if(playerDetails){
+                dispatchNameSubmit('submitSucess', {companyName: "loading"});
                 dispatchPlayerData(playerDetails); // esse manda todos os dados dp player
                 data.sort((a,b)=>{ return b.lsCount - a.lsCount })
                 dispatchLearderboardData(data);
-                modalContainer.classList.add('disabled');
             } else {
                 // AQUI, TEM O PLAYER TEM UM ID NO COOKIE, MAS NÃO TEM ESSE ID CADASTRADO NO BD
-                console.log("Dev não encontrado!");
-                modalContainer.classList.remove('disabled');
+                dispatchNameSubmit('submitError', {error: "Player não encontrado"})
             }
         }
+        
     })
     .catch(err =>{
         console.error("Error", err)
@@ -154,7 +150,6 @@ function updateNamePlayer(name){
         return res.json()
     })
     .then(data => {
-        console.log(name)
 
         if(!name) {
             dispatchNameSubmit('submitError', {error: "Campo vazio!"})
@@ -166,8 +161,7 @@ function updateNamePlayer(name){
         if(existName){
             dispatchNameSubmit('submitError', {error: "Nome já existente!"})
         } else {
-            dispatchNameSubmit('submitSucess', {companyName: name},)
-            dispatchNewName(name)
+            dispatchNameSubmit('submitSucess', {companyName: name})
             postCompany({"companyName": name});
         }
     })
@@ -177,9 +171,9 @@ function updateNamePlayer(name){
 }
 
 // RODAR AO INICIALIZAR
-getData();
-
-
+if(idPlayer){
+    getData()
+}
 // Eventos windows
 
 // Traz os pontos do script.js através do evento criado

@@ -1426,12 +1426,14 @@ modalForm.addEventListener('submit', (e) => {
 })
 
 window.addEventListener('submitError', (e) => {
+  if(modalContainer.classList.contains("disabled")) modalContainer.classList.remove("disabled");
   modalErrorContainer.textContent = e.detail.error;
   modalInput.value = ''
 })
 
 window.addEventListener('submitSucess', (e) => {
-  company = e.detail;
+  console.log("SUBMITR")
+  company = e.detail.companyName;
   companyName.textContent = company;
   modalErrorMessage = ''
   closeModal()
