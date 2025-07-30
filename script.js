@@ -217,12 +217,6 @@ const bonusList = [
   }
 ]
 
-// Um array que conterá todos os upgrades e estruturas que foram sendo desbloqueados
-const desbloqueados = {
-  estruturas: new Set(),
-  upgrades: new Set()
-}
-
 // Um array que conterá uma lista de desbloqueados, que será limpa quando a respectiva aba for acessada
 const notificacoes = {
   upgrades: new Set(),
@@ -263,14 +257,13 @@ let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Upgrades' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
-let currentMusic = null // Controla qual música está tocando no momento
-let fadeOutInterval = null;
-let fadeInInterval = null;
-let modalErrorMessage = ''
 let listDataLeaderboard; // guarda os dados do leaderboard
 let listUpgrades; // lista de upgrades comprados
 let listStructures; // lista de estruturas comprados
 let debug = false; // debugar parte do código
+let currentMusic = null // Controla qual música está tocando no momento
+let fadeOutInterval = null;
+let fadeInInterval = null;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -283,7 +276,7 @@ const clicksContainer = document.querySelector('.clicks-container') // Container
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
-const leadeboardContainer = document.querySelector('.leaderboard-wrapper')
+const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
 const computerCodelinesContainer = document.querySelector(".computer-codelines");
 const modalContainer = document.querySelector('.modal')
 const modalInput = document.querySelector('.modal-input')
@@ -302,6 +295,34 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
+// LEADERBOARD
+
+addSafeTouchListener(leaderboardWrapperContainer, toggleMobileLeaderboard)
+// leaderboardWrapperContainer.addEventListener('touchend', toggleMobileLeaderboard)
+const lbContentContainer = document.querySelector('.leaderboard-content')
+
+lbContentContainer.addEventListener("transitionend", (e) => {
+  if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
+    leaderboardWrapperContainer.classList.remove('enabled')
+  }
+})
+
+function toggleMobileLeaderboard(e) {
+  const touchedContent = e.target.closest('.leaderboard-content')
+  if (touchedContent) return
+
+  const isEnabled = leaderboardWrapperContainer.classList.contains('enabled')
+
+  if (isEnabled) {
+    lbContentContainer.style.opacity = 0
+    leaderboardWrapperContainer.style.background = 'transparent'
+  } else {
+    leaderboardWrapperContainer.classList.toggle('enabled')
+    void lbContentContainer.offsetWidth
+    lbContentContainer.style.opacity = 1
+    leaderboardWrapperContainer.style.background = 'var(--bs)'
+  }
+}
 
 function renderLeaderboard(jogadores, idAtual = id) {
   jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
@@ -353,6 +374,7 @@ function renderLeaderboard(jogadores, idAtual = id) {
     const li = document.createElement("li");
     // const isVoce = jogador.id === idAtual;
 
+    if (isVoce) li.className = 'you'
     li.id = `lb-jogador${jogador.companyName.replace(' ', '')}`
     li.style.order = pos
     li.style.zIndex = pos >= 11 ? 200 : 200-pos
@@ -383,6 +405,15 @@ socket.onmessage = (e) => {
 
   renderLeaderboard(listDataLeaderboard, 0, companyName, pontos);
 }
+
+// FIM DO LEADERBOARD
+
+// Pega o nome do player
+window.addEventListener("updateCompany", (e) => {
+  company = e.detail.company;
+  companyName.textContent = company;
+  
+})
 
 // PEGA DO BACKEND TODOS OS DADOS DO PLAYER
 
@@ -433,6 +464,22 @@ window.addEventListener("dispatchLearderboardData", (event)=>{
   renderLeaderboard(leaderboardInfo, 0, companyName, pontos);
 })
 
+history.pushState(null, null, window.top.location.pathname + window.top.location.search);
+window.addEventListener('popstate', (e) => {
+  e.preventDefault()
+  // Reempilha o estado para impedir voltar
+  history.pushState(null, null, window.top.location.pathname + window.top.location.search)
+})
+
+// Atualizar os upgrades, puxar as estruturas salvas no banco de dados
+window.addEventListener("dispatchUpdateList", (event) => { 
+  let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
+})
+
+// Atualiza as estruturas, puxar as estruturas salvas do banco de dados
+window.addEventListener("dispatchStructList", (event)=> {
+  let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
+})
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
@@ -499,7 +546,7 @@ function animarContador(valorInicial, duracao = 700) {
 
 // Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
 function formatarNumero(valor) {
-  if (valor < 1000000) return valor.toString()
+  if (valor < 1000000) return String(valor)
 
   // Se for maior que o maior limite conhecido
   const maiorLimite = unidades[0].limite
@@ -519,20 +566,11 @@ function formatarNumero(valor) {
 // Essa função é chamada sempre que os pontos são atualizados para verificar se algo foi desbloqueado
 function checarDesbloqueios(pontos) {
   estruturas.forEach((estrutura, index) => {
-    if (pontos >= estrutura.custoAtual && !desbloqueados.estruturas.has(index)) {
-      desbloqueados.estruturas.add(index)
+    if (pontos >= estrutura.custoAtual && !estrutura.unlocked) {
       notificacoes.estruturas.add(index)
       estrutura.unlocked = true
       atualizarIndicadores()
 
-    }
-  })
-
-  upgrades.forEach((upgrade, index) => {
-    if (pontos >= upgrade.custo && !desbloqueados.upgrades.has(index)) {
-      desbloqueados.upgrades.add(index)
-      notificacoes.upgrades.add(index)
-      atualizarIndicadores()
     }
   })
 }
@@ -544,7 +582,32 @@ function atualizarIndicadores() {
 
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+
+  if (notificacoes.upgrades.size > 0 || notificacoes.estruturas.size > 0) playSound('/static/assets/sounds/not.ogg', .4)
 }
+
+function addSafeTouchListener(element, onValidTouchEnd) {
+  let touchValid = false;
+
+  element.addEventListener('touchstart', () => {
+    touchValid = true;
+  });
+
+  element.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    const elAtPoint = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!element.contains(elAtPoint)) {
+      touchValid = false;
+    }
+  });
+
+  element.addEventListener('touchend', (e) => {
+    if (touchValid) {
+      onValidTouchEnd(e);
+    }
+  });
+}
+
 
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
@@ -579,19 +642,19 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (!window.matchMedia('(pointer: coarse)').matches && modalContainer.classList.contains('disabled')) {
-    mouseX = e.clientX
-    mouseY = e.clientY
-  
-    showTooltip()
-  }
+  if (window.matchMedia('(pointer: coarse)').matches) return
+
+  mouseX = e.clientX
+  mouseY = e.clientY
+
+  showTooltip()
 })
 
-leadeboardContainer.addEventListener('mouseenter', (e) => {
+leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
   playSound(`/static/assets/sounds/lb-in.ogg`, .4)
 })
 
-leadeboardContainer.addEventListener('mouseleave', (e) => {
+leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
   playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
@@ -756,7 +819,7 @@ function showMobileTooltip(type, item) {
   close.className = 'close-bttn'
   close.textContent = 'Fechar'
 
-  close.addEventListener('touchend', (e) => {
+  addSafeTouchListener(close, (e) => {
     e.stopPropagation(); // impede que o clique vá para outros elementos
     e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
     closeMobileTootip()
@@ -800,7 +863,7 @@ const renderEstruturas = () => {
   // Se antes, na lista, havia algum "upgrade", reseta o conteúdo da lista
   if (!contentList.querySelector('.estrutura')) contentList.innerHTML = ''
 
-  const size = desbloqueados.estruturas.size
+  const size = estruturas.filter(es => es.unlocked).length
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
   estruturasFixed.forEach((item) => {
@@ -859,11 +922,11 @@ const renderEstruturas = () => {
       buyEstrutura(item.id)
     })
 
-    div.querySelector('.info-bttn').addEventListener('touchend', () => {
+    addSafeTouchListener(div.querySelector('.info-bttn'), () => {
       showMobileTooltip('es', item)
       playSound('/static/assets/sounds/open.ogg', .4)
     })
-
+    
     contentList.appendChild(div)
 
   })
@@ -898,10 +961,11 @@ const renderUpgrades = () => {
         buyUpgrade(item.id)
       })
 
-      div.querySelector('.info-bttn').addEventListener('touchend', () => {
-        showMobileTooltip('es', item)
+      addSafeTouchListener(div.querySelector('.info-bttn'), () => {
+        showMobileTooltip('up', item)
         playSound('/static/assets/sounds/open.ogg', .4)
       })
+      
       contentList.appendChild(div)
     })
   } else {
@@ -922,6 +986,8 @@ const buyEstrutura = (id) => {
   const custo = estrutura.custoAtual
   estrutura.comprados += 1
   refresh(pontos, -custo)
+  
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -934,6 +1000,7 @@ const buyUpgrade = (id) => {
   upgrade.purchased = true
 
   refresh(pontos, -upgrade.custo)
+  
   playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
 }
 
@@ -1116,10 +1183,11 @@ function setBonus(bonus, efeito) {
   div.dataset.id = bonus.id // Coloca um data-set para facilitar a localização dessa div
   div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
-  div.addEventListener('touchend', () => {
-    showMobileTooltip('es', item)
+  addSafeTouchListener(div, () => {
+    showMobileTooltip('bn', bonusActive)
     playSound('/static/assets/sounds/open.ogg', .4)
   })
+
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 
@@ -1495,4 +1563,11 @@ document.addEventListener('touchmove', e => {
 setInterval(() =>{
   setData();
   atualizarPontos(pontos);
-}, 1000 * 5);
+}, 1000 * 5)
+
+function resetItems() {
+  debug = true
+  localStorage.removeItem('upgrades')
+  localStorage.removeItem('estruturas')
+  location.reload()
+}
