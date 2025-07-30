@@ -18,6 +18,7 @@ button, input {
 :root {
     --cs: 86px; /* Coffee Size */
     --bs: rgba(0, 0, 0, .6); /* BOX SHADOW */
+    --ts: 3px 3px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Põe a fonte global */
@@ -130,7 +131,7 @@ body.matrix .table {
 
 /* Contém os textos do container da esquerda */
 .container-left--header {
-    text-shadow: 3px 3px 2px black;
+    text-shadow: var(--ts);
     display: flex;
     flex-direction: column;
 }
@@ -275,6 +276,7 @@ body.evil .container-left--computer {
     position: absolute;
     transform: translate(-50%, -90%);
     transition: opacity var(--time) linear, transform var(--time) linear;
+    white-space: nowrap;
 }
 
 .fading-up {
@@ -387,7 +389,7 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
 
 /* Textos para a estrutura */
 .item-purchased { font-size: 1.8em; color: var(--c2);}
-.item-name { font-size: 1.3em; text-align: left; }
+.item-name { font-size: 1.2em; text-align: left; }
 .high { color: var(--high);}
 .low { color: var(--low);}
 
@@ -840,7 +842,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip {
-    width: 320px;
+    width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -870,6 +872,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     justify-content: space-between;
     border-bottom: 1px solid var(--c1);
     padding-bottom: 5px;
+    text-shadow: var(--ts);
 }
 
 .tooltip-header.center {
@@ -894,6 +897,10 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     font-size: 1.3em;
 }
 
+.tooltip-price {
+    text-align: right;
+}
+
 .tooltip-header.center .tooltip-name {
     text-align: center;
 }
@@ -908,10 +915,16 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     font-style: italic;
     text-align: right;
     opacity: .6;
+    max-width: 300px;
+    align-self: flex-end;
 }
 
 .tooltip-content:not(:last-child) {
     border-bottom: 1px solid var(--c1);
+}
+
+.tooltip-description {
+    line-height: .8em;
 }
 
 .tooltip-description::before { content: '"'; }
@@ -919,6 +932,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 
 .tooltip-function {
     text-align: left;
+    margin-bottom: .4em;
 }
 
 .tooltip ul, .mobile-tooltip ul {
@@ -1189,9 +1203,14 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         min-height: auto;
     }
 
+    .container-left {
+        margin-top: 8.2rem;
+    }
+
     .container-left--header {
-        position: sticky;
-        top: .5em;
+        pointer-events: none;
+        position: fixed;
+        top: 2em;
         z-index: 50;
     }
 
