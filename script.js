@@ -1,98 +1,284 @@
 // Upgrades "place holder" só para o código funcionar
 const upgrades = [
   {
-    id: 'up1',
-    nome: "Café Forte", 
-    custo: 20,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
-    icon: 'placeholder.png',
-    efeito: () => boost *= 2,
-  },
-  { 
-    id: 'up2',
-    nome: "Atalho de Teclado", 
+    nome: "Mouse gamer",
     custo: 100,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
+    descricao: 'Ninguém sabe pra que servem todos esses botões, mas eles estão lá.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    // icon: 'mousegamer.png',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { 
-    id: 'up3',
-    nome: "Dupla Tela", 
-    custo: 500,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
+  {
+    nome: "Cadeira Gamer",
+    custo: 250,
+    descricao: 'Ergonomia duvidosa, produtividade inegável.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    // icon: 'cadeiragamer.png',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { 
-    id: 'up4',
-    nome: "Modo Foco", 
-    custo: 1000,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
+  {
+    nome: "Teclado Mecânico RGB",
+    custo: 50000,
+    descricao: 'Cada cor te deixa 1% mais feliz. São 16M de cores.',
+    funcao: 'Cada clique gera 1% das suas LS.',
+    // icon: 'teclado.png',
+    icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+  },
+  {
+    nome: "Bot de Commit",
+    custo: 12000,
+    descricao: 'feat: commita com base nos seus pensamentos.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    // icon: 'commitbot.png',
     icon: 'placeholder.png',
     efeito: () => boost *= 2,
-  }
-]
+  },
+  {
+    nome: "Não perturbe",
+    custo: 1500,
+    descricao: 'Dê um fim às notificações chatas do Discord!',
+    funcao: 'Aumenta geração de LS em 10%.',
+    // icon: 'naoperturbe.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.1,
+  },
+  {
+    nome: "ChatGPT Licenciado",
+    custo: 4000,
+    descricao: 'Agora com 5% menos alucinação.',
+    funcao: 'Aumenta geração de LS em 10%.',
+    // icon: 'chatgpt.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.1,
+  },
+  {
+    nome: "Cafeteira elétrica",
+    custo: 100000,
+    descricao: 'Seus cafés mais rápidos e mais gostosos!',
+    funcao: 'Dobra a chance de aparecer um cafézinho.',
+    // icon: 'cafeteira.png',
+    icon: 'placeholder.png',
+    efeito: () => coffeeProb *= 2,
+  },
+  {
+    nome: "Frigobar",
+    custo: 2500,
+    descricao: 'Menos idas à cozinha, mais código.',
+    funcao: 'Aumenta geração de LS em 10%.',
+    // icon: 'frigobar.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.10,
+  },
+  {
+    nome: "PENDRIVE de 2TB",
+    custo: 2000,
+    descricao: 'Por algum motivo, diz que já está 97% cheio...',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    // icon: 'pendrive.png',
+    icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
+  {
+    nome: "Gatinho",
+    custo: 10000,
+    descricao: 'Meoow',
+    funcao: 'Aumenta consideravelmente suas LS.',
+    // icon: 'gatinho.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 2,
+  },
+  {
+    nome: "Mousepad ergonômico",
+    custo: 3000,
+    descricao: 'Previne você de ter uma tendinite.',
+    funcao: 'Aumenta geração de LS em 5%.',
+    // icon: 'mousepad.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Fibra óptica",
+    custo: 5000,
+    descricao: 'Chega de ping alto no lolzinho!',
+    funcao: 'Aumenta geração de LS em 5%.',
+    // icon: 'fibra.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Cubo mágico",
+    custo: 4500,
+    descricao: 'A diferença entre o cubo mágico e a programação? Da programação eu desisto.',
+    funcao: 'Chance de 5% de dobrar um clique.',
+    // icon: 'cubo.png',
+    icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => {
+      if (Math.random() < 0.05) return boost
+      else return 0
+    }),
+  },
+  {
+    nome: "Ventilador portátil",
+    custo: 3500,
+    descricao: 'Para esfriar sua cabeça (e evitar um burnout).',
+    funcao: 'Aumenta geração de LS em 10%.',
+    // icon: 'ventilador.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.10,
+  },
+  {
+    nome: "Fone antirruído",
+    custo: 6500,
+    descricao: 'Abafa até 99,9999% dos ruídos (inclusive os internos).',
+    funcao: 'Aumenta geração de LS em 10%.',
+    // icon: 'fone.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.10,
+  },
+  {
+    nome: "Certificado Online",
+    custo: 7500,
+    descricao: 'Aumenta exponencialmente suas chances de arranjar um emprego - Obrigado, Guanabara!',
+    funcao: 'Cada clique gera +0.5 linha de código para cada construção comprada',
+    // icon: 'certificado.png',
+    icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5),
+  },
+  {
+    nome: "SSD de última geração",
+    custo: 12000,
+    descricao: 'HD é coisa do passado, agora a moda é comprar SSD usado.',
+    funcao: 'Aumenta geração de LS em 10%.',
+    // icon: 'ssd.png',
+    icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.10,
+  },
+  {
+    nome: "Placa de vídeo",
+    custo: 20000,
+    descricao: 'RTX 5090 só pra assistir tutoriais em 8K!',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    // icon: 'gpu.png',
+    icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
+].map((up, i) => ({...up, id: `up${i+1}`})).sort((a, b) => a.custo - b.custo)
 
 // Estruturas "place holder" só para o código funcionar
 const estruturas = [
   { 
-    id: 'es1',
-    nome: "Servidor Local", 
-    custoBase: 10, 
+    nome: "LED", 
+    custoBase: 15, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    descricao: 'Não aumentam seu desempenho, mas aumentam sua moral.',
+    ls: .5,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
   },
   { 
-    id: 'es2',
-    nome: "Banco de Dados", 
-    custoBase: 100,
+    nome: "Monitor", 
+    custoBase: 100, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    descricao: 'Telas nunca são demais.',
+    ls: 5,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
   },
   { 
-    id: 'es3',
-    nome: "Nuvem Privada", 
-    custoBase: 1000, 
+    nome: "IDE", 
+    custoBase: 1100, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    descricao: 'VS Code? Eclipse? Sublime? IntelliJ IDEA? Por que não TODOS eles?',
+    ls: 40,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
-   },
+  },
   { 
-    id: 'es4',
-    nome: "Cluster de Servidores", 
-    custoBase: 10000, 
+    nome: "Clippy", 
+    custoBase: 12000, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    descricao: 'Olá! Eu sou o Clippy, seu assistente. Gostaria de uma ajudinha?',
+    ls: 250,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
-  }
-]
+  },
+  { 
+    nome: "DEV Júnior", 
+    custoBase: 130000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'Não faz ideia do que está fazendo, mas ele tenta... Tadinho.',
+    ls: 1500,
+    gerado: 0,
+  },
+  { 
+    nome: "Servidor local", 
+    custoBase: 1400000,
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'Quando seu PC não aguenta mais, você terceiriza.',
+    ls: 8000,
+    gerado: 0,
+  },
+  { 
+    nome: "DEV Pleno", 
+    custoBase: 20000000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'DEV Júnior+ com uma pitada de independência',
+    ls: 35000,
+    gerado: 0,
+  },
+  { 
+    nome: "Cloud", 
+    custoBase: 330000000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'Seus códigos agora suspensos no limbo da internet',
+    ls: 200000,
+    gerado: 0,
+  },
+  { 
+    nome: "DEV Sênior", 
+    custoBase: 5100000000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'Codifica em silêncio absoluto e surge apenas para resolver os bugs alheios.',
+    ls: 1100000,
+    gerado: 0,
+  },
+    { 
+    nome: "Data Center", 
+    custoBase: 75000000000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'Armazena zettabytes de memória! (e seus dados mais obscuros).',
+    ls: 7700000,
+    gerado: 0,
+  },
+  { 
+    nome: "IA ultra-generativa", 
+    custoBase: 1000000000000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'É tipo um DEV, só que mais rápido, mais esperto, mais eficaz, mais sagaz, mais sucinto, mais... Deixa pra lá.',
+    ls: 45000000,
+    gerado: 0,
+  },
+  { 
+    nome: "PC quântico", 
+    custoBase: 14000000000000, 
+    comprados: 0,
+    icon: 'placeholder.png',
+    descricao: 'Resolve os bugs antes mesmo deles surgirem.',
+    ls: 230000000,
+    gerado: 0,
+  },
+
+].map((es, i) => ({id: `es${i+1}`,...es})).sort((a, b) => a.custoBase - b.custoBase)
 
 // Lista com os possíveis bônus do café
 const bonusList = [
@@ -100,10 +286,10 @@ const bonusList = [
     id: 'bn1',
     nome: "CAFÉZINHO",
     descricao: "15% das linhas + 13",
-    peso: 70,
+    peso: 100,
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
-      refresh(pontos, ganho) // Atualiza os pontos na tela
+      refresh(ganho) // Atualiza os pontos na tela
       return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
@@ -112,7 +298,7 @@ const bonusList = [
     nome: "CAFÉ DOCINHO",
     descricao: "LS x7",
     type: 'matrix',
-    duracao: 60,
+    duracao: 30,
     peso: 30,
     icon: 'placeholder.png',
     get efeito() {
@@ -127,7 +313,7 @@ const bonusList = [
     descricao: "LS x777",
     type: 'matrix',
     duracao: 15,
-    peso: 10,
+    peso: 4,
     icon: 'placeholder.png',
     get efeito() {
       lsMultiplier *= 777;
@@ -141,7 +327,7 @@ const bonusList = [
     descricao: "LS x1111",
     type: 'matrix',
     duracao: 10,
-    peso: 2,
+    peso: 1,
     icon: 'placeholder.png',
     get efeito() {
       lsMultiplier *= 1111;
@@ -169,10 +355,10 @@ const bonusList = [
   {
     id: 'bn6',
     nome: "STORM BONUS",
-    descricao: "7% das linhas!", // MUDAR PARA BONUS DE LINHAS POR SEGUNDO NO FUTURO
+    descricao: "5 min das LS!",
     get efeito() {
-        const ganho = Math.floor(pontos * 0.07 + 13);
-        refresh(pontos, ganho)
+        const ganho = Math.floor(lsTOT * 60 * 5);
+        refresh(ganho)
         return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
@@ -180,9 +366,9 @@ const bonusList = [
     id: 'bn7',
     nome: 'CAFÉ VENCIDO',
     descricao: 'Não faz nada...',
-    peso: 1,
+    peso: 2,
     get efeito() {
-      return 'Não faz nada... Absolutamente nada. Tipo: NADA!'
+      return 'Não faz nada... Absolutamente nada.'
     },
   },
   {
@@ -194,12 +380,12 @@ const bonusList = [
     duracao: 30,
     get efeito() {
       lsMultiplier *= .5
-      coffeeProb *= .5
+      coffeeProb *= .1
       return `LS x0.5 por ${this.duracao} segundos...`
     },
     reverter: () => {
-      coffeeProb /= .5
       lsMultiplier /= .5
+      coffeeProb /= .1
     },
   },
     {
@@ -207,7 +393,7 @@ const bonusList = [
     nome: 'CAFÉ DEMONÍACO',
     type: 'evil',
     icon: 'placeholder.png',
-    peso: 10,
+    peso: 2,
     duracao: 6,
     get efeito() {
       lsMultiplier *= 666
@@ -215,6 +401,12 @@ const bonusList = [
     },
     reverter: () => lsMultiplier /= 666,
   }
+]
+
+const onClickEffects = [
+  () => {
+    return boost
+  },
 ]
 
 // Um array que conterá uma lista de desbloqueados, que será limpa quando a respectiva aba for acessada
@@ -251,10 +443,11 @@ let id = -1
 let company = ''
 let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
+let lsTOT = 0
 let lsMultiplier = 1 // Multiplicador para as LS
-let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
+let coffeeProb = 0.03 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
-let tabActive = 'Upgrades' // Qual a aba ativa atualmente
+let tabActive = 'Estruturas' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
 let listDataLeaderboard; // guarda os dados do leaderboard
@@ -448,7 +641,7 @@ window.addEventListener("dispatchPlayerData", (event) => {
 
   pontos = loadingPlayer.lsCount;
 
-  refresh(0, pontos, true)
+  refresh(pontos)
 })
 
 // Traz os dados do leaderboard do backend na primeira execução
@@ -467,9 +660,11 @@ window.addEventListener('popstate', (e) => {
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
-function refresh(valorAtual, add, isEvent = false) {
+function refresh(add) {
+  valorAtual = pontos
   pontos = valorAtual + add
 
+  if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos))} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   
@@ -484,7 +679,7 @@ function animarContador(valorInicial, duracao = 700) {
   const add = valorFinal - valorInicial
 
   if (Math.abs(add) == 1) {
-    display.textContent = `${formatarNumero(pontos)} linhas de código`
+    display.textContent = `${formatarNumero(pontos)} linha${pontos > 1 ? 's' : ''} de código`
     if (add > 0) generateCodeLine()
     return
   }
@@ -550,7 +745,7 @@ function formatarNumero(valor) {
 // Essa função é chamada sempre que os pontos são atualizados para verificar se algo foi desbloqueado
 function checarDesbloqueios(pontos) {
   estruturas.forEach((estrutura, index) => {
-    if (pontos >= estrutura.custoAtual && !estrutura.unlocked) {
+    if (pontos >= custoAtual(estrutura) && !estrutura.unlocked) {
       notificacoes.estruturas.add(index)
       estrutura.unlocked = true
       atualizarIndicadores()
@@ -590,13 +785,14 @@ function addSafeTouchListener(element, onValidTouchEnd) {
   });
 }
 
-
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
+  const toAdd = onClick()
+
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
   click.className = 'click'
-  click.textContent = `+${formatarNumero(boost)}`
+  click.textContent = `+${formatarNumero(toAdd.toFixed(1))}`
   click.style.left = `calc(${e.pageX}px + ${randomOffset}px)`
   click.style.top = `${e.pageY}px`
   clicksContainer.appendChild(click)
@@ -607,8 +803,19 @@ button.addEventListener('click', (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
   })
 
-  refresh(pontos, boost)
 })
+
+function onClick() {
+  let toAdd = 0
+
+  // Executa todos os efeitos extras adicionados por upgrades
+  onClickEffects.forEach(fn => {
+    toAdd += fn()
+  })
+
+  refresh(toAdd)
+  return toAdd
+}
 
 // No celular, 'active' fica muito bugado, portanto iremos colocar uma animação manualmente de pulo no teclado ao ser clicado
 button.addEventListener("touchstart", triggerAnimation)
@@ -651,12 +858,14 @@ function showTooltip(x = mouseX, y = mouseY) {
     if (data.unlocked && data.comprados > 0) {
       extraInfo = `
           <ul>
-            <li>cada ${data.nome.toLocaleLowerCase()} gera <strong>${data.ls} LS</strong></li>
-            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} gerando <strong>${data.comprados*data.ls*lsMultiplier} LS</strong></li>
-            <li>${formatarNumero(data.gerado)} linhas geradas até agora</li>
+            <li>cada ${data.nome.toLocaleLowerCase()} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LS</li>
+            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} gerando ${formatarNumero((data.comprados*data.ls*lsMultiplier).toFixed(1))} LS</li>
+            <li>${formatarNumero(Math.floor(data.gerado))} linhas geradas até agora</li>
           </ul>
       `
     }
+
+    const custo = custoAtual(data)
 
     tooltip.innerHTML = `
         <div class="tooltip-header">
@@ -664,7 +873,7 @@ function showTooltip(x = mouseX, y = mouseY) {
             <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
             <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
           </div>
-          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${formatarNumero(data.custoAtual)}</span>
+          <span class="tooltip-price ${pontos < custo ? 'high' : 'low'}">${formatarNumero(custo)}</span>
         </div>
         <div class="tooltip-content">
           <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
@@ -686,7 +895,7 @@ function showTooltip(x = mouseX, y = mouseY) {
           <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
           <strong class="tooltip-name">${data.nome}</strong>
         </div>
-        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
+        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${formatarNumero(data.custo)}</span>
       </div>
       <div class="tooltip-content">
         <span class="tooltip-function">${data.funcao}</span>
@@ -751,9 +960,9 @@ function showMobileTooltip(type, item) {
         </div>
         <div class="monile-tootltip--items">
             <ul>
-              <li>cada ${item.nome.toLocaleLowerCase()} gera <strong>${item.ls} LS</strong></li>
-              <li>${item.comprados} ${item.nome.toLocaleLowerCase()} gerando <strong>${item.comprados * item.ls * lsMultiplier} LS</strong></li>
-              <li>${formatarNumero(item.gerado)} linhas geradas até agora</li>
+              <li>cada ${item.nome.toLocaleLowerCase()} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LS</li>
+              <li>${item.comprados} ${item.nome.toLocaleLowerCase()} gerando ${formatarNumero((item.comprados * item.ls * lsMultiplier).toFixed(1))} LS</li>
+              <li>${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora</li>
             </ul>
         </div>
           <span class="tooltip-description">${item.descricao}</span>
@@ -833,6 +1042,7 @@ const renderEstruturas = () => {
   if (!contentList.querySelector('.estrutura')) contentList.innerHTML = ''
 
   const size = estruturas.filter(es => es.unlocked).length
+  // const size = 99
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
   estruturasFixed.forEach((item) => {
@@ -852,8 +1062,8 @@ const renderEstruturas = () => {
         estrutura.classList.remove('hidden')
         estrutura.classList.add('unlocked')
       }
-      custo.textContent = formatarNumero(item.custoAtual)
-      if (item.custoAtual > pontos) {
+      custo.textContent = formatarNumero(custoAtual(item))
+      if (custoAtual(item) > pontos) {
         custo.classList.add('high')
         custo.classList.remove('low')
       } else {
@@ -864,6 +1074,7 @@ const renderEstruturas = () => {
       return
     } 
 
+    const custo = custoAtual(item)
     const div = document.createElement("div")
     div.id = id
     div.innerHTML = (`
@@ -871,7 +1082,7 @@ const renderEstruturas = () => {
       <div class="item-content">
         <div class="item-text">
           <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
-          <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${formatarNumero(item.custoAtual)}</span>
+          <span class="cust ${custo> pontos ? 'high' : 'low'}">${formatarNumero(custo)}</span>
         </div>
         <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
         <button class="info-bttn">INFO</button>
@@ -950,8 +1161,8 @@ const renderUpgrades = () => {
         const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
         if (hasClickedInfo) return
         
-        buyUpgrade(item.id)
-        div.remove()
+        const hasBought = buyUpgrade(item.id)
+        if (hasBought) div.remove()
       })
 
       addSafeTouchListener(div.querySelector('.info-bttn'), () => showMobileTooltip('up', item))
@@ -970,12 +1181,12 @@ const renderUpgrades = () => {
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
 const buyEstrutura = (id) => {
   const estrutura = estruturas.find( e => e.id == id )
+  const custo = custoAtual(estrutura)
 
-  if (pontos < estrutura.custoAtual) return
+  if (pontos < custo) return
 
-  const custo = estrutura.custoAtual
   estrutura.comprados += 1
-  refresh(pontos, -custo)
+  refresh(-custo)
 
 }
 
@@ -988,7 +1199,9 @@ const buyUpgrade = (id) => {
   upgrade.efeito()
   upgrade.purchased = true
 
-  refresh(pontos, -upgrade.custo)
+  refresh(-upgrade.custo)
+
+  return true
 }
 
 // FIM DO CONTAINER DA DIREITA
@@ -1001,6 +1214,8 @@ const triggerCoffeeEvent = () => {
         if (Math.random() < coffeeProb) spawnCoffe()
     }, 1000)
 }
+
+let lastBonus = ''
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
 const spawnCoffe = (bonusId = null) => {
@@ -1038,49 +1253,50 @@ const spawnCoffe = (bonusId = null) => {
 
     // Ao clicar no café:
     div.addEventListener('click', () => {
-      const root = document.documentElement
-      const cookieSize = getComputedStyle(root).getPropertyValue('--cs')
-      const cookieSizeValue = parseInt(cookieSize)
-      // ADICIONAR ALGUM SOM
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
       const bonus = bonusList.find(b => b.id == bonusId) ?? escolherBonusComPeso(bonusList)
-      const efeito = bonus.efeito // Trigga o efeito do bônus
-      setBonus(bonus, efeito) // Coloca o bônus na tela
-      
-      // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
-      const alertCoffee = document.createElement('div')
-      alertCoffee.classList.add('alert-coffee')
-      alertCoffee.innerHTML = (`
-            <div class="alert-back"></div> 
-            <h2 class="alert-text alert-name">${bonus.nome}</h2>
-            <span class="alert-text">${efeito}</span>
-      `)
-      coffeeContainer.appendChild(alertCoffee)
-
-      const alertWidth = alertCoffee.offsetWidth
-      const alertHeight = alertCoffee.offsetHeight
-      alertCoffee.style.top = `max(calc(${alertHeight/2}px + .5vh), ${y})` // max() serve para evitar que parte do alerta fique para fora da tela
-      alertCoffee.style.left = `clamp(${(alertWidth*1.4/2) - (cookieSizeValue/2)}px, ${x}, calc(100vw - ${(alertWidth*1.4) - (cookieSizeValue/2)}px))` // clamp() cumpre o mesmo propósito: delimitar um min e max de onde o alerta estará
-
-      // Um pequeno delay para iniciar a animação de subida
-      setTimeout(() => {
-          alertCoffee.style.opacity = 1
-          alertCoffee.style.transform = `translate(calc(-50% + ${cookieSizeValue/2}px), -50%)`
-      }, 10)
-
-      // Depois de 3s, o alerta irá começar a desaparecer com um "fade-out"
-      setTimeout(() => {
-          alertCoffee.classList.add("fade-out")
-          alertCoffee.style.opacity = 0
-      }, 3000)
-
-      // Assim como o café, um listener é adicionado para saber quando a animação acaba para, então, remover a div do DOM
-      alertCoffee.addEventListener("transitionend", (e) => {
-          if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
-      })
+      setBonus(bonus) // Coloca o bônus na tela
+      spawnAlert(x, y)
       
       div.remove() // Remove o café
     })
+}
+
+function spawnAlert(x, y, bonus = lastBonus) {
+  const root = document.documentElement
+  const cookieSize = getComputedStyle(root).getPropertyValue('--cs')
+  const cookieSizeValue = parseInt(cookieSize)
+    // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
+  const alertCoffee = document.createElement('div')
+  alertCoffee.classList.add('alert-coffee')
+  alertCoffee.innerHTML = (`
+        <div class="alert-back"></div> 
+        <h2 class="alert-text alert-name">${bonus.nome}</h2>
+        <span class="alert-text">${bonus.efeito}</span>
+  `)
+  coffeeContainer.appendChild(alertCoffee)
+
+  const alertWidth = alertCoffee.offsetWidth
+  const alertHeight = alertCoffee.offsetHeight
+  alertCoffee.style.top = `max(calc(${alertHeight/2}px + .5vh), ${y})` // max() serve para evitar que parte do alerta fique para fora da tela
+  alertCoffee.style.left = `clamp(${(alertWidth*1.4/2) - (cookieSizeValue/2)}px, ${x}, calc(100vw - ${(alertWidth*1.4) - (cookieSizeValue/2)}px))` // clamp() cumpre o mesmo propósito: delimitar um min e max de onde o alerta estará
+
+  // Um pequeno delay para iniciar a animação de subida
+  setTimeout(() => {
+      alertCoffee.style.opacity = 1
+      alertCoffee.style.transform = `translate(calc(-50% + ${cookieSizeValue/2}px), -50%)`
+  }, 10)
+
+  // Depois de 3s, o alerta irá começar a desaparecer com um "fade-out"
+  setTimeout(() => {
+      alertCoffee.classList.add("fade-out")
+      alertCoffee.style.opacity = 0
+  }, 3000)
+
+  // Assim como o café, um listener é adicionado para saber quando a animação acaba para, então, remover a div do DOM
+  alertCoffee.addEventListener("transitionend", (e) => {
+      if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
+  })
 }
 
 // Essa função pega uma coordenada aleatória da tela para colocar o café, levando em conta os limites inferior e superior da tela, usando o tamanho do café como margem
@@ -1114,8 +1330,15 @@ const escolherBonusComPeso = (list) => {
 }
 
 // Faz o bonus do café funcionar de fato
-function setBonus(bonus, efeito) {
-  if (!bonus.icon) return // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
+function setBonus(bonus) {
+  if (!bonus.icon) {
+    lastBonus = {
+      nome: bonus.nome,
+      efeito: bonus.efeito,
+    }
+
+    return
+  } // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
 
   const active = boostsActive.find(b => b.nome == bonus.nome) // Verifica se já tem um boost ativo
 
@@ -1127,6 +1350,11 @@ function setBonus(bonus, efeito) {
     active.timeoutId = setTimeout(() => {
       removeBoost(bonus)
     }, bonus.duracao * 1000)
+
+    lastBonus = {
+      nome: active.nome,
+      efeito: active.efeito,
+  }
 
     const boostDiv = document.querySelector(`[data-nome="${bonus.nome}"]`)
     boostDiv.classList = 'boost'
@@ -1143,6 +1371,13 @@ function setBonus(bonus, efeito) {
   }, bonus.duracao * 1000)
 
   const expiresIn = Date.now() + bonus.duracao * 1000
+
+  const efeito = bonus.efeito
+
+  lastBonus = {
+    nome: bonus.nome,
+    efeito,
+  }
 
   const bonusActive = {
     id: bonus.id,
@@ -1367,7 +1602,7 @@ function setData(){
 // Toda vez que atualizar a página, ele atualiza os dados
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
-    console.log("AQUI");
+    // console.log("AQUI");
     atualizarPontos(pontos)
     setData()
   }
@@ -1401,13 +1636,17 @@ function reset(lsToo) {
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
   if (lsToo) {
-    refresh(0, 0)
+    refresh(-pontos)
     atualizarPontos(pontos);
   }
   location.reload()
 }
 
 // LINHAS POR SEGUNDO (FINALMENTE)
+
+function custoAtual(el) {
+    return Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
+}
 
 const timing = 0.1
 
@@ -1422,8 +1661,9 @@ function gerarPassivamente() {
 
 
   if (totalGerado == 0) return
-  lsPersecondContainer.textContent = `por segundo: ${formatarNumero(totalGerado / timing)}` 
-  refresh(pontos, totalGerado)
+  lsTOT = totalGerado / timing
+  lsPersecondContainer.textContent = `por segundo: ${formatarNumero(lsTOT.toFixed(1))}` 
+  refresh(totalGerado)
 }
 
 setInterval(gerarPassivamente, 1000*timing);

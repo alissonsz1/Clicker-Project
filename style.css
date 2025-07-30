@@ -19,6 +19,7 @@ button {
 :root {
     --cs: 86px; /* Coffee Size */
     --bs: rgba(0, 0, 0, .6); /* BOX SHADOW */
+    --ts: 3px 3px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Põe a fonte global */
@@ -131,7 +132,7 @@ body.matrix .table {
 
 /* Contém os textos do container da esquerda */
 .container-left--header {
-    text-shadow: 3px 3px 2px black;
+    text-shadow: var(--ts);
     display: flex;
     flex-direction: column;
 }
@@ -794,6 +795,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     justify-content: space-between;
     border-bottom: 1px solid var(--c1);
     padding-bottom: 5px;
+    text-shadow: var(--ts);
 }
 
 .tooltip-header.center {
@@ -816,6 +818,10 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     text-align: left;
     font-weight: bold;
     font-size: 1.3em;
+}
+
+.tooltip-price {
+    text-align: right;
 }
 
 .tooltip-header.center .tooltip-name {
@@ -841,7 +847,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip-description {
-    line-height: .7em;
+    line-height: .8em;
 }
 
 .tooltip-description::before { content: '"'; }
@@ -1112,9 +1118,14 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         min-height: auto;
     }
 
+    .container-left {
+        margin-top: 8.2rem;
+    }
+
     .container-left--header {
-        position: sticky;
-        top: .5em;
+        pointer-events: none;
+        position: fixed;
+        top: 2em;
         z-index: 50;
     }
 
