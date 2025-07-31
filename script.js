@@ -171,15 +171,17 @@ const upgrades = [
 const estruturas = [
   { 
     nome: "LED", 
+    plural: "LEDs",
     custoBase: 15, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'Não aumentam seu desempenho, mas aumentam sua moral.',
+    descricao: 'Não aumentam seu desempenho, mas sua moral sim.',
     ls: .5,
     gerado: 0,
   },
   { 
     nome: "Monitor", 
+    plural: "Monitores",
     custoBase: 100, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -189,6 +191,7 @@ const estruturas = [
   },
   { 
     nome: "IDE", 
+    plural: "IDEs",
     custoBase: 1100, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -198,6 +201,7 @@ const estruturas = [
   },
   { 
     nome: "Clippy", 
+    plural: "Clippies",
     custoBase: 12000, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -207,6 +211,7 @@ const estruturas = [
   },
   { 
     nome: "DEV Júnior", 
+    plural: "DEVs Júniores",
     custoBase: 130000, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -216,6 +221,7 @@ const estruturas = [
   },
   { 
     nome: "Servidor local", 
+    plural: "Servidores locais",
     custoBase: 1400000,
     comprados: 0,
     icon: 'placeholder.png',
@@ -225,6 +231,7 @@ const estruturas = [
   },
   { 
     nome: "DEV Pleno", 
+    plural: "DEVs Plenos",
     custoBase: 20000000, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -233,16 +240,18 @@ const estruturas = [
     gerado: 0,
   },
   { 
-    nome: "Cloud", 
+    nome: "Cloud",
+    plural: "Clouds",
     custoBase: 330000000, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'Seus códigos agora suspensos no limbo da internet',
+    descricao: 'Seus códigos agora suspensos no limbo da internet.',
     ls: 200000,
     gerado: 0,
   },
   { 
     nome: "DEV Sênior", 
+    plural: "DEVs Sêniores",
     custoBase: 5100000000, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -252,15 +261,17 @@ const estruturas = [
   },
     { 
     nome: "Data Center", 
+    plural: "Data Centers",
     custoBase: 75000000000, 
     comprados: 0,
     icon: 'placeholder.png',
-    descricao: 'Armazena zettabytes de memória! (e seus dados mais obscuros).',
+    descricao: 'Armazena zettabytes de memória (e seus dados mais obscuros).',
     ls: 7700000,
     gerado: 0,
   },
   { 
     nome: "IA ultra-generativa", 
+    plural: "IAs ultra-generativas",
     custoBase: 1000000000000, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -270,6 +281,7 @@ const estruturas = [
   },
   { 
     nome: "PC quântico", 
+    plural: "PCs quânticos",
     custoBase: 14000000000000, 
     comprados: 0,
     icon: 'placeholder.png',
@@ -455,8 +467,10 @@ let listUpgrades; // lista de upgrades comprados
 let listStructures; // lista de estruturas comprados
 let debug = false; // debugar parte do código
 let currentMusic = null // Controla qual música está tocando no momento
-let fadeOutInterval = null;
-let fadeInInterval = null;
+let fadeOutInterval = null
+let fadeInInterval = null
+let gameInterval = null
+let coffeeInterval = null
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -470,6 +484,7 @@ const tooltip = document.querySelector('.tooltip') // Container que armazenas as
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
 const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
+const lbContentContainer = document.querySelector('.leaderboard-content')
 const lsPersecondContainer = document.querySelector('.ls-persecond')
 const computerCodelinesContainer = document.querySelector(".computer-codelines");
 const modalContainer = document.querySelector('.modal')
@@ -492,13 +507,21 @@ function atualizarPontos(novoValor) {
 // LEADERBOARD
 
 addSafeTouchListener(leaderboardWrapperContainer, toggleMobileLeaderboard)
-// leaderboardWrapperContainer.addEventListener('touchend', toggleMobileLeaderboard)
-const lbContentContainer = document.querySelector('.leaderboard-content')
 
 lbContentContainer.addEventListener("transitionend", (e) => {
   if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
     leaderboardWrapperContainer.classList.remove('enabled')
   }
+})
+
+leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
+  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+})
+
+leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
+  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
 function toggleMobileLeaderboard(e) {
@@ -510,18 +533,30 @@ function toggleMobileLeaderboard(e) {
   if (isEnabled) {
     lbContentContainer.style.opacity = 0
     leaderboardWrapperContainer.style.background = 'transparent'
+    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+
   } else {
     leaderboardWrapperContainer.classList.toggle('enabled')
     void lbContentContainer.offsetWidth
     lbContentContainer.style.opacity = 1
     leaderboardWrapperContainer.style.background = 'var(--bs)'
+    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
   }
 }
 
-function renderLeaderboard(jogadores, idAtual = id) {
-  jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
-  const yourPlayer = jogadores.find(j => j.companyName === company);
+window.addEventListener('dispatchLeaderboard', (e) => {
+  renderLeaderboard(e.detail.lb)
+})
 
+function requestLeaderboard() {
+    const event = new CustomEvent("requestLeaderboard")
+
+    window.dispatchEvent(event);
+}
+
+function renderLeaderboard(jogadores) {
+  jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
+  const yourPlayer = jogadores.find(j => j.id == idPlayer);
 
   const container = document.querySelector(".leaderboard-content>ul");
   const prevPos = document.querySelector('.lb--prev-pos')
@@ -531,9 +566,10 @@ function renderLeaderboard(jogadores, idAtual = id) {
 
   let topJogadores = jogadores.slice(0, Math.min(jogadores.length, 11))
 
-  const hasPlayerInTop = topJogadores.some(j => j.companyName == company)
+  const hasPlayerInTop = topJogadores.some(j => j.id == idPlayer)
   if (!hasPlayerInTop) {
     const newPlayer = {
+      id: idPlayer,
       companyName: company,
       lsCount: pontos,
       pos: yourPlayer?.pos
@@ -542,14 +578,15 @@ function renderLeaderboard(jogadores, idAtual = id) {
   }
 
   container.childNodes.forEach(j => {
-    const jName = j.id.replace("lb-jogador", "")
-    if (!topJogadores.find(tj => tj.companyName.replace(' ', '') == jName.replace(' ', ''))) j.remove()
+    const jID = j.id
+    if (!topJogadores.find(tj => tj.id == jID)) j.remove()
   })
 
-  topJogadores.map((_, id) => ({..._, id})).forEach((jogador, index) => {
-    const jogadorEl = document.getElementById(`lb-jogador${jogador.companyName.replace(' ', '')}`)
-    const isVoce = jogador.companyName == company
+  topJogadores.forEach((jogador, index) => {
+    const jogadorEl = document.getElementById(jogador.id)
+    const isYou = jogador.id == idPlayer
     const pos = jogador.pos
+
 
     if (jogadorEl) {
       const pointsEl = jogadorEl.querySelector('.lb-number')
@@ -566,15 +603,14 @@ function renderLeaderboard(jogadores, idAtual = id) {
     }
 
     const li = document.createElement("li");
-    // const isVoce = jogador.id === idAtual;
 
-    if (isVoce) li.className = 'you'
-    li.id = `lb-jogador${jogador.companyName.replace(' ', '')}`
+    if (isYou) li.className = 'you'
+    li.id = jogador.id
     li.style.order = pos
     li.style.zIndex = pos >= 11 ? 200 : 200-pos
     li.innerHTML = `
       <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
-      <span class="lb-name">${jogador.companyName}${isVoce ? ' <strong>(VOCÊ)</strong>' : ''}</span>
+      <span class="lb-name">${jogador.companyName}${isYou ? ' <strong>(VOCÊ)</strong>' : ''}</span>
       <span class="lb-number">${formatarNumero(jogador.lsCount)}</span>
     `
 
@@ -587,18 +623,11 @@ function renderLeaderboard(jogadores, idAtual = id) {
 }
 
 // Socket para toda vez que receber uma atualização do db
-socket.onmessage = (e) => {
-  // ESTRUTURA = {id, companyName, lsCount}
-  listDataLeaderboard = JSON.parse(e.data).player;
-
-  listDataLeaderboard.find(obj => {
-    if(obj.id == id){
-      company = obj.companyName;
-    }
-  })
-
-  renderLeaderboard(listDataLeaderboard, 0, companyName, pontos);
-}
+// socket.onmessage = (e) => {
+//   // ESTRUTURA = {id, companyName, lsCount}
+//   listDataLeaderboard = JSON.parse(e.data).player;
+//   renderLeaderboard(listDataLeaderboard);
+// }
 
 // FIM DO LEADERBOARD
 
@@ -614,16 +643,12 @@ window.addEventListener("updateCompany", (e) => {
 window.addEventListener("dispatchPlayerData", (event) => {
   //Coleta os dados do player e coloca em variáveis e postam no index
   let loadingPlayer = event.detail.player;
-
   company = loadingPlayer.companyName
-
   companyName.textContent = company;
 
-  id = loadingPlayer.id;
 
   // Verifica quais estrutras e upgrades estão salvos e atualiza da lista principal
   listUpgrades = JSON.parse(localStorage.getItem("upgrades"))?.salve || []
-
   listStructures = JSON.parse(localStorage.getItem("estruturas"))?.salve || []
 
   listUpgrades.forEach(item => {
@@ -645,10 +670,7 @@ window.addEventListener("dispatchPlayerData", (event) => {
     })
   })
 
-
-  pontos = loadingPlayer.lsCount;
-
-  refresh(pontos)
+  refresh(loadingPlayer.lsCount)
 })
 
 // Traz os dados do leaderboard do backend na primeira execução
@@ -766,7 +788,6 @@ function checarDesbloqueios(pontos) {
       notificacoes.estruturas.add(index)
       estrutura.unlocked = true
       atualizarIndicadores()
-
     }
   })
 }
@@ -779,7 +800,7 @@ function atualizarIndicadores() {
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
 
-  if (notificacoes.upgrades.size > 0 || notificacoes.estruturas.size > 0) playSound('/static/assets/sounds/not.ogg', .4)
+  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.ogg', .4)
 }
 
 function addSafeTouchListener(element, onValidTouchEnd) {
@@ -819,7 +840,7 @@ button.addEventListener('click', (e) => {
   click.classList.add('fading-up')
 
 
-  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .6)
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .4)
 
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
@@ -850,20 +871,12 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (window.matchMedia('(pointer: coarse)').matches) return
+  if (window.matchMedia('(pointer: coarse)').matches || !modalContainer.classList.contains('disabled')) return
 
   mouseX = e.clientX
   mouseY = e.clientY
 
   showTooltip()
-})
-
-leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
-  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
-})
-
-leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
-  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
 function showTooltip(x = mouseX, y = mouseY) {
@@ -888,8 +901,8 @@ function showTooltip(x = mouseX, y = mouseY) {
     if (data.unlocked && data.comprados > 0) {
       extraInfo = `
           <ul>
-            <li>cada ${data.nome.toLocaleLowerCase()} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LS</li>
-            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} gerando ${formatarNumero((data.comprados*data.ls*lsMultiplier).toFixed(1))} LS</li>
+            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LS</li>
+            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero((data.comprados*data.ls*lsMultiplier).toFixed(1))} LS</li>
             <li>${formatarNumero(Math.floor(data.gerado))} linhas geradas até agora</li>
           </ul>
       `
@@ -990,8 +1003,8 @@ function showMobileTooltip(type, item) {
         </div>
         <div class="monile-tootltip--items">
             <ul>
-              <li>cada ${item.nome.toLocaleLowerCase()} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LS</li>
-              <li>${item.comprados} ${item.nome.toLocaleLowerCase()} gerando ${formatarNumero((item.comprados * item.ls * lsMultiplier).toFixed(1))} LS</li>
+              <li>cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LS</li>
+              <li>${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero((item.comprados * item.ls * lsMultiplier).toFixed(1))} LS</li>
               <li>${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora</li>
             </ul>
         </div>
@@ -1465,8 +1478,6 @@ function removeBoost(id) {
   }
 }
 
-triggerCoffeeEvent()
-
 // FIM DO EVENTO DO CAFÉ
 
 // FUNÇÃO EFEITO MATRIX (https://github.com/resolvendobug/efeito-matrix)
@@ -1789,19 +1800,19 @@ window.addEventListener('submitError', (e) => {
 })
 
 window.addEventListener('submitSucess', (e) => {
-  console.log("SUBMITR")
   company = e.detail.companyName;
   companyName.textContent = company;
   modalErrorMessage = ''
   closeModal()
-  
+  startGame()
+  console.log(e)
+  if (e.detail.hasToRenderLb) requestLeaderboard()
 })
 
 // VERIFICAR SE A PÁGINA FOI CARREGADA
 //Seta o data no localStorage
 function setData(){
-
-  if(debug) return
+  if (debug) return
 
   // verifica as upgrades compradas e armazenas
   let listPatchUpgrades = [];
@@ -1825,7 +1836,7 @@ function setData(){
 
 // Toda vez que atualizar a página, ele atualiza os dados
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
+  if (document.visibilityState === 'hidden' && !!company) {
     atualizarPontos(pontos)
     setData()
   }
@@ -1848,12 +1859,28 @@ document.addEventListener('touchmove', e => {
   }
 }, { passive: false });
 
-// Salva os dados a cada tempo
-setInterval(() =>{
-  setData();
-  atualizarPontos(pontos);
-}, 1000 * 3)
+// FUNÇÕES ESSENCIAIS
 
+renderEstruturas()
+
+function startGame() {
+  gameInterval = setInterval(() =>{
+    setData();
+    atualizarPontos(pontos);
+    requestLeaderboard()
+  }, 1000 * 5);
+
+  setTimeout(() => {
+    coffeeInterval = setInterval(() => {
+      if (Math.random() < coffeeProb) spawnCoffe()
+    }, 1000)
+  }, 1000 * 15)
+}
+
+function endGame() {
+  gameInterval = null
+  coffeeInterval = null
+}
 
 function reset(lsToo, cookiesToo) {
   debug = true

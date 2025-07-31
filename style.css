@@ -244,9 +244,12 @@ body.evil .container-left--computer {
 
 .code-block {
     /* height: calc(var(--fs)/2); */
-    background-color: #008080;
     border-radius: 3px;
     transition: width 0.3s;
+}
+
+body.matrix .code-block, body.evil .code-block  {
+    background-color: #008080 !important; 
 }
 
 @keyframes pop {
@@ -399,6 +402,7 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
 
     align-self: stretch;
     /* background-color: var(--c2); */
+    font-size: 1em;
     padding: 0 .5em;
     border: var(--c1b);
     border-radius: 5px;
@@ -669,6 +673,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     flex-grow: 1;
     font-size: 1em;
     padding: .5em;
+    min-width: 0;
     cursor: auto;
     color: white;
 }
@@ -1204,7 +1209,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     }
 
     .container-left {
-        margin-top: 8.2rem;
+        margin-top: 7rem;
     }
 
     .container-left--header {

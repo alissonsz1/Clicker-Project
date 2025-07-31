@@ -113,6 +113,17 @@ def lsPatch(request, *args, **kwargs):
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
+# Requisita os dados para o leaderboard
+def leaderboard_data(request, *args, **kwargs):
+    if request.method == "GET":
+        players = Companies.objects.order_by('-lsCount') # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
+
+        # converte em lista
+        data = list(players.values("companyName", "lsCount", "id"))
+        return JsonResponse(data, safe=False)
+
+
+
 # Create your views here.
 
 # Renderiza as páginas html

@@ -1,6 +1,15 @@
 // Funções
 
 // Manda os dados do Player para o 
+
+function dispatchLeaderboard(leaderboardList){
+    const event = new CustomEvent("dispatchLeaderboard", {
+        detail: { lb: leaderboardList }
+    })
+
+    window.dispatchEvent(event);
+}
+
 function dispatchPlayerData(playerData){
     const event = new CustomEvent("dispatchPlayerData", {
         detail: { player: playerData }
@@ -9,18 +18,9 @@ function dispatchPlayerData(playerData){
     window.dispatchEvent(event);
 }
 
-// Manda os dados iniciais do learderboard para script.js
-function dispatchLearderboardData(data){
-    const event = new CustomEvent("dispatchLearderboardData", {
-        detail: {leaderboardData: data}
-    });
-
-    window.dispatchEvent(event);
-}
-
-function dispatchNameSubmit(type, obj) {
+function dispatchNameSubmit(type, obj, hasToRenderLb = false) {
     const event = new CustomEvent(type, {
-        detail: obj
+        detail: {...obj, hasToRenderLb}
     })
 
     window.dispatchEvent(event);
@@ -75,10 +75,10 @@ function getData(){
             // caso o idPlayer não tenha valor, ele executa o código abaixo.
             playerDetails = data.find( obj => obj.id == idPlayer );
             if(playerDetails){
-                dispatchNameSubmit('submitSucess', {companyName: "loading"});
                 dispatchPlayerData(playerDetails); // esse manda todos os dados dp player
+                dispatchNameSubmit('submitSucess', {companyName: playerDetails.companyName});
                 data.sort((a,b)=>{ return b.lsCount - a.lsCount })
-                dispatchLearderboardData(data);
+                dispatchLeaderboard(data);
             } else {
                 // AQUI, TEM O PLAYER TEM UM ID NO COOKIE, MAS NÃO TEM ESSE ID CADASTRADO NO BD
                 dispatchNameSubmit('submitError', {error: "Player não encontrado"})
@@ -109,8 +109,9 @@ function postCompany(post){
         })
         .then(data => {
             lsCount = 0;
+            idPlayer = data.id;
             setCookie("id", data.id, 8);
-            idPlayer = getCookie("id");
+            dispatchNameSubmit('submitSucess', {companyName: post.companyName}, true)
         })
         .catch(err => {
             console.error("ERRO:",err)
@@ -151,8 +152,13 @@ function updateNamePlayer(name){
     })
     .then(data => {
 
-        if(!name) {
+        if (!name) {
             dispatchNameSubmit('submitError', {error: "Campo vazio!"})
+            return
+        }
+
+        if (String(name).length > 15) {
+            dispatchNameSubmit('submitError', {error: "Nome muito longo!"})
             return
         }
             
@@ -161,7 +167,6 @@ function updateNamePlayer(name){
         if(existName){
             dispatchNameSubmit('submitError', {error: "Nome já existente!"})
         } else {
-            dispatchNameSubmit('submitSucess', {companyName: name})
             postCompany({"companyName": name});
         }
     })
@@ -171,7 +176,7 @@ function updateNamePlayer(name){
 }
 
 // RODAR AO INICIALIZAR
-if(idPlayer){
+if (idPlayer){
     getData()
 }
 // Eventos windows
@@ -184,11 +189,30 @@ window.addEventListener("pontosAtualizados", (event) => {
 
 });
 
-
 // Escuta caso o player acione o botão do modal
-window.addEventListener("submitName", (event)=>{
+window.addEventListener("submitName", (event) => {
     let newNamePlayer = event.detail.newName;
     updateNamePlayer(newNamePlayer);
+})
+
+window.addEventListener("requestLeaderboard", (e) => {
+    fetch("/leaderboard/", {
+        method:"GET",
+        headers: {
+            "Content-Type":"application/json",
+            "X-CSRFToken": csrfToken,
+        },
+    })
+    .then(res => {
+      if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
+      return res.json()
+    })
+    .then(data => {
+      dispatchLeaderboard(data)
+    })
+    .catch( err => {
+      console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
+    })
 })
 
 // CASO QUEIRA, PODE-SE DELETAR O COOKIE (AMBIENTE DE TESTE)

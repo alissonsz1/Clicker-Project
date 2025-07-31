@@ -7,6 +7,7 @@ from .views import (
     companiesGetData,
     companiesPostName,
     lsPatch,
+    leaderboard_data,
 )
 
 # As rotas de solicitação
@@ -15,4 +16,5 @@ urlpatterns = [
     path('get-data/', companiesGetData, name="companies-get-data"), # coletar os dados do backend
     path('post-data/', companiesPostName, name="companies-post-data"), # postar os dados iniciais
     path('patch-ls-data/', lsPatch, name="companies-patch-ls"),  # atualizar as linhas de código
+    path('leaderboard/', leaderboard_data,name="leaderboard-get"),
 ]
