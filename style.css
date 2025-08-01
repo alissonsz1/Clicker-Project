@@ -358,13 +358,25 @@ body.matrix .container-right, body.evil .container-right {
 body.matrix .content-item, body.evil .content-item { background-color: color-mix(in srgb, var(--c3) 80%, transparent); }
 
 .item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     aspect-ratio: 1/1;
     width: 50px;
     transition: opacity var(--time) linear, filter 1s linear;
 }
 
+.item-icon img {
+    filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.5));
+    /* aspect-ratio: 1/1; */
+    /* width: 150%; */
+    /* max-width: fit-content; */
+    /* position: absolute; */
+}
+
 /* Deixa o icone preto enquanto ele nao for desbloqueado */
-.content-item.hidden .item-icon {
+.content-item.hidden .item-icon, .tooltip-icon.hidden {
     filter: brightness(0);
     opacity: .7;
 }
@@ -646,6 +658,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     background-repeat: no-repeat;
     background-position: 50%;
     cursor: pointer;
+    transition: filter .2s ease;
 }
 
 /* Propriedade que serve pra animar o "conic-gradient" (efeito de cooldown) */
@@ -765,7 +778,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip {
-    width: 350px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -810,8 +823,9 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip-icon {
-    aspect-ratio: 1/1;
-    width: 40px;
+    /* aspect-ratio: 1/1; */
+    filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.5));
+    width: 60px;
 }
 
 .tooltip-name {
@@ -838,7 +852,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     font-style: italic;
     text-align: right;
     opacity: .6;
-    max-width: 300px;
+    max-width: 350px;
     align-self: flex-end;
 }
 
@@ -879,7 +893,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 /* LEADERBOARD */
 
 .leaderboard-wrapper {
-    --cont-w: 250px;
+    --cont-w: 280px;
     --cont-h: 326px;
     --icon-size: 52px;
     display: flex;
@@ -993,7 +1007,9 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     /* border-bottom: 2px solid var(--c1); */
     border-bottom: none;
     border-top: 2px solid var(--c2);
-    color: #914a4a;
+    /* color: #613737; */
+    /* background-color: var(--c4); */
+    /* color: white; */
 }
 
 
@@ -1030,6 +1046,10 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 
     .leaderboard-wrapper:hover .leaderboard-content li {
         transition: transform .2s ease, color .2s ease;
+    }
+
+    .boost:hover {
+        filter: brightness(1.3);
     }
 }
 
