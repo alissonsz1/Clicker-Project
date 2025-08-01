@@ -5,8 +5,8 @@ const upgrades = [
     custo: 100,
     descricao: 'Ninguém sabe pra que servem todos esses botões, mas eles estão lá.',
     funcao: 'Cada clique gera o dobro de linhas.',
-    // icon: 'mousegamer.png',
-    icon: 'placeholder.png',
+    icon: 'mouse.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
   {
@@ -14,8 +14,8 @@ const upgrades = [
     custo: 250,
     descricao: 'Ergonomia duvidosa, produtividade inegável.',
     funcao: 'Cada clique gera o dobro de linhas.',
-    // icon: 'cadeiragamer.png',
-    icon: 'placeholder.png',
+    icon: 'cadeira.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
   {
@@ -23,8 +23,8 @@ const upgrades = [
     custo: 50000,
     descricao: 'Cada cor te deixa 1% mais feliz. São 16M de cores.',
     funcao: 'Cada clique gera 1% das suas LS.',
-    // icon: 'teclado.png',
-    icon: 'placeholder.png',
+    icon: 'teclado.png',
+    // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
   },
   {
@@ -32,26 +32,26 @@ const upgrades = [
     custo: 12000,
     descricao: 'feat: commita com base nos seus pensamentos.',
     funcao: 'Cada clique gera o dobro de linhas.',
-    // icon: 'commitbot.png',
-    icon: 'placeholder.png',
+    icon: 'commitbot.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
   {
-    nome: "Não perturbe",
+    nome: "Placa gamer",
     custo: 1500,
-    descricao: 'Dê um fim às notificações chatas do Discord!',
+    descricao: 'Impede seu irmão caçula de perturbar seu foco.',
     funcao: 'Aumenta geração de LS em 10%.',
-    // icon: 'naoperturbe.png',
-    icon: 'placeholder.png',
+    icon: 'placa.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.1,
   },
   {
     nome: "ChatGPT Licenciado",
     custo: 4000,
-    descricao: 'Agora com 5% menos alucinação.',
+    descricao: 'Agora com 5% menos alucinações.',
     funcao: 'Aumenta geração de LS em 10%.',
-    // icon: 'chatgpt.png',
-    icon: 'placeholder.png',
+    icon: 'chatgpt.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.1,
   },
   {
@@ -59,8 +59,8 @@ const upgrades = [
     custo: 100000,
     descricao: 'Seus cafés mais rápidos e mais gostosos!',
     funcao: 'Dobra a chance de aparecer um cafézinho.',
-    // icon: 'cafeteira.png',
-    icon: 'placeholder.png',
+    icon: 'cafeteira.png',
+    // icon: 'placeholder.png',
     efeito: () => coffeeProb *= 2,
   },
   {
@@ -68,8 +68,8 @@ const upgrades = [
     custo: 2500,
     descricao: 'Menos idas à cozinha, mais código.',
     funcao: 'Aumenta geração de LS em 10%.',
-    // icon: 'frigobar.png',
-    icon: 'placeholder.png',
+    icon: 'frigobar.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.10,
   },
   {
@@ -77,17 +77,17 @@ const upgrades = [
     custo: 2000,
     descricao: 'Por algum motivo, diz que já está 97% cheio...',
     funcao: 'Cada clique gera o dobro de linhas.',
-    // icon: 'pendrive.png',
-    icon: 'placeholder.png',
+    icon: 'pendrive.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
   {
-    nome: "Gatinho",
+    nome: "Gatinho fofo",
     custo: 10000,
     descricao: 'Meoow',
     funcao: 'Aumenta consideravelmente suas LS.',
-    // icon: 'gatinho.png',
-    icon: 'placeholder.png',
+    icon: 'gatinho.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 2,
   },
   {
@@ -95,8 +95,8 @@ const upgrades = [
     custo: 3000,
     descricao: 'Previne você de ter uma tendinite.',
     funcao: 'Aumenta geração de LS em 5%.',
-    // icon: 'mousepad.png',
-    icon: 'placeholder.png',
+    icon: 'mousepad.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -104,17 +104,17 @@ const upgrades = [
     custo: 5000,
     descricao: 'Chega de ping alto no lolzinho!',
     funcao: 'Aumenta geração de LS em 5%.',
-    // icon: 'fibra.png',
-    icon: 'placeholder.png',
+    icon: 'fibra.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
     nome: "Cubo mágico",
     custo: 4500,
-    descricao: 'A diferença entre o cubo mágico e a programação? Da programação eu desisto.',
+    descricao: 'Save a diferença entre o cubo mágico e a programação? É que da programação eu desisto.',
     funcao: 'Chance de 5% de dobrar um clique.',
-    // icon: 'cubo.png',
-    icon: 'placeholder.png',
+    icon: 'cubo.png',
+    // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => {
       if (Math.random() < 0.05) return boost
       else return 0
@@ -125,17 +125,17 @@ const upgrades = [
     custo: 3500,
     descricao: 'Para esfriar sua cabeça (e evitar um burnout).',
     funcao: 'Aumenta geração de LS em 10%.',
-    // icon: 'ventilador.png',
-    icon: 'placeholder.png',
+    icon: 'ventilador.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.10,
   },
   {
     nome: "Fone antirruído",
     custo: 6500,
-    descricao: 'Abafa até 99,9999% dos ruídos (inclusive os internos).',
+    descricao: 'Abafa até 99,999999999999999999999999999999999999999999999999999% dos ruídos.',
     funcao: 'Aumenta geração de LS em 10%.',
-    // icon: 'fone.png',
-    icon: 'placeholder.png',
+    icon: 'fone.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.10,
   },
   {
@@ -143,8 +143,8 @@ const upgrades = [
     custo: 7500,
     descricao: 'Aumenta exponencialmente suas chances de arranjar um emprego - Obrigado, Guanabara!',
     funcao: 'Cada clique gera +0.5 linha de código para cada construção comprada',
-    // icon: 'certificado.png',
-    icon: 'placeholder.png',
+    icon: 'certificado.png',
+    // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5),
   },
   {
@@ -152,8 +152,8 @@ const upgrades = [
     custo: 12000,
     descricao: 'HD é coisa do passado, agora a moda é comprar SSD usado.',
     funcao: 'Aumenta geração de LS em 10%.',
-    // icon: 'ssd.png',
-    icon: 'placeholder.png',
+    icon: 'ssd.png',
+    // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.10,
   },
   {
@@ -161,8 +161,8 @@ const upgrades = [
     custo: 20000,
     descricao: 'RTX 5090 só pra assistir tutoriais em 8K!',
     funcao: 'Cada clique gera o dobro de linhas.',
-    // icon: 'gpu.png',
-    icon: 'placeholder.png',
+    icon: 'gpu.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
 ].map((up, i) => ({...up, id: `up${i+1}`})).sort((a, b) => a.custo - b.custo)
@@ -174,8 +174,8 @@ const estruturas = [
     plural: "LEDs",
     custoBase: 15, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'Não aumentam seu desempenho, mas sua moral sim.',
+    icon: 'led.png',
+    descricao: 'Não aumenta seu desempenho, mas sua moral sim.',
     ls: .5,
     gerado: 0,
   },
@@ -184,7 +184,7 @@ const estruturas = [
     plural: "Monitores",
     custoBase: 100, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'monitor.png',
     descricao: 'Telas nunca são demais.',
     ls: 5,
     gerado: 0,
@@ -194,7 +194,7 @@ const estruturas = [
     plural: "IDEs",
     custoBase: 1100, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'ide.png',
     descricao: 'VS Code? Eclipse? Sublime? IntelliJ IDEA? Por que não TODOS eles?',
     ls: 40,
     gerado: 0,
@@ -204,7 +204,7 @@ const estruturas = [
     plural: "Clippies",
     custoBase: 12000, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'clippy.png',
     descricao: 'Olá! Eu sou o Clippy, seu assistente. Gostaria de uma ajudinha?',
     ls: 250,
     gerado: 0,
@@ -214,7 +214,7 @@ const estruturas = [
     plural: "DEVs Júniores",
     custoBase: 130000, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'dev_jr.png',
     descricao: 'Não faz ideia do que está fazendo, mas ele tenta... Tadinho.',
     ls: 1500,
     gerado: 0,
@@ -224,7 +224,7 @@ const estruturas = [
     plural: "Servidores locais",
     custoBase: 1400000,
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'servidor.png',
     descricao: 'Quando seu PC não aguenta mais, você terceiriza.',
     ls: 8000,
     gerado: 0,
@@ -234,7 +234,7 @@ const estruturas = [
     plural: "DEVs Plenos",
     custoBase: 20000000, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'dev_pleno.png',
     descricao: 'DEV Júnior+ com uma pitada de independência',
     ls: 35000,
     gerado: 0,
@@ -244,8 +244,8 @@ const estruturas = [
     plural: "Clouds",
     custoBase: 330000000, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'Seus códigos agora suspensos no limbo da internet.',
+    icon: 'cloud.png',
+    descricao: 'Seus códigos agora suspensos no limbo da internet',
     ls: 200000,
     gerado: 0,
   },
@@ -254,7 +254,7 @@ const estruturas = [
     plural: "DEVs Sêniores",
     custoBase: 5100000000, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'dev_senior.png',
     descricao: 'Codifica em silêncio absoluto e surge apenas para resolver os bugs alheios.',
     ls: 1100000,
     gerado: 0,
@@ -264,8 +264,8 @@ const estruturas = [
     plural: "Data Centers",
     custoBase: 75000000000, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'Armazena zettabytes de memória (e seus dados mais obscuros).',
+    icon: 'data_center.png',
+    descricao: 'Armazena zettabytes de memória! (e seus dados mais obscuros).',
     ls: 7700000,
     gerado: 0,
   },
@@ -274,7 +274,7 @@ const estruturas = [
     plural: "IAs ultra-generativas",
     custoBase: 1000000000000, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'ia.png',
     descricao: 'É tipo um DEV, só que mais rápido, mais esperto, mais eficaz, mais sagaz, mais sucinto, mais... Deixa pra lá.',
     ls: 45000000,
     gerado: 0,
@@ -284,7 +284,7 @@ const estruturas = [
     plural: "PCs quânticos",
     custoBase: 14000000000000, 
     comprados: 0,
-    icon: 'placeholder.png',
+    icon: 'quantico.png',
     descricao: 'Resolve os bugs antes mesmo deles surgirem.',
     ls: 230000000,
     gerado: 0,
@@ -913,7 +913,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     tooltip.innerHTML = `
         <div class="tooltip-header">
           <div class="tooltip-header--left">
-            <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
+            <img src="/static/assets/icons/${data.icon}" class="tooltip-icon ${!data.unlocked ? "hidden" : ''}"/>
             <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
           </div>
           <span class="tooltip-price ${pontos < custo ? 'high' : 'low'}">${formatarNumero(custo)}</span>
@@ -1123,7 +1123,7 @@ const renderEstruturas = () => {
     const div = document.createElement("div")
     div.id = id
     div.innerHTML = (`
-      <img src="/static/assets/icons/${item.icon}" class="item-icon"/>
+      <div class="item-icon"><img src="/static/assets/icons/${item.icon}"/></div>
       <div class="item-content">
         <div class="item-text">
           <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
@@ -1190,7 +1190,7 @@ const renderUpgrades = () => {
       div.id = id
 
       div.innerHTML = (`
-        <img src="/static/assets/icons/${item.icon}" class="item-icon"/>
+        <div class="item-icon"><img src="/static/assets/icons/${item.icon}"/></div>
         <div class="item-content">
           <div class="item-text">
             <span class="item-name">${item.nome}</span>
