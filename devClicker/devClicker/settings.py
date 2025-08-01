@@ -66,7 +66,7 @@ ROOT_URLCONF = 'devClicker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [f'{BASE_DIR.parent}'],
+        'DIRS': [f'{BASE_DIR.parent}/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,7 +135,6 @@ USE_TZ = True
 
 # Localização dos arquivos estáticos
 STATIC_URL = '/static/'
-
 
 # Define a pasta local que vai "ser" o static
 STATICFILES_DIRS = [
