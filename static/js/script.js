@@ -1380,7 +1380,7 @@ function setBonus(bonus) {
   if (!bonus.icon) {
     lastBonus = {
       nome: bonus.nome,
-      efeito: bonus.efeito(),
+      efeito: bonus.efeito,
     }
 
     return
@@ -1400,7 +1400,7 @@ function setBonus(bonus) {
     const boostDiv = document.querySelector(`[data-id="${bonus.id}"]`)
     lastBonus = {
       nome: active.nome,
-      efeito: active.efeito(),
+      efeito: active.efeito,
   }
 
     boostDiv.classList = 'boost'
@@ -1418,7 +1418,7 @@ function setBonus(bonus) {
 
   const expiresIn = Date.now() + bonus.duracao * 1000
 
-  const efeito = bonus.efeito()
+  const efeito = bonus.efeito
 
   lastBonus = {
     nome: bonus.nome,
