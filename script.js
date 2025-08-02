@@ -398,7 +398,7 @@ const bonusList = [
     peso: 5,
     get efeito() {
         var coffeeStorm = setInterval(() => {
-            spawnCoffe('bn6')
+            spawnCoffee('bn6')
         }, 400)
 
         setTimeout(() => {
@@ -538,6 +538,21 @@ const modalInput = document.querySelector('.modal-input')
 const modalForm = document.querySelector('.modal-form')
 const modalErrorContainer = document.querySelector('.modal-error')
 const bulkButtons = document.querySelectorAll('.bulk')
+
+// PRELOAD (CACHE)
+const iconCache = {}
+
+function preloadIcons(iconList) {
+  iconList.forEach(icon => {
+    const img = new Image()
+    img.src = `/static/assets/icons/${icon}`
+    iconCache[icon] = img
+  })
+}
+
+preloadIcons(estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)))
+
+// FIM PRELOAD
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -942,6 +957,24 @@ function showTooltip(x = mouseX, y = mouseY) {
 
   if (atributtePre === 'es') {
     const data = estruturas.find(es => es.id === id)
+    const custo = custoAtual(data)
+
+    if (!tooltip.classList.contains('estrutura')) {
+      tooltip.className = 'tooltip estrutura'
+      tooltip.innerHTML = `
+          <div class="tooltip-header">
+            <div class="tooltip-header--left">
+              <img class="tooltip-icon"/>
+              <strong class="tooltip-name"></strong>
+            </div>
+            <span class="tooltip-price"></span>
+          </div>
+          <div class="tooltip-content">
+            <span class="tooltip-description"></span>
+          </div>
+          <div class="tooltip-extra"></div>
+      `
+    }
 
     let extraInfo = ``
 
@@ -955,22 +988,26 @@ function showTooltip(x = mouseX, y = mouseY) {
       `
     }
 
-    const custo = custoAtual(data)
+    const img = tooltip.querySelector('.tooltip-icon')
+    const newSrc = `/static/assets/icons/${data.icon}`
 
-    tooltip.innerHTML = `
-        <div class="tooltip-header">
-          <div class="tooltip-header--left">
-            <img src="/static/assets/icons/${data.icon}" class="tooltip-icon ${!data.unlocked ? "hidden" : ''}"/>
-            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
-          </div>
-          <span class="tooltip-price ${pontos < custo ? 'high' : 'low'}">${formatarNumero(custo)}</span>
-        </div>
-        <div class="tooltip-content">
-          <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
-        </div>
-        ${extraInfo}
-    `
-    tooltip.classList.remove('bonus')
+    if (img.src !== location.origin + newSrc) {
+      if (iconCache[data.icon]) {
+        console.log('EITA')
+        img.src = iconCache[data.icon].src // já foi carregado
+      } else {
+        console.log('OPAA')
+        img.src = newSrc // fallback, se não estiver no cache
+      }
+    }
+    img.classList.toggle('hidden', !data.unlocked)
+    tooltip.querySelector('.tooltip-name').textContent = data.unlocked ? data.nome : '???'
+    tooltip.querySelector('.tooltip-price').textContent = formatarNumero(custo)
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-description').textContent = data.unlocked ? data.descricao : '???'
+    tooltip.querySelector('.tooltip-extra').innerHTML = extraInfo
+    tooltip.querySelector('.tooltip-extra').classList.toggle('hidden', !extraInfo)
+
     tooltip.style.transform = 'translateY(-50%)'
     tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
     tooltip.style.opacity = 1
@@ -978,22 +1015,40 @@ function showTooltip(x = mouseX, y = mouseY) {
   }
   else if (atributtePre === 'up') {
     const data = upgrades.find(up => up.id === id)
-
-    tooltip.innerHTML = `
-      <div class="tooltip-header">
-        <div class="tooltip-header--left">
-          <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
-          <strong class="tooltip-name">${data.nome}</strong>
+    
+    if (!tooltip.classList.contains('upgrade')) {
+      tooltip.className = 'tooltip upgrade'
+      tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <div class="tooltip-header--left">
+            <img class="tooltip-icon"/>
+            <strong class="tooltip-name"></strong>
+          </div>
+          <span class="tooltip-price"></span>
         </div>
-        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${formatarNumero(data.custo)}</span>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-function">${data.funcao}</span>
-        <span class="tooltip-description">${data.descricao}</span>
-      </div>
-    `
+        <div class="tooltip-content">
+          <span class="tooltip-function"></span>
+          <span class="tooltip-description"></span>
+        </div>
+      `
+    }
 
-    tooltip.classList.remove('bonus')
+    const img = tooltip.querySelector('.tooltip-icon')
+    const newSrc = `/static/assets/icons/${data.icon}`
+
+    if (img.src !== location.origin + newSrc) {
+      if (iconCache[data.icon]) {
+        img.src = iconCache[data.icon].src // já foi carregado
+      } else {
+        img.src = newSrc // fallback, se não estiver no cache
+      }
+    }
+    tooltip.querySelector('.tooltip-name').textContent = data.nome
+    tooltip.querySelector('.tooltip-price').textContent = formatarNumero(data.custo)
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < data.custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-function').textContent = data.funcao
+    tooltip.querySelector('.tooltip-description').textContent = data.descricao
+
     tooltip.style.transform = 'translateY(-50%)'
     tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
     tooltip.style.opacity = 1
@@ -1003,17 +1058,23 @@ function showTooltip(x = mouseX, y = mouseY) {
   else if (atributtePre === 'bn') {
     const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()  
     const data = boostsActive.find(bn => bn.id === id)
+
+    if (!tooltip.classList.contains('bonus')) {
+      tooltip.className = 'tooltip bonus'
+      tooltip.innerHTML = `
+        <div class="tooltip-header center">
+          <strong class="tooltip-name"></strong>
+        </div>
+        <div class="tooltip-content">
+          <span class="tooltip-efeito"></span>
+        </div>
+      `
+    }
+
+    tooltip.querySelector('.tooltip-name').textContent = data.nome
+    tooltip.querySelector('.tooltip-efeito').textContent = data.efeito
     
-    tooltip.classList.add('bonus')
-    tooltip.innerHTML = `
-      <div class="tooltip-header center">
-        <strong class="tooltip-name">${data.nome}</strong>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-efeito">${data.efeito}</span>
-      </div>
-    `
-    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
+    const tooltipRect = tooltip.getBoundingClientRect()
     tooltip.style.left = `${x}px`
     tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
     tooltip.style.transform = `translateX(-50%)`
@@ -1327,14 +1388,14 @@ const buyUpgrade = (id) => {
 const triggerCoffeeEvent = () => {
     // A cada um segundo, verificar se o número aleatorizado é menor que a probabilidade, para então spawnar o coffee
     setInterval(() => {
-        if (Math.random() < coffeeProb) spawnCoffe()
+        if (Math.random() < coffeeProb) spawnCoffee()
     }, 1000)
 }
 
 let lastBonus = ''
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-const spawnCoffe = (bonusId = null) => {
+const spawnCoffee = (bonusId = null) => {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -1933,7 +1994,7 @@ function startGame() {
 
   setTimeout(() => {
     coffeeInterval = setInterval(() => {
-      if (Math.random() < coffeeProb) spawnCoffe()
+      if (Math.random() < coffeeProb) spawnCoffee()
     }, 1000)
   }, 1000 * 15)
 }

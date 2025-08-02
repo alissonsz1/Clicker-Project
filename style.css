@@ -336,6 +336,7 @@ body.matrix .container-right, body.evil .container-right {
 
 
 .cust {
+    text-align: left;
     font-weight: normal;
 }
 
@@ -958,7 +959,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip-icon {
-    /* aspect-ratio: 1/1; */
+    aspect-ratio: 1/1;
     filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.5));
     width: 60px;
 }
@@ -983,6 +984,15 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     justify-content: space-between;
 }
 
+.tooltip-content:has(+ .tooltip-extra:not(.hidden)) {
+    border-bottom: 1px solid var(--c1);
+}
+
+.tooltip-extra.hidden {
+    display: none;
+    visibility: hidden;
+}
+
 .tooltip-description {
     font-style: italic;
     text-align: right;
@@ -991,9 +1001,6 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     align-self: flex-end;
 }
 
-.tooltip-content:not(:last-child) {
-    border-bottom: 1px solid var(--c1);
-}
 
 .tooltip-description {
     line-height: .8em;
