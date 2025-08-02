@@ -111,7 +111,7 @@ const upgrades = [
   {
     nome: "Cubo mágico",
     custo: 4500,
-    descricao: 'Save a diferença entre o cubo mágico e a programação? É que da programação eu desisto.',
+    descricao: 'Sabe a diferença entre o cubo mágico e a programação? É que da programação eu desisto.',
     funcao: 'Chance de 5% de dobrar um clique.',
     icon: 'cubo.png',
     // icon: 'placeholder.png',
@@ -165,6 +165,51 @@ const upgrades = [
     // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
+  {
+    nome: "Calculadora científica",
+    custo: 30000,
+    descricao: 'Te ajuda com os cálculos que o professor jura que são triviais.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'calculadora.png',
+    // icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
+  {
+    nome: "Livro de Cálculo",
+    custo: 30000,
+    descricao: 'Previne você de zerar quatro provas seguidas de Cálculo I (acredite, é possível).',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'livro.png',
+    // icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
+  {
+    nome: "Energético",
+    custo: 30000,
+    descricao: 'Junte com café e veja a mágica da cafeína acontecer!',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'monster.png',
+    // icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
+  {
+    nome: "HUB USB",
+    custo: 30000,
+    descricao: 'Organiza (ou pelo menos tenta) o seu emaranhado de cabos.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'usb.png',
+    // icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
+    {
+    nome: "Óculos VR",
+    custo: 30000,
+    descricao: 'Te leva para fora dessa realidade cruel, monótona e apática, repleta de violência e ódio gratuito, onde sonhos são sufocados, esmagados, triturados - e sua força de trabalho é sugada até sua última gota de suor. Um belo gadget!',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'vr.png',
+    // icon: 'placeholder.png',
+    efeito: () => boost *= 2,
+  },
 ].map((up, i) => ({...up, id: `up${i+1}`})).sort((a, b) => a.custo - b.custo)
 
 // Estruturas "place holder" só para o código funcionar
@@ -176,7 +221,7 @@ const estruturas = [
     comprados: 0,
     icon: 'led.png',
     descricao: 'Não aumenta seu desempenho, mas sua moral sim.',
-    ls: .5,
+    ls: 0.5,
     gerado: 0,
   },
   { 
@@ -457,6 +502,7 @@ let pontos = 0;
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
 let lsTOT = 0
 let lsMultiplier = 1 // Multiplicador para as LS
+let bulkBuy = 1
 let coffeeProb = 0.03 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Estruturas' // Qual a aba ativa atualmente
@@ -491,6 +537,7 @@ const modalContainer = document.querySelector('.modal')
 const modalInput = document.querySelector('.modal-input')
 const modalForm = document.querySelector('.modal-form')
 const modalErrorContainer = document.querySelector('.modal-error')
+const bulkButtons = document.querySelectorAll('.bulk')
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -1060,6 +1107,21 @@ function closeMobileTootip() {
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
+bulkButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) return
+
+    playSound(`/static/assets/sounds/tab.ogg`, .5)
+
+    bulkButtons.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
+    btn.classList.add('active') // Depois, adiciona somente no que foi clicado
+
+    bulkBuy = Number(btn.dataset.bulk)
+
+    if (tabActive == 'Estruturas') renderEstruturas()
+  })
+})
+
 buttonsHeader.forEach((btn) => {
     btn.addEventListener("click", () => {
       if (btn.classList.contains('active')) return
@@ -1096,7 +1158,7 @@ const renderEstruturas = () => {
 
     // Se o item já está renderizado, não adiciona ele novamente, apenas atualiza
     if (estrutura) {
-      const custo = estrutura.querySelector('.cust')
+      const custoContainer = estrutura.querySelector('.cust')
       const itemName = estrutura.querySelector('.item-name')
       const comprados = estrutura.querySelector('.item-purchased')
 
@@ -1107,19 +1169,20 @@ const renderEstruturas = () => {
         estrutura.classList.remove('hidden')
         estrutura.classList.add('unlocked')
       }
-      custo.textContent = formatarNumero(custoAtual(item))
-      if (custoAtual(item) > pontos) {
-        custo.classList.add('high')
-        custo.classList.remove('low')
+      const custo = Math.round(sumPG(custoAtual(item), 1.15, bulkBuy))
+      custoContainer.textContent = formatarNumero(custo)
+      if (custo > pontos) {
+        custoContainer.classList.add('high')
+        custoContainer.classList.remove('low')
       } else {
-        custo.classList.add('low')
-        custo.classList.remove('high')
+        custoContainer.classList.add('low')
+        custoContainer.classList.remove('high')
       }
       
       return
     } 
 
-    const custo = custoAtual(item)
+    const custo = Math.round(sumPG(custoAtual(item), 1.15, bulkBuy))
     const div = document.createElement("div")
     div.id = id
     div.innerHTML = (`
@@ -1127,7 +1190,7 @@ const renderEstruturas = () => {
       <div class="item-content">
         <div class="item-text">
           <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
-          <span class="cust ${custo> pontos ? 'high' : 'low'}">${formatarNumero(custo)}</span>
+          <span class="cust ${custo > pontos ? 'high' : 'low'}">${formatarNumero(custo)}</span>
         </div>
         <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
         <button class="info-bttn">INFO</button>
@@ -1230,12 +1293,12 @@ const renderUpgrades = () => {
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
 const buyEstrutura = (id) => {
-  const estrutura = estruturas.find( e => e.id == id )
-  const custo = custoAtual(estrutura)
+  const estrutura = estruturas.find(e => e.id == id)
+  const custo = Math.round(sumPG(custoAtual(estrutura), 1.15, bulkBuy))
 
   if (pontos < custo) return
 
-  estrutura.comprados += 1
+  estrutura.comprados += bulkBuy
   refresh(-custo)
   
   playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
@@ -1634,9 +1697,8 @@ function generateCodeLine(add = 1) {
 
 // INICIO LINHAS POR SEGUNDO (FINALMENTE)
 
-function custoAtual(el) {
-    return Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
-}
+const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/(q - 1)
+const custoAtual = (el) => Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
 
 const timing = 0.1
 
@@ -1805,7 +1867,6 @@ window.addEventListener('submitSucess', (e) => {
   modalErrorMessage = ''
   closeModal()
   startGame()
-  console.log(e)
   if (e.detail.hasToRenderLb) requestLeaderboard()
 })
 
@@ -1882,7 +1943,7 @@ function endGame() {
   coffeeInterval = null
 }
 
-function reset(lsToo, cookiesToo) {
+function reset(lsToo = true, cookiesToo = true) {
   debug = true
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')

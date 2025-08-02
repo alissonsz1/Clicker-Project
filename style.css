@@ -248,6 +248,10 @@ body.evil .container-left--computer {
     transition: width 0.3s;
 }
 
+body.evil .line-number {
+    color: #3e777d;
+}
+
 body.matrix .code-block, body.evil .code-block  {
     background-color: #008080 !important; 
 }
@@ -314,9 +318,58 @@ body.matrix .container-right, body.evil .container-right {
     flex-direction: row;
 }
 
+.container-right:has( .upgrade) .items-bulk {
+    display: none;
+    visibility: hidden;
+}
+
+.items-bulk {
+    border-radius: 5px 5px 0 0;
+    margin-top: 2em;
+    background-color: var(--c5);
+    padding: .2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.cust {
+    font-weight: normal;
+}
+
+.container-right:has( [data-bulk^="10"].active):not(:has(.upgrade)) .cust::before {
+    margin-right: 5px;
+    color: rgb(255, 255, 255);
+    font-size: .8em;
+    font-weight: normal;
+}
+
+.container-right:has( [data-bulk="10"].active):not(:has(.upgrade)) .cust::before { content: 'x10'; }
+.container-right:has( [data-bulk="100"].active):not(:has(.upgrade))  .cust::before { content: 'x100'; }
+
+.bulks-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: .5em;
+}
+
+.bulk {
+    font-size: 1em;
+    transition: color .2s ease;
+}
+
+.bulk.active {
+    color: white;
+}
+
 /* Conteúdo do cotainer da direita */
 .container-content {
     overflow-y: auto;
+}
+
+.container-content:has( .upgrade) {
     margin-top: 2em;
 }
 
