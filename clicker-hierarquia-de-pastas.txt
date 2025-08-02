@@ -1,0 +1,20 @@
+Clicker-Project/
+├── manage.py
+├── requirements.txt	       # bibliotecas
+├── .env                       # variáveis de ambiente escondidas
+├── static/                    # arquivos estáticos da app
+│   ├── assets/               
+│   ├── js/
+│   └── style.css
+├── templates/		       # templates
+│   ├── index.html              
+│   └── 404.html
+├── mainApp/                   # seu app Django
+├── devClicker/                # pasta do projeto Django
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    ├── wsgi.py               
+    └── asgi.py
+
+
