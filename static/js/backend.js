@@ -52,7 +52,7 @@ let playerDetails; // vai armazenar os dados do player através de seu id
 let lsCount; // coleta os pontos do player
 
 // variáveis em csrftoken
-window.csrfToken = document.getElementById("csrf-token").value;
+window.csrfToken = getCookie("csrftoken");
 
 // FETCH
 

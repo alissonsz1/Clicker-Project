@@ -447,7 +447,7 @@ function randomBetween(min, max) {
 }
 
 
-const csrfToken = window.csrfToken
+const csrfToken = window.csrfToken;
 
 // Variaveis
 let id = -1
