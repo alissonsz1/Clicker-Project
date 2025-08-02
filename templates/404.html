@@ -1,11 +1,36 @@
+{% load static %} 
 <!DOCTYPE html>
 <html lang="pt-br">
+    
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERROR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/pc.ico' %}">
+    <meta http-equiv="cache-control" content="max-age=0" />
+
+    <title>Dev Clicker</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
+
 <body>
-    <h1>ERROR</h1>
+    <!-- O corpo principal do projeto -->
+    <main>
+        <div class="mobile-tooltip"></div>
+        <div class="tooltip"></div>
+        <div class="table"></div> <!-- Mesa onde fica o computador -->
+        <div id="coffee-container"></div>
+        <div class="clicks-container"></div>
+        <!-- O container que envolve a seção da esquerda (computador) -->
+        <div class="container-left">
+            <div class="container-left--computer-error">
+                <div class="computer computer-error"></div>
+                <div class="computer computer-monitor"></div>
+                <div class="computer computer-keyboard"></div>
+                <!-- <div class="computer computer-back glow"></div> -->
+            </div>
+        </div>
+    </main>
 </body>
+
 </html>

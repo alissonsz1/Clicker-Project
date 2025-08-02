@@ -146,6 +146,16 @@ body.matrix .table {
     width: 100%;
     max-height: 400px;
 }
+/* Cointainer do erro 404 */
+.container-left--computer-error {
+    aspect-ratio: 1/1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-height: 900px;
+}
 
 /* Muda a cor do computador apra um tom de verde */
 body.matrix .container-left--computer {
@@ -159,6 +169,7 @@ body.evil .container-left--computer {
 
 .computer-monitor { background: url("./assets/monitor.png");}
 .computer-back { background: url("./assets/fundo_monitor.png"); }
+.computer-error { background: url("./assets/fundo_error.webp"); }
 .computer-keyboard { background: url("./assets/teclado.png"); transition: all .1s ease;}
 
 /* Ainda será implementado algum tipo de luz saindo do monitor */
