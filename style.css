@@ -286,6 +286,11 @@ body.matrix .code-block, body.evil .code-block  {
     white-space: nowrap;
 }
 
+.combo {
+    opacity: .8;
+    font-size: .8em;
+}
+
 .fading-up {
     opacity: 0;
     transform: translate(-50%, -2000%);
@@ -457,7 +462,7 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
 }
 
 /* Textos para a estrutura */
-.item-purchased { font-size: 1.8em; color: var(--c2);}
+.item-purchased { font-size: 1.8em; color: var(--c2); font-weight: normal; }
 .item-name { font-size: 1.2em; text-align: left; }
 .high { color: var(--high);}
 .low { color: var(--low);}
@@ -942,6 +947,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 5px;
     border-bottom: 1px solid var(--c1);
     padding-bottom: 5px;
     text-shadow: var(--ts);
@@ -971,6 +977,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip-price {
+    font-weight: normal;
     text-align: right;
 }
 
