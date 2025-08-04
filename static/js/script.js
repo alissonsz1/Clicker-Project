@@ -622,12 +622,11 @@ function renderLeaderboard(jogadores) {
   })
 }
 
-// Socket para toda vez que receber uma atualização do db
-// socket.onmessage = (e) => {
-//   // ESTRUTURA = {id, companyName, lsCount}
-//   listDataLeaderboard = JSON.parse(e.data).player;
-//   renderLeaderboard(listDataLeaderboard);
-// }
+// Socket para parar o jogo
+socket.onmessage = (e) => {
+  // ESTRUTURA = {id, companyName, lsCount}
+  let status = JSON.parse(e.data).status;  
+}
 
 // FIM DO LEADERBOARD
 
@@ -1805,7 +1804,6 @@ window.addEventListener('submitSucess', (e) => {
   modalErrorMessage = ''
   closeModal()
   startGame()
-  console.log(e)
   if (e.detail.hasToRenderLb) requestLeaderboard()
 })
 

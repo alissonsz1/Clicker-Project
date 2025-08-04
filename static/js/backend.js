@@ -1,4 +1,23 @@
 // Funções
+const stopGame = () => {
+    if(user == "admin"){
+        fetch('/stop-game/', {
+            method:"PUT",
+            headers:{
+                "Content-type":"application/json",
+                "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({user: user})
+        })
+        .then( res => {
+            if(!res.ok) throw Error("BAH PIA!");
+            return res.json()
+        })
+        .catch( err => {
+            console.error("Esse erro: ",err)
+        })
+    }
+}
 
 // Manda os dados do Player para o 
 
@@ -50,6 +69,8 @@ let companyName = document.querySelector('.company-text'); // Nome do player
 let idPlayer = getCookie("id"); // pega o id do player caso tenha salvo
 let playerDetails; // vai armazenar os dados do player através de seu id
 let lsCount; // coleta os pontos do player
+
+const user = document.getElementById("user").value;
 
 // variáveis em csrftoken
 window.csrfToken = document.getElementById("csrf-token").value;

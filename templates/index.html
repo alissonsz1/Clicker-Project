@@ -17,6 +17,7 @@
     <!-- O corpo principal do projeto -->
     <main>
         <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}"/>
+        <input type="hidden" name="user" id="user" value="{{ request.user }}"/>
 
         <div class="leaderboard-wrapper" id="leaderboard">
             <div class="leaderboard-content">
@@ -81,6 +82,7 @@
         <div class="container-boosts">
         </div>
     </main>
+
 
     <script src="{% static 'js/backend.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script> <!-- O script que contém a lógica do jogo -->

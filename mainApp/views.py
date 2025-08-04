@@ -10,7 +10,7 @@ from .models import Companies
 # FUNÇÕES
 
 # Detecta qualquer atualização no banco de dados (por exemplo, pontuação de uma empresa mudou)
-def updateDetect(players):
+def updateDetect(status):
     # Obtém o "channel layer" configurado no settings (Redis ou InMemory)
     channel_layer = get_channel_layer()
 
@@ -20,14 +20,10 @@ def updateDetect(players):
         {
             "type": "leaderboard.update",       # tipo da mensagem → invoca leaderboard_update no consumer
             "data": {
-                "player": players,  # dados que serão enviados no payload
+                "status": status,  # dados que serão enviados no payload
             }
         }
     )
-
-# Ele formata o dados para poder enviar para o leaderboard
-def leaderboardFormat():
-    return list(Companies.objects.all().order_by('-lsCount').values("id","companyName", "lsCount"))
 
 # FETCH
 
@@ -60,11 +56,6 @@ def companiesPostName(request, *args, **kwargs):
             company = Companies.objects.create(
                 companyName = company_name,
             )
-
-
-            leaderboardList = leaderboardFormat()
-
-            updateDetect(leaderboardList)
             
             #Retorna uma mensagem para o request
             return JsonResponse({
@@ -99,10 +90,6 @@ def lsPatch(request, *args, **kwargs):
             
             company.save()
 
-            leaderboardList = leaderboardFormat()
-
-            updateDetect(leaderboardList)
-
             return JsonResponse({
                 "menssage":"OK",
             }, status=200)
@@ -112,6 +99,16 @@ def lsPatch(request, *args, **kwargs):
             return JsonResponse({"error": str(e)}, status=500)
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
+
+def stopGame(request, *args, **kwargs):
+    if request.method == "PUT":
+        data = json.loads(request.body)
+
+        user = data.get("user")
+
+        if(user == "admin"):
+            updateDetect(True)
+            return JsonResponse({"messages": True},status=200, safe=False)  
 
 # Requisita os dados para o leaderboard
 def leaderboard_data(request, *args, **kwargs):
