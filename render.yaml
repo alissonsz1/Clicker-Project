@@ -53,9 +53,6 @@ services:
   startCommand: |
 
     python manage.py migrate &&
-    python manage.py createsuperuser && 
-    admin && 'sidraocaique@gmail.com' && '¢0d&l@b3@ch31082025pa$$W°rdd£fli3d' && '¢0d&l@b3@ch31082025pa$$W°rdd£fli3d' &&
-    python manage.py makemigrations && python manage.py migrate &&
     python manage.py collectstatic --noinput &&
     daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application
 
