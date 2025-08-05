@@ -54,6 +54,7 @@ def companiesPostName(request, *args, **kwargs):
 
 # atualiza as linhas no banco de dados
 def lsPatch(request, *args, **kwargs):
+    print("ATUALIZOU")
     if request.method == "PATCH":
         try:            
 
