@@ -53,6 +53,7 @@ services:
   startCommand: |
 
     python manage.py migrate &&
+    python manage.py createsu &&
     python manage.py collectstatic --noinput &&
     daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application
 
