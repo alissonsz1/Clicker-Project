@@ -16,7 +16,7 @@ button, input {
 }
 
 :root {
-    --cs: 86px; /* Coffee Size */
+    --cs: 72px; /* Coffee Size */
     --bs: rgba(0, 0, 0, .6); /* BOX SHADOW */
     --ts: 3px 3px 2px rgba(0, 0, 0, 0.8);
 }
@@ -116,7 +116,13 @@ body.matrix .table {
     opacity: .8;
     background-position: 0 100%;
     background: linear-gradient(to bottom, #00e20093 0%, 2.86624%, rgb(3, 110, 21) 5.73248%, 12.7389%, rgb(0, 64, 18) 19.7452%, 22.9299%, rgb(0, 56, 19) 26.1146%, 63.0573%, rgb(0, 47, 20) 100%);
-    /* box-shadow: inset 0 20px 50px #00e20093 */
+}
+
+body.evil .table {
+    overflow: hidden;
+    opacity: .8;
+    background-position: 0 100%;
+    background: linear-gradient(to bottom, #e2000093 0%, 2.86624%, rgb(110, 3, 3) 5.73248%, 12.7389%, rgb(64, 0, 0) 19.7452%, 22.9299%, rgb(56, 0, 0) 26.1146%, 63.0573%, rgb(47, 0, 0) 100%);
 }
 
 /* O container que envolve a seção da esquerda */
@@ -183,6 +189,7 @@ body.evil .container-left--computer {
     background-repeat: no-repeat;
     background-position: 50% 0;
     pointer-events: none;
+    filter: brightness(1.2);
 }
 
 /* Nome da empresa */
@@ -472,11 +479,24 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
     text-shadow: 3px 3px 2px black;
 }
 
+.item-text--wrapper {
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    gap: 5px;
+}
+
 /* Textos para a estrutura */
+.mobile-purchased { color: white; font-weight: normal; }
 .item-purchased { font-size: 1.8em; color: var(--c2); font-weight: normal; }
-.item-name { font-size: 1.2em; text-align: left; }
+.item-name, .mobile-name { font-size: 1.2em; text-align: left; }
 .high { color: var(--high);}
 .low { color: var(--low);}
+
+.mobile-name, .mobile-purchased {
+    display: none;
+    visibility: hidden;
+}
 
 .info-bttn {
     display: none;
@@ -611,7 +631,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     height: var(--cs);
     cursor: pointer;
     background-size: var(--cs) var(--cs);
-    background-image: url('./assets/coffee.png');
+    background-image: url('./assets/coffees/coffee.png');
     background-position: 0 0;
 
     pointer-events: auto;
@@ -1365,14 +1385,29 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         visibility: visible;
     }
 
-    .item-name {
+    .item-name, .mobile-name {
         font-size: clamp(.9em, 6vw,1.2em);
+    }
+
+    .estrutura .item-name {
+        display: none;
+        visibility: hidden;
+    }
+
+    .mobile-name, .mobile-purchased {
+        display: block;
+        visibility: visible;
     }
 
     .mobile-tooltip {
         touch-action: none;
         display: block;
         visibility: visible;
+    }
+
+    .tooltip-description {
+        font-size: .8em;
+        max-width: 280px;
     }
 
     .container-boosts {

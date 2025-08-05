@@ -4,7 +4,7 @@ const upgrades = [
     nome: "Mouse gamer",
     custo: 200000,
     descricao: 'Ninguém sabe pra que servem todos esses botões, mas eles estão lá.',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
 
     icon: 'mouse.png',
     // icon: 'placeholder.png',
@@ -15,7 +15,7 @@ const upgrades = [
     nome: "Mousepad ergonômico",
     custo: 1000000,
     descricao: 'Previne você de ter uma tendinite (e ainda vem com um LED maneiro).',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'mousepad.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -24,7 +24,7 @@ const upgrades = [
     nome: "Teclado Mecânico RGB",
     custo: 2000000,
     descricao: 'Faz um barulho gostosinho ao teclar e possui mais de 16M de cores para você testar. Uau!',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'teclado.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -33,7 +33,7 @@ const upgrades = [
     nome: "HUB USB",
     custo: 10000000,
     descricao: 'Organiza (ou pelo menos tenta) o teu emaranhado de cabos e fios.',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'usb.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -42,7 +42,7 @@ const upgrades = [
     nome: "Fone Gamer",
     custo: 20000000,
     descricao: 'Abafa tudo: os cachorros latindo, a obra do vizinho e teus familiares te chamando.',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fone.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -51,7 +51,7 @@ const upgrades = [
     nome: "Cadeira Gamer",
     custo: 100000000,
     descricao: 'Melhora teu conforto e transforma tua coluna lentamente em uma espiral.',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'cadeira.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -60,7 +60,7 @@ const upgrades = [
     nome: "PENDRIVE de 2TB",
     custo: 1000000000,
     descricao: 'Por algum motivo, diz que já está 97% cheio...',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'pendrive.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -69,7 +69,7 @@ const upgrades = [
     nome: "SSD de última geração",
     custo: 2000000000,
     descricao: 'Faz milagres quando tudo que você possui é uma placa integrada.',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'ssd.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -78,7 +78,7 @@ const upgrades = [
     nome: "Placa de vídeo",
     custo: 10000000000,
     descricao: 'Uma RTX 5090 só pra assistir tutoriais em 8K!',
-    funcao: 'Aumenta geração de LS em 5%',
+    funcao: 'Aumenta geração de LpS em 5%',
     icon: 'gpu.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -87,7 +87,7 @@ const upgrades = [
     nome: "Fibra óptica",
     custo: 20000000000,
     descricao: 'Chega de ping alto no lolzinho!',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fibra.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -96,7 +96,7 @@ const upgrades = [
     nome: "Óculos VR",
     custo: 200000000000,
     descricao: 'Te leva para fora dessa realidade cruel, monótona e apática, repleta de violência e ódio gratuito, onde sonhos são sufocados, esmagados, triturados - e tua força de trabalho é sugada até tua última gota de suor. Um ótimo gadget!',
-    funcao: 'Aumenta geração de LS em 5%.',
+    funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'vr.png',
     // icon: 'placeholder.png',
     efeito: () => lsMultiplier *= 1.05,
@@ -162,7 +162,7 @@ const upgrades = [
     nome: "Placa gamer",
     custo: 50000,
     descricao: 'Impede teu irmão caçula de perturbar teu foco sagrado.',
-    funcao: '+1% das suas LS por clique.',
+    funcao: '+1% das suas LpS por clique.',
     icon: 'placa.png',
     // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
@@ -171,7 +171,7 @@ const upgrades = [
     nome: "Ventilador portátil",
     custo: 5000000,
     descricao: 'Para esfriar tua cabeça (e evitar um burnout).',
-    funcao: '+1% das suas LS por clique.',
+    funcao: '+1% das suas LpS por clique.',
     icon: 'ventilador.png',
     // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
@@ -180,7 +180,7 @@ const upgrades = [
     nome: "Gatinho fofo",
     custo: 500000000,
     descricao: 'Meoow',
-    funcao: '+1% das suas LS por clique.',
+    funcao: '+1% das suas LpS por clique.',
     icon: 'gatinho.png',
     // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
@@ -207,10 +207,14 @@ const upgrades = [
     nome: "Cubo mágico",
     custo: 43252003,
     descricao: 'Você sabia que existem mais combinações possíveis em um cubo mágico do que átomos no universo? Pois é, na verdade é mentira...',
-    funcao: 'Chance de 10% de gerar +1 click a cada click.',
+    funcao: 'Cada clique passa a ter uma chance mínima de fazer surgir um café',
     icon: 'cubo.png',
     // icon: 'placeholder.png',
-    efeito: () => hasCube = true,
+    efeito: () => onClickEffects.push(() => {
+      const chance = 0.005
+      if (Math.random() < chance) spawnCoffee()
+      return 0
+    }),
   },
   {
     nome: "Stalker cibernética",
@@ -376,7 +380,7 @@ const bonusList = [
   {
     id: 'bn2',
     nome: "Café Docinho",
-    descricao: "LS x7",
+    descricao: "LpS x7",
     type: 'matrix',
     duracao: 30,
     peso: 30,
@@ -384,14 +388,14 @@ const bonusList = [
     unlocked: true,
     get efeito() {
       lsMultiplier *= 7;
-      return `LS x7 por ${this.duracao} segundos!`
+      return `LpS x7 por ${this.duracao} segundos!`
     },
     reverter: () => lsMultiplier /= 7,
   },
   {
     id: 'bn3',
     nome: "Café Perfeito",
-    descricao: "LS x777",
+    descricao: "LpS x777",
     type: 'matrix',
     duracao: 15,
     peso: 4,
@@ -399,14 +403,14 @@ const bonusList = [
     unlocked: true,
     get efeito() {
       lsMultiplier *= 777;
-      return `LS x777 por ${this.duracao} segundos!!!`
+      return `LpS x777 por ${this.duracao} segundos!!!`
     },
     reverter: () => lsMultiplier /= 777,
   },
   {
     id: 'bn4',
     nome: "Café Divino",
-    descricao: "LS x1111",
+    descricao: "LpS x1111",
     type: 'matrix',
     duracao: 10,
     peso: 1,
@@ -414,7 +418,7 @@ const bonusList = [
     unlocked: true,
     get efeito() {
       lsMultiplier *= 1111;
-      return `LS x1111 por ${this.duracao} segundos!!!`
+      return `LpS x1111 por ${this.duracao} segundos!!!`
     },
     reverter: () => lsMultiplier /= 1111,
   },
@@ -439,7 +443,7 @@ const bonusList = [
   {
     id: 'bn6',
     nome: "STORM BONUS",
-    descricao: "5 min das LS!",
+    descricao: "5 min das LpS!",
     unlocked: true,
     get efeito() {
         const ganho = Math.floor(lsTOT * 60 * 5);
@@ -471,7 +475,7 @@ const bonusList = [
     get efeito() {
       lsMultiplier *= .5
       coffeeProb *= .1
-      return `LS x0.5 por ${this.duracao} segundos...`
+      return `LpS x0.5 por ${this.duracao} segundos...`
     },
     reverter: () => {
       lsMultiplier /= .5
@@ -488,7 +492,7 @@ const bonusList = [
     unlocked: false,
     get efeito() {
       lsMultiplier *= 666
-      return `LS x666 por ${this.duracao} segundos...`
+      return `LpS x666 por ${this.duracao} segundos...`
     },
     reverter: () => lsMultiplier /= 666,
   }
@@ -533,12 +537,11 @@ let id = -1
 let company = ''
 let pontos = 0 // Linhas de código
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
-let lsTOT = 0 // Quantas LS estão sendo geradas
-let lsMultiplier = 1 // Multiplicador para as LS
+let lsTOT = 0 // Quantas LpS estão sendo geradas
+let lsMultiplier = 1 // Multiplicador para as LpS
 let bulkBuy = 1 // Quantas estruturas serão comprados por vez (x1, x10, x100)
 let comboMultiplier = 1
 let estruturaMultiplier = 1
-let hasCube = false // Se possui o upgrade do cubo ou não
 let hasCombo = false // Se possui o upgrade para gerar o combo de cliques
 let coffeeProb = 0.03 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
@@ -936,23 +939,34 @@ function addSafeTouchListener(element, onValidTouchEnd) {
 
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
-  handleClicker(e)
-  if (hasCube && Math.random() < 0.10) {
-    setTimeout(() => {
-      handleClicker(e)
-    }, 100)
+  if (window.matchMedia('(pointer: coarse)').matches) return
+
+  const coords = {
+    x: e.pageX,
+    y: e.pageY,
   }
+
+  handleClicker(coords)
 })
 
-function handleClicker(e) {
+button.addEventListener('touchstart', (e) => {
+  const currentTouch = [...e.touches].at(-1)
+  const coords = {
+    x: currentTouch.pageX,
+    y: currentTouch.pageY,
+  }
+  handleClicker(coords)
+})
+
+function handleClicker({x, y}) {
   const [toAdd, actualComboMultiplier] = onClick()
 
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
   click.className = 'click'
   click.innerHTML = `<span>+${formatarNumero(toAdd.toFixed(1))}</span>${hasCombo ? ` <span class="combo">x${actualComboMultiplier.toFixed(1)}</span>` : ''}`
-  click.style.left = `calc(${e.pageX}px + ${randomOffset}px)`
-  click.style.top = `${e.pageY}px`
+  click.style.left = `calc(${x}px + ${randomOffset}px)`
+  click.style.top = `${y}px`
   clicksContainer.appendChild(click)
   void click.offsetHeight
   click.classList.add('fading-up')
@@ -1049,8 +1063,8 @@ function showTooltip(x = mouseX, y = mouseY) {
       const gerando = (data.comprados*data.ls*lsMultiplier).toFixed(1)
       extraInfo = `
           <ul>
-            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LS</li>
-            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
+            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LpS</li>
+            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
             <li>${formatarNumero(Math.floor(data.gerado))} linhas geradas até agora</li>
           </ul>
       `
@@ -1178,8 +1192,8 @@ function showMobileTooltip(type, item) {
         </div>
         <div class="monile-tootltip--items">
             <ul>
-              <li>cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LS</li>
-              <li>${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
+              <li>cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LpS</li>
+              <li>${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
               <li>${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora</li>
             </ul>
         </div>
@@ -1251,7 +1265,7 @@ bulkButtons.forEach((btn) => {
 })
 
 buttonsHeader.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', () => {
       if (btn.classList.contains('active')) return
 
       buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
@@ -1295,7 +1309,11 @@ const renderEstruturas = () => {
         <img class="item-icon">
         <div class="item-content">
           <div class="item-text">
-            <span class="item-name"></span>
+            <div class="item-text--wrapper">
+              <span class="mobile-purchased"></span>
+              <span class="mobile-name"></span>
+              <span class="item-name"></span>
+            </div>
             <span class="cust"></span>
           </div>
           <span class="item-purchased"></span>
@@ -1320,6 +1338,8 @@ const renderEstruturas = () => {
     
     const custoContainer = estrutura.querySelector('.cust')
     const itemName = estrutura.querySelector('.item-name')
+    const mobileName = estrutura.querySelector('.mobile-name')
+    const mobilePurchased = estrutura.querySelector('.mobile-purchased')
     const comprados = estrutura.querySelector('.item-purchased')
     const img = estrutura.querySelector('.item-icon')
     const newSrc = `/static/assets/icons/${item.icon}`
@@ -1335,13 +1355,18 @@ const renderEstruturas = () => {
     const custo = Math.round(sumPG(custoAtual(item), 1.15, bulkBuy))
 
     if (item.unlocked) {
-      if (item.comprados > 0) comprados.textContent = item.comprados
+      if (item.comprados > 0) {
+        comprados.textContent = item.comprados
+        mobilePurchased.textContent = item.comprados
+      }
       if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
       itemName.textContent = item.nome
+      mobileName.textContent = item.comprados > 1 ? item.plural : item.nome
       estrutura.classList.remove('hidden')
       estrutura.classList.add('unlocked')
     } else {
       itemName.textContent = '???'
+      mobileName.textContent = '???'
       estrutura.classList.add('hidden')
     }
 
@@ -1516,7 +1541,7 @@ function spawnCoffee (bonusId = null)  {
       div.classList.add("fade-out")
       div.style.opacity = 0
       div.style.transform = "scale(0)"
-    }, 10050) //10050ms = 10s (lembrando que há 5s só para surgir o elemento)
+    }, 5050 + 3000) // 5s (surgimento) + tempo em que ficará na tela
 
     // Adicionar um listener para saber quando o "fade-out" terminou, para então remover a div do "coffee"
     div.addEventListener("transitionend", (e) => {
@@ -1870,7 +1895,7 @@ function gerarPassivamente() {
 
   if (totalGerado == 0) return
   lsTOT = totalGerado / timing
-  lsPersecondContainer.textContent = `por segundo: ${formatarNumero(lsTOT.toFixed(1))}` 
+  lsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lsTOT.toFixed(1))}` 
   refresh(totalGerado)
 }
 
