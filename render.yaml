@@ -54,7 +54,7 @@ services:
     python manage.py migrate &&
     python manage.py createadmin &&
     python manage.py collectstatic --noinput &&
-    daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application &&
+    daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application
     
 
   autoDeployTrigger: commit
