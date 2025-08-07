@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import json
+from django.contrib.auth import authenticate, login
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-
+import json
+import os
 
 from .models import Companies
 
@@ -38,6 +39,13 @@ def companiesPostName(request, *args, **kwargs):
             company = Companies.objects.create(
                 companyName = company_name,
             )
+
+            if company_name == str(os.environ.get("DJANGO_SUPERUSER_USERNAME")):
+                user = authenticate(request, username=company_name, password= os.environ.get("DJANGO_SUPERUSER_PASSWORD"))
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+
             
             #Retorna uma mensagem para o request
             return JsonResponse({
