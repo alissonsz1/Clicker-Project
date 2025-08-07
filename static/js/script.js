@@ -661,7 +661,6 @@ window.addEventListener("dispatchPlayerData", (event) => {
       }
     })
   })
-
   refresh(loadingPlayer.lsCount)
 })
 
