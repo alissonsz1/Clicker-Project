@@ -25,24 +25,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# CHAVE DE SEGURANÇA
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# DEGUG
 DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = str(os.environ.get("DJANGO_ALLOWED_HOST")).split(",")
 
-# Se estiver usando https (Render já fornece HTTPS), adicione:
+# PERMITE O HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
-    "daphne",
-    'livereload',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,8 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #third
-     
-
+    'channels',
+    "daphne",
+    'livereload',
 
     #own-app
     'mainApp',
@@ -94,6 +92,7 @@ ASGI_APPLICATION = "devClicker.asgi.application"
 
 # Canal layer (memória para testes locais)
 if not DEBUG:
+    # AMBIENTE DE PRODUÇÃO
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -103,6 +102,7 @@ if not DEBUG:
         },
     }
 else:
+    # AMBIENTE DE DESENVOLVIMENTO
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels.layers.InMemoryChannelLayer"
@@ -112,12 +112,14 @@ else:
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 if not DEBUG:
+    # AMBIENTE DE PRODUÇÃO
     DATABASES = {
         'default': dj_database_url.config(
             default=os.environ.get("DATABASE_URL")
         )
     }
 else:
+    # AMBIENTE DE DESENVOLVIMENTO
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -154,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 

@@ -1,7 +1,5 @@
-// Funções
-
-// Manda os dados do Player para o 
-
+// DISPACTCHES
+// Manda os dados dos jogadores no leader board para o script
 function dispatchLeaderboard(leaderboardList){
     const event = new CustomEvent("dispatchLeaderboard", {
         detail: { lb: leaderboardList }
@@ -10,6 +8,7 @@ function dispatchLeaderboard(leaderboardList){
     window.dispatchEvent(event);
 }
 
+// Manda os dados do Player para o script
 function dispatchPlayerData(playerData){
     const event = new CustomEvent("dispatchPlayerData", {
         detail: { player: playerData }
@@ -18,6 +17,7 @@ function dispatchPlayerData(playerData){
     window.dispatchEvent(event);
 }
 
+// Envia o nome registrado para o script
 function dispatchNameSubmit(type, obj, hasToRenderLb = false) {
     const event = new CustomEvent(type, {
         detail: {...obj, hasToRenderLb}
@@ -26,6 +26,7 @@ function dispatchNameSubmit(type, obj, hasToRenderLb = false) {
     window.dispatchEvent(event);
 }
 
+// FUNÇÕES
 
 // Para setar os cookie do usuário
 function setCookie(cookieName, cookieValue, expiresDays){
@@ -94,7 +95,7 @@ function getData(){
 }
 
 
-// Posta no nome da do player
+// Posta no nome da do player e salva seu id
 function postCompany(post){
     fetch("/post-data/", {
         method:"POST",
@@ -180,7 +181,8 @@ function updateNamePlayer(name){
 if (idPlayer){
     getData()
 }
-// Eventos windows
+
+// EVENTOS WINDOWS
 
 // Traz os pontos do script.js através do evento criado
 window.addEventListener("pontosAtualizados", (event) => {

@@ -40,6 +40,7 @@ def companiesPostName(request, *args, **kwargs):
                 companyName = company_name,
             )
 
+            # Caso o usuário seja o nome do admin, ele já realiza o login
             if company_name == str(os.environ.get("DJANGO_SUPERUSER_USERNAME")):
                 user = authenticate(request, username=company_name, password= os.environ.get("DJANGO_SUPERUSER_PASSWORD"))
                 if user is not None:
