@@ -1,3 +1,33 @@
+
+// FUNÇÕES
+
+// Para setar os cookie do usuário
+function setCookie(cookieName, cookieValue, expiresDays){
+    const d = new Date(); // pega o dia de hoje
+    d.setTime(d.getTime() + (expiresDays*24*60*60*1000)); // configura o d para daqui 8 dias
+    document.cookie = `${cookieName} = ${cookieValue}; expires = ${d.toUTCString()}; path=/`; //define o cookie
+}
+
+// Pegar o cookie
+function getCookie(name) {
+  const value = `; ${document.cookie}`; // Recebe o cookie (ele vem em string)
+  const parts = value.split(`; ${name}=`); // Separa o cookie de acordo com um padrão, com o dado que se quer
+  if (parts.length === 2) {
+    return parts.pop().split(';').shift(); // separa esse dado do resto
+  }
+  return null;
+}
+
+
+// VARIÁVIES GLOBAIS
+let companyName = document.querySelector('.company-text'); // Nome do player
+let idPlayer = getCookie("id"); // pega o id do player caso tenha salvo
+let playerDetails; // vai armazenar os dados do player através de seu id
+let lsCount; // coleta os pontos do player
+
+// variáveis em csrftoken
+window.csrfToken = document.getElementById("csrf-token").value;
+
 // DISPACTCHES
 // Manda os dados dos jogadores no leader board para o script
 function dispatchLeaderboard(leaderboardList){
@@ -26,40 +56,10 @@ function dispatchNameSubmit(type, obj, hasToRenderLb = false) {
     window.dispatchEvent(event);
 }
 
-// FUNÇÕES
-
-// Para setar os cookie do usuário
-function setCookie(cookieName, cookieValue, expiresDays){
-    const d = new Date(); // pega o dia de hoje
-    d.setTime(d.getTime() + (expiresDays*24*60*60*1000)); // configura o d para daqui 8 dias
-    document.cookie = `${cookieName} = ${cookieValue}; expires = ${d.toUTCString()}; path=/` //define o cookie
-}
-
-// Pegar o cookie
-function getCookie(key) {
-    // A expressão regex checa se: está no começo ou se possui um ponto e vírgula com espaços em seguida (";  ")
-    // Se achar isso, procurará por "key=" e depois o número correspondente ("\d+")
-    const regex = new RegExp(`(?:^|;\\s*)${key}=(\\d+)`);
-    const match = document.cookie.match(regex)
-    const cookieId = match?.[1] // [1] retorna o primeiro grupo encontrado que segue esse padrão
-    return cookieId
-}
-
-
-// VARIÁVIES GLOBAIS
-let companyName = document.querySelector('.company-text'); // Nome do player
-let idPlayer = getCookie("id"); // pega o id do player caso tenha salvo
-let playerDetails; // vai armazenar os dados do player através de seu id
-let lsCount; // coleta os pontos do player
-
-// variáveis em csrftoken
-window.csrfToken = document.getElementById("csrf-token").value;
-
-
 // FETCH
 
 // Manda uma requesição GET para coletar os dados, e vai realizar uma outra requesição dependendo qual seja
-async function getData(){
+function getData(){
     fetch("/get-data/", {
     method: "GET",
     headers: {
@@ -75,21 +75,23 @@ async function getData(){
     .then(data =>{
         if(idPlayer){
             // caso o idPlayer não tenha valor, ele executa o código abaixo.
-            playerDetails = data.find( obj => obj.id == idPlayer );
+            playerDetails = data.find( obj => obj.id == idPlayer ); // Encontra o player
+            playerDetails.lsCount = Number(playerDetails.lsCount); // Converte os pontos em notação em números
             if(playerDetails){
                 dispatchPlayerData(playerDetails); // esse manda todos os dados do player
                 dispatchNameSubmit('submitSucess', {companyName: playerDetails.companyName});
-                data.sort((a,b)=>{ return b.lsCount - a.lsCount })
-                dispatchLeaderboard(data);
+                data.sort((a,b)=>{ return b.lsCount - a.lsCount }); // organiza os dados em relação aos pontos
+                dataComplet = data.map(item => { return {...item, lsCount: Number(item.lsCount)}} ); // tranforma os pontos em notação científica em número inteiro
+                dispatchLeaderboard(dataComplet);
             } else {
                 // AQUI, TEM O PLAYER TEM UM ID NO COOKIE, MAS NÃO TEM ESSE ID CADASTRADO NO BD
-                dispatchNameSubmit('submitError', {error: "Player não encontrado"})
+                dispatchNameSubmit('submitError', {error: "Player não encontrado"});
             }
         }
         
     })
     .catch(err =>{
-        console.error("Error", err)
+        console.error("Error", err);
     })
     
 }
@@ -107,16 +109,16 @@ function postCompany(post){
     })
         .then(res => {
             if(!res.ok) throw new Error("Erro ao postar o dado");
-            return res.json()
+            return res.json();
         })
         .then(data => {
             lsCount = 0;
             idPlayer = data.id;
             setCookie("id", data.id, 8);
-            dispatchNameSubmit('submitSucess', {companyName: post.companyName}, true)
+            dispatchNameSubmit('submitSucess', {companyName: post.companyName}, true);
         })
         .catch(err => {
-            console.error("ERRO:",err)
+            console.error("ERRO:",err);
         })
 }
 
@@ -131,11 +133,11 @@ function patchLS(patch){
         body: JSON.stringify(patch)
     })
     .then( res => {
-        if(!res.ok) throw new Error("Erro ao atualizar as LS no BD")
-        return res.json()
+        if(!res.ok) throw new Error("Erro ao atualizar as LS no BD");
+        return res.json();
     })
     .catch( err => {
-        console.error("Error ", err )
+        console.error("Error ", err );
     })
 }
 
@@ -149,37 +151,37 @@ function updateNamePlayer(name){
         },
     })
     .then( res => {
-        if(!res.ok) throw new Error("Erro ao mandar o upgrade")
-        return res.json()
+        if(!res.ok) throw new Error("Erro ao mandar o upgrade");
+        return res.json();
     })
     .then(data => {
 
         if (!name) {
-            dispatchNameSubmit('submitError', {error: "Campo vazio!"})
+            dispatchNameSubmit('submitError', {error: "Campo vazio!"});
             return
         }
 
         if (String(name).length > 15) {
-            dispatchNameSubmit('submitError', {error: "Nome muito longo!"})
+            dispatchNameSubmit('submitError', {error: "Nome muito longo!"});
             return
         }
             
         let existName  = data.find(item => item.companyName == name );
         
         if(existName){
-            dispatchNameSubmit('submitError', {error: "Nome já existente!"})
+            dispatchNameSubmit('submitError', {error: "Nome já existente!"});
         } else {
             postCompany({"companyName": name});
         }
     })
     .catch( err => {
-        console.error("Error", err )
+        console.error("Error", err );
     })
 }
 
 // RODAR AO INICIALIZAR
 if (idPlayer){
-    await getData()
+    getData();
 }
 
 // EVENTOS WINDOWS
@@ -188,7 +190,11 @@ if (idPlayer){
 window.addEventListener("pontosAtualizados", (event) => {
   const novoValor = event.detail.newPoints;
   lsCount = novoValor;
-  patchLS({"id": idPlayer, "lsCount": lsCount})
+
+  // CASO O NÚMERO CHEGA À 1 MILHÃO, COMEÇA A ANOTAR EM NOTAÇÃO CIENTÍFICA
+  if(lsCount > 1e6) lsCount = lsCount.toExponential(3);
+
+  patchLS({"id": idPlayer, "lsCount": lsCount});
 
 });
 
@@ -208,13 +214,16 @@ window.addEventListener("requestLeaderboard", (e) => {
     })
     .then(res => {
       if(!res.ok) throw new Error("Error ao carregar os dados do leaderboard");
-      return res.json()
+      return res.json();
     })
     .then(data => {
-      dispatchLeaderboard(data)
+
+        data.sort((a,b)=>{ return b.lsCount - a.lsCount }); // Organiza por ordem de pontos
+        dataComplet = data.map(item => { return {...item, lsCount: Number(item.lsCount)}} ); // converte os pontos em notação científicas para números
+        dispatchLeaderboard(dataComplet);
     })
     .catch( err => {
-      console.error("ERRO AO CARREGAR O LEADERBOARD: ", err)
+      console.error("ERRO AO CARREGAR O LEADERBOARD: ", err);
     })
 })
 
