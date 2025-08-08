@@ -1,161 +1,435 @@
 // Upgrades "place holder" só para o código funcionar
 const upgrades = [
   {
-    id: 'up1',
-    nome: "Café Forte", 
-    custo: 20,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
-    icon: 'placeholder.png',
-    efeito: () => boost *= 2,
+    nome: "Mouse gamer",
+    custo: 200000,
+    descricao: 'Ninguém sabe pra que servem todos esses botões, mas eles estão lá.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+
+    icon: 'mouse.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+    // efeito: () => boost *= 2,
   },
-  { 
-    id: 'up2',
-    nome: "Atalho de Teclado", 
+  {
+    nome: "Mousepad ergonômico",
+    custo: 1000000,
+    descricao: 'Previne você de ter uma tendinite (e ainda vem com um LED maneiro).',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'mousepad.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Teclado Mecânico RGB",
+    custo: 2000000,
+    descricao: 'Faz um barulho gostosinho ao teclar e possui mais de 16M de cores para você testar. Uau!',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'teclado.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "HUB USB",
+    custo: 10000000,
+    descricao: 'Organiza (ou pelo menos tenta) o teu emaranhado de cabos e fios.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'usb.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Fone Gamer",
+    custo: 20000000,
+    descricao: 'Abafa tudo: os cachorros latindo, a obra do vizinho e teus familiares te chamando.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'fone.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Cadeira Gamer",
+    custo: 100000000,
+    descricao: 'Melhora teu conforto e transforma tua coluna lentamente em uma espiral.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'cadeira.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "PENDRIVE de 2TB",
+    custo: 1000000000,
+    descricao: 'Por algum motivo, diz que já está 97% cheio...',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'pendrive.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "SSD de última geração",
+    custo: 2000000000,
+    descricao: 'Faz milagres quando tudo que você possui é uma placa integrada.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'ssd.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Placa de vídeo",
+    custo: 10000000000,
+    descricao: 'Uma RTX 5090 só pra assistir tutoriais em 8K!',
+    funcao: 'Aumenta geração de LpS em 5%',
+    icon: 'gpu.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Fibra óptica",
+    custo: 20000000000,
+    descricao: 'Chega de ping alto no lolzinho!',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'fibra.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Óculos VR",
+    custo: 200000000000,
+    descricao: 'Te leva para fora dessa realidade cruel, monótona e apática, repleta de violência e ódio gratuito, onde sonhos são sufocados, esmagados, triturados - e tua força de trabalho é sugada até tua última gota de suor. Um ótimo gadget!',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'vr.png',
+    // icon: 'placeholder.png',
+    efeito: () => lsMultiplier *= 1.05,
+  },
+  {
+    nome: "Energético",
+    custo: 88888,
+    descricao: 'Junte com café e veja os poderes incríveis da cafeína.',
+    funcao: 'Aumenta as chances de se aparecer um cafézinho (lide com as consequências).',
+    icon: 'monster.png',
+    // icon: 'placeholder.png',
+    efeito: () => {
+      coffeeProb *= 2
+      bonusList.filter(b => b.type == 'evil').forEach(b => b.unlocked = true)
+    },
+  },
+  {
+    nome: "Cafeteira elétrica",
+    custo: 8888888,
+    descricao: 'Teus cafés mais rápidos e mais gostosos!',
+    funcao: 'Aumenta as chances de se aparecer um cafézinho.',
+    icon: 'cafeteira.png',
+    // icon: 'placeholder.png',
+    efeito: () => coffeeProb *= 2,
+  },
+  {
+    nome: "Frigobar",
+    custo: 888888888,
+    descricao: 'Menos idas à cozinha, mais linhas de código.',
+    funcao: 'Aumenta as chances de se aparecer um cafézinho.',
+    icon: 'frigobar.png',
+    // icon: 'placeholder.png',
+    efeito: () => coffeeProb *= 2,
+  },
+  {
+    nome: "Certificado Online",
     custo: 100,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
-    icon: 'placeholder.png',
+    descricao: 'Aumenta exponencialmente suas chances de arranjar um emprego - Obrigado, Guanabara!',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'certificado.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { 
-    id: 'up3',
-    nome: "Dupla Tela", 
+  {
+    nome: "Calculadora científica",
     custo: 500,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
-    icon: 'placeholder.png',
+    descricao: 'Te ajuda com os cálculos que o professor jura que são triviais.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'calculadora.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
   },
-  { 
-    id: 'up4',
-    nome: "Modo Foco", 
-    custo: 1000,
-    descricao: 'DESCREVA',
-    funcao: 'FAZ TAL COISA',
-    icon: 'placeholder.png',
+  {
+    nome: "Livro de Cálculo",
+    custo: 10000,
+    descricao: 'Previne você de zerar quatro provas seguidas de Cálculo I (acredite, é possível).',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'livro.png',
+    // icon: 'placeholder.png',
     efeito: () => boost *= 2,
-  }
-]
+  },
+  {
+    nome: "Placa gamer",
+    custo: 50000,
+    descricao: 'Impede teu irmão caçula de perturbar teu foco sagrado.',
+    funcao: '+1% das suas LpS por clique.',
+    icon: 'placa.png',
+    // icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+  },
+  {
+    nome: "Ventilador portátil",
+    custo: 5000000,
+    descricao: 'Para esfriar tua cabeça (e evitar um burnout).',
+    funcao: '+1% das suas LpS por clique.',
+    icon: 'ventilador.png',
+    // icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+  },
+  {
+    nome: "Gatinho fofo",
+    custo: 500000000,
+    descricao: 'Meoow',
+    funcao: '+1% das suas LpS por clique.',
+    icon: 'gatinho.png',
+    // icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+  },
+  {
+    nome: "Bot de Commit",
+    custo: 100000,
+    descricao: 'feat: lê e commita com base nos teus pensamentos.',
+    funcao: 'Cada clique gera +0.5 linha de código para cada construção possuída',
+    icon: 'commitbot.png',
+    // icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5 * estruturaMultiplier),
+  },
+  {
+    nome: "ChatGPT Licenciado",
+    custo: 100000000,
+    descricao: 'Agora com 5% menos alucinações.',
+    funcao: 'Multiplica o ganho do Bot de Commit por 10',
+    icon: 'chatgpt.png',
+    // icon: 'placeholder.png',
+    efeito: () => estruturaMultiplier *= 10,
+  },
+  {
+    nome: "Cubo mágico",
+    custo: 43252003,
+    descricao: 'Você sabia que existem mais combinações possíveis em um cubo mágico do que átomos no universo? Pois é, na verdade é mentira...',
+    funcao: 'Cada clique passa a ter uma chance mínima de fazer surgir um café',
+    icon: 'cubo.png',
+    // icon: 'placeholder.png',
+    efeito: () => onClickEffects.push(() => {
+      const chance = 0.005
+      if (Math.random() < chance) spawnCoffee()
+      return 0
+    }),
+  },
+  {
+    nome: "Stalker cibernética",
+    custo: 802007,
+    descricao: 'Receba instantaneamente o follow de uma garota que usa foto de dinossauro, luta boxe, desenha extremamente bem, ama patos e é terrivelmente boa em tudo (e se apaixone perdidamente por ela).',
+    funcao: 'Clicar consecutivamente aumenta o multiplicador de cliques',
+    icon: 'carta.png',
+    // icon: 'placeholder.png',
+    efeito: () => hasCombo = true,
+  },
+  {
+    nome: "Extensão Caça-Cupom",
+    custo: 999999,
+    descricao: 'Mergulha nos cantos mais obscuros da internet em busca dos melhores cupons de desconto.',
+    funcao: 'Reduz o preço de todas as estruturas em 10%',
+    icon: 'preco.png',
+    // icon: 'placeholder.png',
+    efeito: () => {
+      estruturas.forEach(e => e.custoBase *= 0.9)
+    },
+  },
+].map((up, i) => ({...up, id: `up${i+1}`, unlocked: false, purchased: false})).sort((a, b) => a.custo - b.custo)
 
 // Estruturas "place holder" só para o código funcionar
 const estruturas = [
   { 
-    id: 'es1',
-    nome: "Servidor Local", 
-    custoBase: 10, 
+    nome: "LED", 
+    plural: "LEDs",
+    custoBase: 15, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    icon: 'led.png',
+    descricao: 'Não aumenta teu desempenho, mas tua moral sim.',
+    ls: 0.5,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
   },
   { 
-    id: 'es2',
-    nome: "Banco de Dados", 
-    custoBase: 100,
+    nome: "Monitor", 
+    plural: "Monitores",
+    custoBase: 100, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    icon: 'monitor.png',
+    descricao: 'Telas nunca são demais.',
+    ls: 5,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
   },
   { 
-    id: 'es3',
-    nome: "Nuvem Privada", 
-    custoBase: 1000, 
+    nome: "IDE", 
+    plural: "IDEs",
+    custoBase: 1100, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    icon: 'ide.png',
+    descricao: 'VS Code? Eclipse? Sublime? IntelliJ IDEA? Por que não TODOS eles?',
+    ls: 40,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
-   },
+  },
   { 
-    id: 'es4',
-    nome: "Cluster de Servidores", 
-    custoBase: 10000, 
+    nome: "Clippy", 
+    plural: "Clippies",
+    custoBase: 12000, 
     comprados: 0,
-    icon: 'placeholder.png',
-    descricao: 'DESCREVA',
-    ls: 2,
+    icon: 'clippy.png',
+    descricao: 'Olá! Eu sou o Clippy, teu assistente. Gostaria de uma ajudinha?',
+    ls: 250,
     gerado: 0,
-    get custoAtual() {
-      return Math.floor(this.custoBase * Math.pow(1.15, this.comprados));
-    }
-  }
-]
+  },
+  { 
+    nome: "DEV Júnior", 
+    plural: "DEVs Júniores",
+    custoBase: 130000, 
+    comprados: 0,
+    icon: 'dev_jr.png',
+    descricao: 'Não faz ideia do que está fazendo, mas ele tenta... Tadinho.',
+    ls: 1500,
+    gerado: 0,
+  },
+  { 
+    nome: "Servidor local", 
+    plural: "Servidores locais",
+    custoBase: 1400000,
+    comprados: 0,
+    icon: 'servidor.png',
+    descricao: 'Quando teu PC não aguenta mais, você terceiriza.',
+    ls: 8000,
+    gerado: 0,
+  },
+  { 
+    nome: "DEV Pleno", 
+    plural: "DEVs Plenos",
+    custoBase: 20000000, 
+    comprados: 0,
+    icon: 'dev_pleno.png',
+    descricao: 'DEV Júnior+ com uma pitada de independência',
+    ls: 35000,
+    gerado: 0,
+  },
+  { 
+    nome: "Cloud",
+    plural: "Clouds",
+    custoBase: 330000000, 
+    comprados: 0,
+    icon: 'cloud.png',
+    descricao: 'Teus códigos agora suspensos no limbo da internet',
+    ls: 200000,
+    gerado: 0,
+  },
+  { 
+    nome: "DEV Sênior", 
+    plural: "DEVs Sêniores",
+    custoBase: 5100000000, 
+    comprados: 0,
+    icon: 'dev_senior.png',
+    descricao: 'Codifica em silêncio absoluto e surge apenas para resolver os bugs alheios.',
+    ls: 1100000,
+    gerado: 0,
+  },
+    { 
+    nome: "Data Center", 
+    plural: "Data Centers",
+    custoBase: 75000000000, 
+    comprados: 0,
+    icon: 'data_center.png',
+    descricao: 'Armazena zettabytes de memória! (e teus dados mais obscuros).',
+    ls: 7700000,
+    gerado: 0,
+  },
+  { 
+    nome: "IA ultra-generativa", 
+    plural: "IAs ultra-generativas",
+    custoBase: 1000000000000, 
+    comprados: 0,
+    icon: 'ia.png',
+    descricao: 'É tipo um DEV, só que mais rápido, mais esperto, mais eficaz, mais sagaz, mais sucinto, mais... Deixa pra lá.',
+    ls: 45000000,
+    gerado: 0,
+  },
+  { 
+    nome: "PC quântico", 
+    plural: "PCs quânticos",
+    custoBase: 14000000000000, 
+    comprados: 0,
+    icon: 'quantico.png',
+    descricao: 'Resolve os bugs antes mesmo deles surgirem.',
+    ls: 230000000,
+    gerado: 0,
+  },
+
+].map((es, i) => ({id: `es${i+1}`,...es})).sort((a, b) => a.custoBase - b.custoBase)
 
 // Lista com os possíveis bônus do café
 const bonusList = [
   {
     id: 'bn1',
-    nome: "CAFÉZINHO",
+    nome: "Cafézinho",
     descricao: "15% das linhas + 13",
-    peso: 70,
+    peso: 100,
+    unlocked: true,
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
-      refresh(pontos, ganho) // Atualiza os pontos na tela
+      refresh(ganho) // Atualiza os pontos na tela
       return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
   {
     id: 'bn2',
-    nome: "CAFÉ DOCINHO",
-    descricao: "LS x7",
+    nome: "Café Docinho",
+    descricao: "LpS x7",
     type: 'matrix',
-    duracao: 60,
+    duracao: 30,
     peso: 30,
-    icon: 'placeholder.png',
+    icon: 'cafe_docinho.png',
+    unlocked: true,
     get efeito() {
       lsMultiplier *= 7;
-      return `LS x7 por ${this.duracao} segundos!`
+      return `LpS x7 por ${this.duracao} segundos!`
     },
     reverter: () => lsMultiplier /= 7,
   },
   {
     id: 'bn3',
-    nome: "CAFÉ PERFEITO",
-    descricao: "LS x777",
+    nome: "Café Perfeito",
+    descricao: "LpS x777",
     type: 'matrix',
     duracao: 15,
-    peso: 10,
-    icon: 'placeholder.png',
+    peso: 4,
+    icon: 'cafe_perfeito.png',
+    unlocked: true,
     get efeito() {
       lsMultiplier *= 777;
-      return `LS x777 por ${this.duracao} segundos!!!`
+      return `LpS x777 por ${this.duracao} segundos!!!`
     },
     reverter: () => lsMultiplier /= 777,
   },
   {
     id: 'bn4',
-    nome: "CAFÉ DIVINO",
-    descricao: "LS x1111",
+    nome: "Café Divino",
+    descricao: "LpS x1111",
     type: 'matrix',
     duracao: 10,
-    peso: 2,
-    icon: 'placeholder.png',
+    peso: 1,
+    icon: 'cafe_divino.png',
+    unlocked: true,
     get efeito() {
       lsMultiplier *= 1111;
-      return `LS x1111 por ${this.duracao} segundos!!!`
+      return `LpS x1111 por ${this.duracao} segundos!!!`
     },
     reverter: () => lsMultiplier /= 1111,
   },
   {
     id: 'bn5',
-    nome: "TEMPESTADE DE CAFÉ",
+    nome: "Tempestade de Café",
     peso: 5,
+    unlocked: true,
     get efeito() {
         var coffeeStorm = setInterval(() => {
-            spawnCoffe('bn6')
+            spawnCoffee('bn6')
         }, 400)
 
         setTimeout(() => {
@@ -169,59 +443,66 @@ const bonusList = [
   {
     id: 'bn6',
     nome: "STORM BONUS",
-    descricao: "7% das linhas!", // MUDAR PARA BONUS DE LINHAS POR SEGUNDO NO FUTURO
+    descricao: "5 min das LpS!",
+    unlocked: true,
     get efeito() {
-        const ganho = Math.floor(pontos * 0.07 + 13);
-        refresh(pontos, ganho)
+        const ganho = Math.floor(lsTOT * 60 * 5);
+        refresh(ganho)
         return `Ganhou ${formatarNumero(ganho)} linhas!`
     },
   },
   {
     id: 'bn7',
-    nome: 'CAFÉ VENCIDO',
+    nome: 'Café Vencido',
+    descricao: '',
+    type: 'evil',
     descricao: 'Não faz nada...',
-    peso: 1,
+    peso: 2,
+    unlocked: false,
     get efeito() {
-      return 'Não faz nada... Absolutamente nada. Tipo: NADA!'
+      return 'Não faz nada... Absolutamente nada.'
     },
   },
   {
     id: 'bn8',
-    nome: 'CAFÉ DO MAL',
+    nome: 'Café Estragado',
+        descricao: '',
     type: 'evil',
-    icon: 'placeholder.png',
+    icon: 'cafe_estragado.png',
     peso: 10,
     duracao: 30,
+    unlocked: false,
     get efeito() {
       lsMultiplier *= .5
-      coffeeProb *= .5
-      return `LS x0.5 por ${this.duracao} segundos...`
+      coffeeProb *= .1
+      return `LpS x0.5 por ${this.duracao} segundos...`
     },
     reverter: () => {
-      coffeeProb /= .5
       lsMultiplier /= .5
+      coffeeProb /= .1
     },
   },
     {
     id: 'bn9',
-    nome: 'CAFÉ DEMONÍACO',
+    nome: 'Café Demoníaco',
     type: 'evil',
-    icon: 'placeholder.png',
-    peso: 10,
+    icon: 'cafe_demoniaco.png',
+    peso: 2,
     duracao: 6,
+    unlocked: false,
     get efeito() {
       lsMultiplier *= 666
-      return `LS x666 por ${this.duracao} segundos...`
+      return `LpS x666 por ${this.duracao} segundos...`
     },
     reverter: () => lsMultiplier /= 666,
   }
 ]
 
-// Um array que conterá todos os upgrades e estruturas que foram sendo desbloqueados
-const desbloqueados = {
-  estruturas: new Set(),
-  upgrades: new Set()
-}
+const onClickEffects = [
+  () => {
+    return boost
+  },
+]
 
 // Um array que conterá uma lista de desbloqueados, que será limpa quando a respectiva aba for acessada
 const notificacoes = {
@@ -248,30 +529,36 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
-
+const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+const socket = new WebSocket(protocol + window.location.host + "/ws/leaderboard/");
 const csrfToken = window.csrfToken
 
 // Variaveis
 let id = -1
 let company = ''
-let pontos = 0;
+let pontos = 0 // Linhas de código
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
-let lsMultiplier = 1 // Multiplicador para as LS
-let coffeeProb = 0.04 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
+let lsTOT = 0 // Quantas LpS estão sendo geradas
+let lsMultiplier = 1 // Multiplicador para as LpS
+let bulkBuy = 1 // Quantas estruturas serão comprados por vez (x1, x10, x100)
+let comboMultiplier = 1
+let estruturaMultiplier = 1
+let hasCombo = false // Se possui o upgrade para gerar o combo de cliques
+let coffeeProb = 0.03 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
-let tabActive = 'Upgrades' // Qual a aba ativa atualmente
+let tabActive = 'Estruturas' // Qual a aba ativa atualmente
 let mouseX = 0 // Coordenada x do mouse
 let mouseY = 0 // Coordenada y do mouse
-let currentMusic = null // Controla qual música está tocando no momento
-let fadeOutInterval = null;
-let fadeInInterval = null;
-let modalErrorMessage = ''
 let listDataLeaderboard; // guarda os dados do leaderboard
 let listUpgrades; // lista de upgrades comprados
 let listStructures; // lista de estruturas comprados
 let debug = false; // debugar parte do código
-let clicked = false;
+let currentMusic = null // Controla qual música está tocando no momento
+let comboTimeout = null
+let fadeOutInterval = null
+let fadeInInterval = null
+let gameInterval = null
+let coffeeInterval = null
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -284,12 +571,30 @@ const clicksContainer = document.querySelector('.clicks-container') // Container
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
 const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
-const leadeboardContainer = document.querySelector('.leaderboard-wrapper')
+const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
+const lbContentContainer = document.querySelector('.leaderboard-content')
+const lsPersecondContainer = document.querySelector('.ls-persecond')
 const computerCodelinesContainer = document.querySelector(".computer-codelines");
 const modalContainer = document.querySelector('.modal')
 const modalInput = document.querySelector('.modal-input')
 const modalForm = document.querySelector('.modal-form')
 const modalErrorContainer = document.querySelector('.modal-error')
+const bulkButtons = document.querySelectorAll('.bulk')
+
+// PRELOAD (CACHE)
+const iconCache = {}
+
+function preloadIcons(iconList) {
+  iconList.forEach(icon => {
+    const img = new Image()
+    img.src = `/static/assets/icons/${icon}`
+    iconCache[icon] = img
+  })
+}
+
+preloadIcons(estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)))
+
+// FIM PRELOAD
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
@@ -303,11 +608,59 @@ function atualizarPontos(novoValor) {
   window.dispatchEvent(evento); // Notifica outros scripts
 }
 
+// LEADERBOARD
 
-function renderLeaderboard(jogadores, idAtual = id) {
+addSafeTouchListener(leaderboardWrapperContainer, toggleMobileLeaderboard)
+
+lbContentContainer.addEventListener("transitionend", (e) => {
+  if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
+    leaderboardWrapperContainer.classList.remove('enabled')
+  }
+})
+
+leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
+  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+})
+
+leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
+  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+})
+
+function toggleMobileLeaderboard(e) {
+  const touchedContent = e.target.closest('.leaderboard-content')
+  if (touchedContent) return
+
+  const isEnabled = leaderboardWrapperContainer.classList.contains('enabled')
+
+  if (isEnabled) {
+    lbContentContainer.style.opacity = 0
+    leaderboardWrapperContainer.style.background = 'transparent'
+    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+
+  } else {
+    leaderboardWrapperContainer.classList.toggle('enabled')
+    void lbContentContainer.offsetWidth
+    lbContentContainer.style.opacity = 1
+    leaderboardWrapperContainer.style.background = 'var(--bs)'
+    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+  }
+}
+
+window.addEventListener('dispatchLeaderboard', (e) => {
+  renderLeaderboard(e.detail.lb)
+})
+
+function requestLeaderboard() {
+    const event = new CustomEvent("requestLeaderboard")
+
+    window.dispatchEvent(event);
+}
+
+function renderLeaderboard(jogadores) {
   jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
-  const yourPlayer = jogadores.find(j => j.companyName === company);
-
+  const yourPlayer = jogadores.find(j => j.id == idPlayer);
 
   const container = document.querySelector(".leaderboard-content>ul");
   const prevPos = document.querySelector('.lb--prev-pos')
@@ -317,9 +670,10 @@ function renderLeaderboard(jogadores, idAtual = id) {
 
   let topJogadores = jogadores.slice(0, Math.min(jogadores.length, 11))
 
-  const hasPlayerInTop = topJogadores.some(j => j.companyName == company)
+  const hasPlayerInTop = topJogadores.some(j => j.id == idPlayer)
   if (!hasPlayerInTop) {
     const newPlayer = {
+      id: idPlayer,
       companyName: company,
       lsCount: pontos,
       pos: yourPlayer?.pos
@@ -328,14 +682,15 @@ function renderLeaderboard(jogadores, idAtual = id) {
   }
 
   container.childNodes.forEach(j => {
-    const jName = j.id.replace("lb-jogador", "")
-    if (!topJogadores.find(tj => tj.companyName.replace(' ', '') == jName.replace(' ', ''))) j.remove()
+    const jID = j.id
+    if (!topJogadores.find(tj => tj.id == jID)) j.remove()
   })
 
-  topJogadores.map((_, id) => ({..._, id})).forEach((jogador, index) => {
-    const jogadorEl = document.getElementById(`lb-jogador${jogador.companyName.replace(' ', '')}`)
-    const isVoce = jogador.companyName == company
+  topJogadores.forEach((jogador, index) => {
+    const jogadorEl = document.getElementById(jogador.id)
+    const isYou = jogador.id == idPlayer
     const pos = jogador.pos
+
 
     if (jogadorEl) {
       const pointsEl = jogadorEl.querySelector('.lb-number')
@@ -344,7 +699,7 @@ function renderLeaderboard(jogadores, idAtual = id) {
       jogadorEl.style.order = pos
       jogadorEl.style.transform = `translateY(${index*100}%)`
       jogadorEl.style.zIndex = pos >= 11 ? 200 : 200-pos
-      pointsEl.textContent = jogador.lsCount
+      pointsEl.textContent = formatarNumero(jogador.lsCount)
       posEl.textContent = pos
       posEl.className = `lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}`
 
@@ -352,15 +707,15 @@ function renderLeaderboard(jogadores, idAtual = id) {
     }
 
     const li = document.createElement("li");
-    // const isVoce = jogador.id === idAtual;
 
-    li.id = `lb-jogador${jogador.companyName.replace(' ', '')}`
+    if (isYou) li.className = 'you'
+    li.id = jogador.id
     li.style.order = pos
     li.style.zIndex = pos >= 11 ? 200 : 200-pos
     li.innerHTML = `
       <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
-      <span class="lb-name">${jogador.companyName}${isVoce ? ' <strong>(VOCÊ)</strong>' : ''}</span>
-      <span class="lb-number">${jogador.lsCount}</span>
+      <span class="lb-name">${jogador.companyName}${isYou ? ' <strong style="font-size: .8em">(VOCÊ)</strong>' : ''}</span>
+      <span class="lb-number">${formatarNumero(jogador.lsCount)}</span>
     `
 
     container.appendChild(li);
@@ -371,60 +726,49 @@ function renderLeaderboard(jogadores, idAtual = id) {
   })
 }
 
-// Socket para toda vez que receber uma atualização do db
-socket.onmessage = (e) => {
-  // ESTRUTURA = {id, companyName, lsCount}
-  listDataLeaderboard = JSON.parse(e.data).player;
+// FIM DO LEADERBOARD
 
-  listDataLeaderboard.find(obj => {
-    if(obj.id == id){
-      company = obj.companyName;
-    }
-  })
-
-  renderLeaderboard(listDataLeaderboard, 0, companyName, pontos);
-}
+// Pega o nome do player
+window.addEventListener("updateCompany", (e) => {
+  company = e.detail.company
+  companyName.textContent = company
+  
+})
 
 // PEGA DO BACKEND TODOS OS DADOS DO PLAYER
 
 window.addEventListener("dispatchPlayerData", (event) => {
   //Coleta os dados do player e coloca em variáveis e postam no index
-  let loadingPlayer = event.detail.player;
-
+  let loadingPlayer = event.detail.player
   company = loadingPlayer.companyName
+  companyName.textContent = company
 
-  companyName.textContent = company;
-
-  id = loadingPlayer.id;
 
   // Verifica quais estrutras e upgrades estão salvos e atualiza da lista principal
   listUpgrades = JSON.parse(localStorage.getItem("upgrades"))?.salve || []
-
   listStructures = JSON.parse(localStorage.getItem("estruturas"))?.salve || []
 
   listUpgrades.forEach(item => {
     upgrades.forEach((upgrade, index) => {
-      if(upgrade.id == item){
-        upgrades[index].purchased = true;
-        upgrades[index].efeito();
+      if (upgrade.id == item.id){
+        upgrades[index].purchased = item.purchased
+        upgrades[index].unlocked = item.unlocked
+        if (item.purchased) upgrades[index].efeito()
       }
     })
   })
 
   listStructures.forEach(item => {
     estruturas.forEach((estrutura, index)=>{
-      if(estrutura.id == item.id){
-        estruturas[index].comprados = item.comprados;
-        estruturas[index].gerado = item.gerado;
-        estruturas[index].unlocked = true;
+      if (estrutura.id == item.id){
+        estruturas[index].comprados = item.comprados
+        estruturas[index].gerado = item.gerado
+        estruturas[index].unlocked = true
       }
     })
   })
 
-
-  pontos = loadingPlayer.lsCount;
-
-  refresh(0, pontos, true)
+  refresh(loadingPlayer.lsCount)
 })
 
 // Traz os dados do leaderboard do backend na primeira execução
@@ -434,13 +778,30 @@ window.addEventListener("dispatchLearderboardData", (event)=>{
   renderLeaderboard(leaderboardInfo, 0, companyName, pontos);
 })
 
+history.pushState(null, null, window.top.location.pathname + window.top.location.search);
+window.addEventListener('popstate', (e) => {
+  e.preventDefault()
+  // Reempilha o estado para impedir voltar
+  history.pushState(null, null, window.top.location.pathname + window.top.location.search)
+})
+
+// Atualizar os upgrades, puxar as estruturas salvas no banco de dados
+window.addEventListener("dispatchUpdateList", (event) => { 
+  let loadingUpdateList = event.detail.updateList; // o index do upgrade é retornado
+})
+
+// Atualiza as estruturas, puxar as estruturas salvas do banco de dados
+window.addEventListener("dispatchStructList", (event)=> {
+  let loadingStructList = event.detail.structList; // retorna o index da estrutra e quantas delas foram comprados
+})
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
-function refresh(valorAtual, add, isEvent = false) {
+function refresh(add) {
+  valorAtual = pontos
   pontos = valorAtual + add
-  clicked = true;
 
+  if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos))} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   
@@ -455,7 +816,7 @@ function animarContador(valorInicial, duracao = 700) {
   const add = valorFinal - valorInicial
 
   if (Math.abs(add) == 1) {
-    display.textContent = `${formatarNumero(pontos)} linhas de código`
+    display.textContent = `${formatarNumero(pontos)} linha${pontos > 1 ? 's' : ''} de código`
     if (add > 0) generateCodeLine()
     return
   }
@@ -501,7 +862,7 @@ function animarContador(valorInicial, duracao = 700) {
 
 // Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
 function formatarNumero(valor) {
-  if (valor < 1000000) return valor.toString()
+  if (valor < 1000000) return Number(valor).toLocaleString('pt-BR')
 
   // Se for maior que o maior limite conhecido
   const maiorLimite = unidades[0].limite
@@ -513,7 +874,7 @@ function formatarNumero(valor) {
     if (valor >= unidade.limite) {
       const valorDividido = valor / unidade.limite
       const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
-      return `${valorDividido.toFixed(1).replace('.', ',')} ${nome}`
+      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
     }
   }
 }
@@ -521,19 +882,17 @@ function formatarNumero(valor) {
 // Essa função é chamada sempre que os pontos são atualizados para verificar se algo foi desbloqueado
 function checarDesbloqueios(pontos) {
   estruturas.forEach((estrutura, index) => {
-    if (pontos >= estrutura.custoAtual && !desbloqueados.estruturas.has(index)) {
-      desbloqueados.estruturas.add(index)
+    if (pontos >= custoAtual(estrutura) && !estrutura.unlocked) {
       notificacoes.estruturas.add(index)
       estrutura.unlocked = true
       atualizarIndicadores()
-
     }
   })
 
   upgrades.forEach((upgrade, index) => {
-    if (pontos >= upgrade.custo && !desbloqueados.upgrades.has(index)) {
-      desbloqueados.upgrades.add(index)
+    if (pontos >= upgrade.custo && !upgrade.unlocked) {
       notificacoes.upgrades.add(index)
+      upgrade.unlocked = true
       atualizarIndicadores()
     }
   })
@@ -546,29 +905,97 @@ function atualizarIndicadores() {
 
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
+
+  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.ogg', .4)
+}
+
+function addSafeTouchListener(element, onValidTouchEnd) {
+  let touchValid = false;
+
+  element.addEventListener('touchstart', () => {
+    touchValid = true;
+  });
+
+  element.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    const elAtPoint = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!element.contains(elAtPoint)) {
+      touchValid = false;
+    }
+  });
+
+  element.addEventListener('touchend', (e) => {
+    if (touchValid) {
+      onValidTouchEnd(e);
+    }
+  });
 }
 
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
+  if (window.matchMedia('(pointer: coarse)').matches) return
+
+  const coords = {
+    x: e.pageX,
+    y: e.pageY,
+  }
+
+  handleClicker(coords)
+})
+
+button.addEventListener('touchstart', (e) => {
+  const currentTouch = [...e.touches].at(-1)
+  const coords = {
+    x: currentTouch.pageX,
+    y: currentTouch.pageY,
+  }
+  handleClicker(coords)
+})
+
+function handleClicker({x, y}) {
+  const [toAdd, actualComboMultiplier] = onClick()
+
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
   click.className = 'click'
-  click.textContent = `+${boost}`
-  click.style.left = `calc(${e.pageX}px + ${randomOffset}px)`
-  click.style.top = `${e.pageY}px`
+  click.innerHTML = `<span>+${formatarNumero(toAdd.toFixed(1))}</span>${hasCombo ? ` <span class="combo">x${actualComboMultiplier.toFixed(1)}</span>` : ''}`
+  click.style.left = `calc(${x}px + ${randomOffset}px)`
+  click.style.top = `${y}px`
   clicksContainer.appendChild(click)
   void click.offsetHeight
   click.classList.add('fading-up')
 
 
-  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .6)
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .4)
 
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
   })
+}
 
-  refresh(pontos, boost)
-})
+function onClick() {
+  let toAdd = 0
+
+  // Executa todos os efeitos extras adicionados por upgrades
+  onClickEffects.forEach(fn => toAdd += fn())
+
+  let actualCombo = comboMultiplier
+  toAdd *= comboMultiplier
+
+  if (hasCombo) {
+    
+    comboMultiplier = Math.min(2, comboMultiplier + .02)
+    if (comboTimeout) clearTimeout(comboTimeout)
+      
+      comboTimeout = setTimeout(() => {
+        comboTimeout = null
+        comboMultiplier = 1
+      }, 400)
+  }
+  
+  refresh(toAdd)
+  return [toAdd, actualCombo]
+}
 
 // No celular, 'active' fica muito bugado, portanto iremos colocar uma animação manualmente de pulo no teclado ao ser clicado
 button.addEventListener("touchstart", triggerAnimation)
@@ -581,20 +1008,12 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (!window.matchMedia('(pointer: coarse)').matches && modalContainer.classList.contains('disabled')) {
-    mouseX = e.clientX
-    mouseY = e.clientY
-  
-    showTooltip()
-  }
-})
+  if (window.matchMedia('(pointer: coarse)').matches || !modalContainer.classList.contains('disabled')) return
 
-leadeboardContainer.addEventListener('mouseenter', (e) => {
-  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
-})
+  mouseX = e.clientX
+  mouseY = e.clientY
 
-leadeboardContainer.addEventListener('mouseleave', (e) => {
-  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+  showTooltip()
 })
 
 function showTooltip(x = mouseX, y = mouseY) {
@@ -613,33 +1032,56 @@ function showTooltip(x = mouseX, y = mouseY) {
 
   if (atributtePre === 'es') {
     const data = estruturas.find(es => es.id === id)
+    const custo = custoAtual(data)
+
+    if (!tooltip.classList.contains('estrutura')) {
+      tooltip.className = 'tooltip estrutura'
+      tooltip.innerHTML = `
+          <div class="tooltip-header">
+            <div class="tooltip-header--left">
+              <img class="tooltip-icon"/>
+              <strong class="tooltip-name"></strong>
+            </div>
+            <span class="tooltip-price"></span>
+          </div>
+          <div class="tooltip-content">
+            <span class="tooltip-description"></span>
+          </div>
+          <div class="tooltip-extra"></div>
+      `
+    }
 
     let extraInfo = ``
 
     if (data.unlocked && data.comprados > 0) {
+      const gerando = (data.comprados*data.ls*lsMultiplier).toFixed(1)
       extraInfo = `
           <ul>
-            <li>cada ${data.nome.toLocaleLowerCase()} gera <strong>${data.ls} LS</strong></li>
-            <li>${data.comprados} ${data.nome.toLocaleLowerCase()} gerando <strong>${data.comprados*data.ls*lsMultiplier} LS</strong></li>
-            <li>${data.gerado} linhas geradas até agora</li>
+            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LpS</li>
+            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
+            <li>${formatarNumero(Math.floor(data.gerado))} linhas geradas até agora</li>
           </ul>
       `
     }
 
-    tooltip.innerHTML = `
-        <div class="tooltip-header">
-          <div class="tooltip-header--left">
-            <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
-            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
-          </div>
-          <span class="tooltip-price ${pontos < data.custoAtual ? 'high' : 'low'}">${data.custoAtual}</span>
-        </div>
-        <div class="tooltip-content">
-          <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
-        </div>
-        ${extraInfo}
-    `
-    tooltip.classList.remove('bonus')
+    const img = tooltip.querySelector('.tooltip-icon')
+    const newSrc = `/static/assets/icons/${data.icon}`
+
+    if (img.src !== location.origin + newSrc) {
+      if (iconCache[data.icon]) {
+        img.src = iconCache[data.icon].src // já foi carregado
+      } else {
+        img.src = newSrc // fallback, se não estiver no cache
+      }
+    }
+    img.classList.toggle('hidden', !data.unlocked)
+    tooltip.querySelector('.tooltip-name').textContent = data.unlocked ? data.nome : '???'
+    tooltip.querySelector('.tooltip-price').textContent = formatarNumero(custo)
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-description').textContent = data.unlocked ? data.descricao : '???'
+    tooltip.querySelector('.tooltip-extra').innerHTML = extraInfo
+    tooltip.querySelector('.tooltip-extra').classList.toggle('hidden', !extraInfo)
+
     tooltip.style.transform = 'translateY(-50%)'
     tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
     tooltip.style.opacity = 1
@@ -647,22 +1089,40 @@ function showTooltip(x = mouseX, y = mouseY) {
   }
   else if (atributtePre === 'up') {
     const data = upgrades.find(up => up.id === id)
-
-    tooltip.innerHTML = `
-      <div class="tooltip-header">
-        <div class="tooltip-header--left">
-          <img src="/static/assets/${data.icon}" class="tooltip-icon"/>
-          <strong class="tooltip-name">${data.nome}</strong>
+    
+    if (!tooltip.classList.contains('upgrade')) {
+      tooltip.className = 'tooltip upgrade'
+      tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <div class="tooltip-header--left">
+            <img class="tooltip-icon"/>
+            <strong class="tooltip-name"></strong>
+          </div>
+          <span class="tooltip-price"></span>
         </div>
-        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${data.custo}</span>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-function">${data.funcao}</span>
-        <span class="tooltip-description">${data.descricao}</span>
-      </div>
-    `
+        <div class="tooltip-content">
+          <span class="tooltip-function"></span>
+          <span class="tooltip-description"></span>
+        </div>
+      `
+    }
 
-    tooltip.classList.remove('bonus')
+    const img = tooltip.querySelector('.tooltip-icon')
+    const newSrc = `/static/assets/icons/${data.icon}`
+
+    if (img.src !== location.origin + newSrc) {
+      if (iconCache[data.icon]) {
+        img.src = iconCache[data.icon].src // já foi carregado
+      } else {
+        img.src = newSrc // fallback, se não estiver no cache
+      }
+    }
+    tooltip.querySelector('.tooltip-name').textContent = data.nome
+    tooltip.querySelector('.tooltip-price').textContent = formatarNumero(data.custo)
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < data.custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-function').textContent = data.funcao
+    tooltip.querySelector('.tooltip-description').textContent = data.descricao
+
     tooltip.style.transform = 'translateY(-50%)'
     tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
     tooltip.style.opacity = 1
@@ -672,17 +1132,23 @@ function showTooltip(x = mouseX, y = mouseY) {
   else if (atributtePre === 'bn') {
     const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()  
     const data = boostsActive.find(bn => bn.id === id)
+
+    if (!tooltip.classList.contains('bonus')) {
+      tooltip.className = 'tooltip bonus'
+      tooltip.innerHTML = `
+        <div class="tooltip-header center">
+          <strong class="tooltip-name"></strong>
+        </div>
+        <div class="tooltip-content">
+          <span class="tooltip-efeito"></span>
+        </div>
+      `
+    }
+
+    tooltip.querySelector('.tooltip-name').textContent = data.nome
+    tooltip.querySelector('.tooltip-efeito').textContent = data.efeito
     
-    tooltip.classList.add('bonus')
-    tooltip.innerHTML = `
-      <div class="tooltip-header center">
-        <strong class="tooltip-name">${data.nome}</strong>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-efeito">${data.efeito}</span>
-      </div>
-    `
-    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
+    const tooltipRect = tooltip.getBoundingClientRect()
     tooltip.style.left = `${x}px`
     tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
     tooltip.style.transform = `translateX(-50%)`
@@ -708,10 +1174,11 @@ function showMobileTooltip(type, item) {
   content.innerHTML = `<div class="mobile-tooltip--title">${titles[type]}</div>`
 
   if (type == 'es') {
+    const gerando = (item.comprados*item.ls*lsMultiplier).toFixed(1)
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
               <span>Comprados: ${item.comprados}</span>
@@ -719,9 +1186,9 @@ function showMobileTooltip(type, item) {
         </div>
         <div class="monile-tootltip--items">
             <ul>
-              <li>cada ${item.nome.toLocaleLowerCase()} gera <strong>${item.ls} LS</strong></li>
-              <li>${item.comprados} ${item.nome.toLocaleLowerCase()} gerando <strong>${item.comprados * item.ls * lsMultiplier} LS</strong></li>
-              <li>${item.gerado} linhas geradas até agora</li>
+              <li>cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LpS</li>
+              <li>${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
+              <li>${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora</li>
             </ul>
         </div>
           <span class="tooltip-description">${item.descricao}</span>
@@ -731,7 +1198,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -744,7 +1211,7 @@ function showMobileTooltip(type, item) {
     content.innerHTML += `
       <div class="mobile-tooltip--wrapper">
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/${item.icon}" class="mobile-tooltip--icon"/>
+          <img  src="/static/assets/coffees/${item.icon}" class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
               <span class="mobile-tooltip--name">${item.nome}</span>
           </div>
@@ -758,7 +1225,7 @@ function showMobileTooltip(type, item) {
   close.className = 'close-bttn'
   close.textContent = 'Fechar'
 
-  close.addEventListener('touchend', (e) => {
+  addSafeTouchListener(close, (e) => {
     e.stopPropagation(); // impede que o clique vá para outros elementos
     e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
     closeMobileTootip()
@@ -776,8 +1243,23 @@ function closeMobileTootip() {
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
+bulkButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) return
+
+    playSound(`/static/assets/sounds/tab.ogg`, .5)
+
+    bulkButtons.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
+    btn.classList.add('active') // Depois, adiciona somente no que foi clicado
+
+    bulkBuy = Number(btn.dataset.bulk)
+
+    if (tabActive == 'Estruturas') renderEstruturas()
+  })
+})
+
 buttonsHeader.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', () => {
       if (btn.classList.contains('active')) return
 
       buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
@@ -802,109 +1284,157 @@ const renderEstruturas = () => {
   // Se antes, na lista, havia algum "upgrade", reseta o conteúdo da lista
   if (!contentList.querySelector('.estrutura')) contentList.innerHTML = ''
 
-  const size = desbloqueados.estruturas.size
+  const size = estruturas.filter(es => es.unlocked).length
+  // const size = 99
   const estruturasFixed = estruturas.slice(0, Math.min(size + 2, estruturas.length))
 
   estruturasFixed.forEach((item) => {
     const id = `estrutura-${item.id}`
-    const estrutura = document.getElementById(id)
+    let estrutura = document.getElementById(id)
 
-    // Se o item já está renderizado, não adiciona ele novamente, apenas atualiza
-    if (estrutura) {
-      const custo = estrutura.querySelector('.cust')
-      const itemName = estrutura.querySelector('.item-name')
-      const comprados = estrutura.querySelector('.item-purchased')
+    // Se o item não está renderizado, cria a estrutura HTML
+    if (!estrutura) {
+      estrutura = document.createElement('div')
+      estrutura.id = id
+      estrutura.className = "content-item estrutura"
+      estrutura.setAttribute('data-tooltipId', item.id)
 
-      if (item.unlocked) {
-        if (item.comprados > 0) comprados.textContent = item.comprados
-        if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
-        itemName.textContent = item.nome
-        estrutura.classList.remove('hidden')
-        estrutura.classList.add('unlocked')
-      }
-      custo.textContent = item.custoAtual
-      if (item.custoAtual > pontos) {
-        custo.classList.add('high')
-        custo.classList.remove('low')
-      } else {
-        custo.classList.add('low')
-        custo.classList.remove('high')
-      }
-      
-      return
-    } 
-
-    const div = document.createElement("div")
-    div.id = id
-    div.innerHTML = (`
-      <img src="/static/assets/${item.icon}" class="item-icon"/>
-      <div class="item-content">
-        <div class="item-text">
-          <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
-          <span class="cust ${item.custoAtual > pontos ? 'high' : 'low'}">${item.custoAtual}</span>
+      estrutura.innerHTML = (`
+        <img class="item-icon">
+        <div class="item-content">
+          <div class="item-text">
+            <div class="item-text--wrapper">
+              <span class="mobile-purchased"></span>
+              <span class="mobile-name"></span>
+              <span class="item-name"></span>
+            </div>
+            <span class="cust"></span>
+          </div>
+          <span class="item-purchased"></span>
+          <button class="info-bttn">INFO</button>
         </div>
-        <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
-        <button class="info-bttn">INFO</button>
-      </div>
-    `)
-    div.className = "content-item estrutura"
-    if (item.unlocked) {
-      div.classList.add('unlocked')
+      `)
+
+      estrutura.addEventListener('click', (e) => {
+        const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
+        if (hasClickedInfo) return
+    
+        buyEstrutura(item.id)
+      })
+
+      addSafeTouchListener(estrutura.querySelector('.info-bttn'), () => {
+        showMobileTooltip('es', item)
+        playSound('/static/assets/sounds/open.ogg', .4)
+      })
+    
+      contentList.appendChild(estrutura)
+    } 
+    
+    const custoContainer = estrutura.querySelector('.cust')
+    const itemName = estrutura.querySelector('.item-name')
+    const mobileName = estrutura.querySelector('.mobile-name')
+    const mobilePurchased = estrutura.querySelector('.mobile-purchased')
+    const comprados = estrutura.querySelector('.item-purchased')
+    const img = estrutura.querySelector('.item-icon')
+    const newSrc = `/static/assets/icons/${item.icon}`
+
+    if (img.src !== location.origin + newSrc) {
+      if (iconCache[item.icon]) {
+        img.src = iconCache[item.icon].src // já foi carregado
+      } else {
+        img.src = newSrc // fallback, se não estiver no cache
+      }
     }
 
-    else div.classList.add('hidden')
-    div.setAttribute('data-tooltipId', item.id)
-    div.addEventListener('click', (e) => {
-      const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
-      if (hasClickedInfo) return
-  
-      buyEstrutura(item.id)
-    })
+    const custo = Math.round(sumPG(custoAtual(item), 1.15, bulkBuy))
 
-    div.querySelector('.info-bttn').addEventListener('touchend', () => {
-      showMobileTooltip('es', item)
-      playSound('/static/assets/sounds/open.ogg', .4)
-    })
+    if (item.unlocked) {
+      if (item.comprados > 0) {
+        comprados.textContent = item.comprados
+        mobilePurchased.textContent = item.comprados
+      }
+      if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
+      itemName.textContent = item.nome
+      mobileName.textContent = item.comprados > 1 ? item.plural : item.nome
+      estrutura.classList.remove('hidden')
+      estrutura.classList.add('unlocked')
+    } else {
+      itemName.textContent = '???'
+      mobileName.textContent = '???'
+      estrutura.classList.add('hidden')
+    }
 
-    contentList.appendChild(div)
-
+    custoContainer.textContent = formatarNumero(custo)
+    custoContainer.classList = `cust ${custo > pontos ? 'high' : 'low'}`
   })
 }
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
-  contentList.innerHTML = "" // Limpa o conteúdo para renderizar certinho
+  if (!contentList.querySelector('.upgrade')) contentList.innerHTML = ''
+
   const upgradesFiltered = upgrades.filter(item => !item.purchased)
   if (upgradesFiltered.length > 0) {
     upgradesFiltered.forEach(item => {
-      const div = document.createElement("div")
+      const id = `upgrade-${item.id}`
+      let upgrade = document.getElementById(id)
 
-      div.innerHTML = (`
-        <img src="/static/assets/${item.icon}" class="item-icon"/>
-        <div class="item-content">
-          <div class="item-text">
-            <span class="item-name">${item.nome}</span>
-            <span class="cust ${item.custo > pontos ? 'high' : 'low'}">${item.custo}</span>
+      if (!upgrade) {
+        upgrade = document.createElement('div')
+        upgrade.id = id
+    
+        upgrade.innerHTML = (`
+          <img class="item-icon"/>
+          <div class="item-content">
+            <div class="item-text">
+              <span class="item-name">${item.nome}</span>
+              <span class="cust"></span>
+            </div>
+            <button class="info-bttn">INFO</button>
           </div>
-          <button class="info-bttn">INFO</button>
-        </div>
-      `)
-      div.className = "content-item upgrade"
-      if (pontos >= item.custo) div.classList.add('unlocked')
-
-      div.setAttribute('data-tooltipId', item.id)
-      div.addEventListener('click', (e) => {
-        const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
-        if (hasClickedInfo) return
+        `)
+    
+        upgrade.className = "content-item upgrade"
+        if (pontos >= item.custo) upgrade.classList.add('unlocked')
+    
+        upgrade.setAttribute('data-tooltipId', item.id)
+        upgrade.addEventListener('click', (e) => {
+          const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
+          if (hasClickedInfo) return
+          
+          const hasBought = buyUpgrade(item.id)
+          if (hasBought) upgrade.remove()
+        })
+    
+        addSafeTouchListener(upgrade.querySelector('.info-bttn'), () => {
+          showMobileTooltip('up', item)
+          playSound('/static/assets/sounds/open.ogg', .4)
+        })
         
-        buyUpgrade(item.id)
-      })
+        contentList.appendChild(upgrade)
+      }
+      
+      if (item.purchased) {
+        upgrade.remove()
+        return
+      }
 
-      div.querySelector('.info-bttn').addEventListener('touchend', () => {
-        showMobileTooltip('es', item)
-        playSound('/static/assets/sounds/open.ogg', .4)
-      })
-      contentList.appendChild(div)
+      const img = upgrade.querySelector('.item-icon')
+      const newSrc = `/static/assets/icons/${item.icon}`
+
+      if (img.src !== location.origin + newSrc) {
+        if (iconCache[item.icon]) {
+          img.src = iconCache[item.icon].src // já foi carregado
+        } else {
+          img.src = newSrc // fallback, se não estiver no cache
+        }
+      }
+
+      const custoContainer = upgrade.querySelector('.cust')
+
+      custoContainer.textContent = formatarNumero(item.custo)
+      custoContainer.className = `cust ${item.custo > pontos ? 'high' : 'low'}`
+      upgrade.classList.toggle('unlocked', pontos >= item.custo)
     })
   } else {
     const span = document.createElement("span")
@@ -917,13 +1447,36 @@ const renderUpgrades = () => {
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
 const buyEstrutura = (id) => {
-  const estrutura = estruturas.find( e => e.id == id )
+  const estrutura = estruturas.find(e => e.id == id);
+  let custo = 0;
+  let quantidadeComprada = 0;
 
-  if (pontos < estrutura.custoAtual) return
+  // Tenta comprar o bulkBuy completo primeiro
+  custo = Math.round(sumPG(custoAtual(estrutura), 1.15, bulkBuy));
+  
+  if (pontos >= custo) {
+    quantidadeComprada = bulkBuy;
+  } else {
+    // Se não tiver pontos para o bulkBuy, calcula quantas estruturas é possível comprar
+    for (let i = bulkBuy; i >= 1; i--) {
+      const custoParcial = Math.round(sumPG(custoAtual(estrutura), 1.15, i));
+      if (pontos >= custoParcial) {
+        quantidadeComprada = i;
+        custo = custoParcial;
+        break;
+      }
+    }
+  }
 
-  const custo = estrutura.custoAtual
-  estrutura.comprados += 1
-  refresh(pontos, -custo)
+  // Se for possível comprar pelo menos uma estrutura
+  if (quantidadeComprada > 0) {
+    estrutura.comprados += quantidadeComprada;
+    refresh(-custo);
+    playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5);
+  } else {
+    // Se não for possível comprar nenhuma, a função simplesmente retorna
+    return;
+  }
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -935,12 +1488,12 @@ const buyUpgrade = (id) => {
   upgrade.efeito()
   upgrade.purchased = true
 
-  refresh(pontos, -upgrade.custo)
+  refresh(-upgrade.custo)
+  
   playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
-}
 
-// Renderiza os upgrades assim que o site inicia
-renderUpgrades(upgrades)
+  return true
+}
 
 // FIM DO CONTAINER DA DIREITA
 
@@ -949,12 +1502,14 @@ renderUpgrades(upgrades)
 const triggerCoffeeEvent = () => {
     // A cada um segundo, verificar se o número aleatorizado é menor que a probabilidade, para então spawnar o coffee
     setInterval(() => {
-        if (Math.random() < coffeeProb) spawnCoffe()
+        if (Math.random() < coffeeProb) spawnCoffee()
     }, 1000)
 }
 
+let lastBonus = ''
+
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-const spawnCoffe = (bonusId = null) => {
+function spawnCoffee (bonusId = null)  {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -980,7 +1535,7 @@ const spawnCoffe = (bonusId = null) => {
       div.classList.add("fade-out")
       div.style.opacity = 0
       div.style.transform = "scale(0)"
-    }, 10050) //10050ms = 10s (lembrando que há 5s só para surgir o elemento)
+    }, 5050 + 3000) // 5s (surgimento) + tempo em que ficará na tela
 
     // Adicionar um listener para saber quando o "fade-out" terminou, para então remover a div do "coffee"
     div.addEventListener("transitionend", (e) => {
@@ -989,50 +1544,51 @@ const spawnCoffe = (bonusId = null) => {
 
     // Ao clicar no café:
     div.addEventListener('click', () => {
-      const root = document.documentElement
-      const cookieSize = getComputedStyle(root).getPropertyValue('--cs')
-      const cookieSizeValue = parseInt(cookieSize)
-      // ADICIONAR ALGUM SOM
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
       const bonus = bonusList.find(b => b.id == bonusId) ?? escolherBonusComPeso(bonusList)
-      const efeito = bonus.efeito // Trigga o efeito do bônus
-      setBonus(bonus, efeito) // Coloca o bônus na tela
-      
-      // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
-      const alertCoffee = document.createElement('div')
-      alertCoffee.classList.add('alert-coffee')
-      alertCoffee.innerHTML = (`
-            <div class="alert-back"></div> 
-            <h2 class="alert-text alert-name">${bonus.nome}</h2>
-            <span class="alert-text">${efeito}</span>
-      `)
-      coffeeContainer.appendChild(alertCoffee)
-
-      const alertWidth = alertCoffee.offsetWidth
-      const alertHeight = alertCoffee.offsetHeight
-      alertCoffee.style.top = `max(calc(${alertHeight/2}px + .5vh), ${y})` // max() serve para evitar que parte do alerta fique para fora da tela
-      alertCoffee.style.left = `clamp(${(alertWidth*1.4/2) - (cookieSizeValue/2)}px, ${x}, calc(100vw - ${(alertWidth*1.4) - (cookieSizeValue/2)}px))` // clamp() cumpre o mesmo propósito: delimitar um min e max de onde o alerta estará
-
-      // Um pequeno delay para iniciar a animação de subida
-      setTimeout(() => {
-          alertCoffee.style.opacity = 1
-          alertCoffee.style.transform = `translate(calc(-50% + ${cookieSizeValue/2}px), -50%)`
-      }, 10)
-
-      // Depois de 3s, o alerta irá começar a desaparecer com um "fade-out"
-      setTimeout(() => {
-          alertCoffee.classList.add("fade-out")
-          alertCoffee.style.opacity = 0
-      }, 3000)
-
-      // Assim como o café, um listener é adicionado para saber quando a animação acaba para, então, remover a div do DOM
-      alertCoffee.addEventListener("transitionend", (e) => {
-          if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
-      })
+      setBonus(bonus) // Coloca o bônus na tela
+      spawnAlert(x, y)
       
       playSound(`/static/assets/sounds/coffee.ogg`, .5)
       div.remove() // Remove o café
     })
+}
+
+function spawnAlert(x, y, bonus = lastBonus) {
+  const root = document.documentElement
+  const cookieSize = getComputedStyle(root).getPropertyValue('--cs')
+  const cookieSizeValue = parseInt(cookieSize)
+    // Cria um pequeno "alerta" para mostrar qual foi o bônus obtido
+  const alertCoffee = document.createElement('div')
+  alertCoffee.classList.add('alert-coffee')
+  alertCoffee.innerHTML = (`
+        <div class="alert-back"></div> 
+        <h2 class="alert-text alert-name">${bonus.nome}</h2>
+        <span class="alert-text">${bonus.efeito}</span>
+  `)
+  coffeeContainer.appendChild(alertCoffee)
+
+  const alertWidth = alertCoffee.offsetWidth
+  const alertHeight = alertCoffee.offsetHeight
+  alertCoffee.style.top = `max(calc(${alertHeight/2}px + .5vh), ${y})` // max() serve para evitar que parte do alerta fique para fora da tela
+  alertCoffee.style.left = `clamp(${(alertWidth*1.4/2) - (cookieSizeValue/2)}px, ${x}, calc(100vw - ${(alertWidth*1.4) - (cookieSizeValue/2)}px))` // clamp() cumpre o mesmo propósito: delimitar um min e max de onde o alerta estará
+
+  // Um pequeno delay para iniciar a animação de subida
+  setTimeout(() => {
+      alertCoffee.style.opacity = 1
+      alertCoffee.style.transform = `translate(calc(-50% + ${cookieSizeValue/2}px), -50%)`
+  }, 10)
+
+  // Depois de 3s, o alerta irá começar a desaparecer com um "fade-out"
+  setTimeout(() => {
+      alertCoffee.classList.add("fade-out")
+      alertCoffee.style.opacity = 0
+  }, 3000)
+
+  // Assim como o café, um listener é adicionado para saber quando a animação acaba para, então, remover a div do DOM
+  alertCoffee.addEventListener("transitionend", (e) => {
+      if (e.propertyName === "opacity" && alertCoffee.classList.contains("fade-out")) alertCoffee.remove()
+  })
 }
 
 // Essa função pega uma coordenada aleatória da tela para colocar o café, levando em conta os limites inferior e superior da tela, usando o tamanho do café como margem
@@ -1052,7 +1608,7 @@ const randomCoord = (el) => {
 
 // Ao invés de usar porcentagens, utilzamos pesos (pois teríamos que recalcular sempre que um café novo fosse adicionado): quantos maior, mais provável de ser escolhido
 const escolherBonusComPeso = (list) => {
-  const listFiltered = list.filter(l => l?.peso)
+  const listFiltered = list.filter(l => l?.peso && l?.unlocked)
   const totalPeso = listFiltered.reduce((soma, b) => soma + b.peso, 0) // Essa linha soma TODOS os pesos
   const sorteio = Math.random() * totalPeso // Aqui é sorteado um número entre 0 e o PESO TOTAL
 
@@ -1066,8 +1622,15 @@ const escolherBonusComPeso = (list) => {
 }
 
 // Faz o bonus do café funcionar de fato
-function setBonus(bonus, efeito) {
-  if (!bonus.icon) return // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
+function setBonus(bonus) {
+  if (!bonus.icon) {
+    lastBonus = {
+      nome: bonus.nome,
+      efeito: bonus.efeito,
+    }
+
+    return
+  } // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
 
   const active = boostsActive.find(b => b.nome == bonus.nome) // Verifica se já tem um boost ativo
 
@@ -1081,6 +1644,11 @@ function setBonus(bonus, efeito) {
     }, bonus.duracao * 1000)
 
     const boostDiv = document.querySelector(`[data-id="${bonus.id}"]`)
+    lastBonus = {
+      nome: active.nome,
+      efeito: active.efeito,
+  }
+
     boostDiv.classList = 'boost'
     void boostDiv.offsetHeight // Essa linha serve para 'atualizar' o elemento, ou seja, identificar que houver a mudança em 'classList'
     boostDiv.classList = 'boost cooldown'
@@ -1095,6 +1663,13 @@ function setBonus(bonus, efeito) {
   }, bonus.duracao * 1000)
 
   const expiresIn = Date.now() + bonus.duracao * 1000
+
+  const efeito = bonus.efeito
+
+  lastBonus = {
+    nome: bonus.nome,
+    efeito,
+  }
 
   const bonusActive = {
     id: bonus.id,
@@ -1116,12 +1691,13 @@ function setBonus(bonus, efeito) {
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
   div.dataset.id = bonus.id // Coloca um data-set para facilitar a localização dessa div
-  div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
+  div.style.backgroundImage = `url('/static/assets/coffees/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
-  div.addEventListener('touchend', () => {
-    showMobileTooltip('es', item)
+  addSafeTouchListener(div, () => {
+    showMobileTooltip('bn', bonusActive)
     playSound('/static/assets/sounds/open.ogg', .4)
   })
+
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 
@@ -1139,8 +1715,6 @@ function removeBoost(id) {
     showTooltip()
   }
 }
-
-triggerCoffeeEvent()
 
 // FIM DO EVENTO DO CAFÉ
 
@@ -1296,6 +1870,33 @@ function generateCodeLine(add = 1) {
 
 // FIM DA FUNÇÃO DAS SALSICHINHAS
 
+// INICIO LINHAS POR SEGUNDO (FINALMENTE)
+
+const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/(q - 1)
+const custoAtual = (el) => Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
+
+const timing = 0.1
+
+function gerarPassivamente() {
+  let totalGerado = 0;
+
+  estruturas.forEach(estrutura => {
+    const geradoPorEssa = estrutura.ls * estrutura.comprados * lsMultiplier * timing
+    estrutura.gerado += geradoPorEssa
+    totalGerado += geradoPorEssa
+  })
+
+
+  if (totalGerado == 0) return
+  lsTOT = totalGerado / timing
+  lsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lsTOT.toFixed(1))}` 
+  refresh(totalGerado)
+}
+
+setInterval(gerarPassivamente, 1000*timing)
+
+// FIM FUNÇÃO LINHAS POR SEGUNDO
+
 // INÍCIO FUNÇÃO SOM
 
 const soundCache = {};            // Guarda os objetos Audio já carregados
@@ -1365,10 +1966,10 @@ function playMusic(url, finalVolume = 1, loop = true, fadeDuration = 2000) {
       if (currentStep >= steps) {
         clearInterval(fadeInInterval);
       }
-    }, interval);
+    }, interval)
   }).catch((err) => {
     console.error("Erro ao tocar música:", err);
-  });
+  })
 }
 
 function stopMusic(useFade = true, fadeDuration = 1000) {
@@ -1399,6 +2000,8 @@ function stopMusic(useFade = true, fadeDuration = 1000) {
     currentMusic = null;
   }
 }
+
+// FIM DA FUNÇÃO SOM
 
 // INICIO DO MODAL
 
@@ -1434,29 +2037,33 @@ window.addEventListener('submitError', (e) => {
 })
 
 window.addEventListener('submitSucess', (e) => {
-  console.log("SUBMITR")
   company = e.detail.companyName;
   companyName.textContent = company;
   modalErrorMessage = ''
   closeModal()
-  
+  startGame()
+  if (e.detail.hasToRenderLb) requestLeaderboard()
 })
+
 // VERIFICAR SE A PÁGINA FOI CARREGADA
 //Seta o data no localStorage
 function setData(){
-
-  if(debug) return
+  if (debug) return
 
   // verifica as upgrades compradas e armazenas
   let listPatchUpgrades = [];
   upgrades.forEach((element) => {
-    if(element.purchased) listPatchUpgrades.push(element.id)
+    listPatchUpgrades.push({
+      "id": element.id,
+      "purchased": element.purchased,
+      "unlocked": element.unlocked,
+    })
   })
   
   // verifica as estruturas compradas e armazenas
   let listPatchStructures = [];
   estruturas.forEach((element)=>{
-    if(element.comprados > 0) listPatchStructures.push({
+    if (element.comprados > 0) listPatchStructures.push({
       "id": element.id,
       "comprados": element.comprados,
       "gerado": element.gerado,
@@ -1465,12 +2072,11 @@ function setData(){
 
   localStorage.setItem("upgrades", JSON.stringify({salve: listPatchUpgrades}));
   localStorage.setItem("estruturas", JSON.stringify({salve: listPatchStructures}));
-  
 }
 
 // Toda vez que atualizar a página, ele atualiza os dados
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
+  if (document.visibilityState === 'hidden' && !!company) {
     atualizarPontos(pontos)
     setData()
   }
@@ -1493,10 +2099,43 @@ document.addEventListener('touchmove', e => {
   }
 }, { passive: false });
 
-// Salva os dados a cada tempo
-setInterval(() =>{
-  setData();
-  if(clicked){
+// FUNÇÕES ESSENCIAIS
+
+renderEstruturas()
+
+function startGame() {
+  gameInterval = setInterval(() =>{
+    setData();
     atualizarPontos(pontos);
+    requestLeaderboard()
+  }, 1000 * 5);
+
+  setTimeout(() => {
+    coffeeInterval = setInterval(() => {
+      if (Math.random() < coffeeProb) spawnCoffee()
+    }, 1000)
+  }, 1000 * 15)
+}
+
+function endGame() {
+  gameInterval = null
+  coffeeInterval = null
+}
+
+function reset(lsToo = true, cookiesToo = true) {
+  debug = true
+  localStorage.removeItem('upgrades')
+  localStorage.removeItem('estruturas')
+  if (lsToo) {
+    refresh(-pontos)
+    atualizarPontos(pontos)
   }
-}, 1000 * 5);
+  if (cookiesToo) {
+    document.cookie.split(";").forEach(cookie => {
+      const nome = cookie.split("=")[0].trim()
+      document.cookie = `${nome}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`
+    })
+  }
+
+  location.reload()
+}
