@@ -429,7 +429,7 @@ const bonusList = [
     unlocked: true,
     get efeito() {
         var coffeeStorm = setInterval(() => {
-            spawnCoffee('bn6')
+            spawnCoffee('bn6', 500)
         }, 400)
 
         setTimeout(() => {
@@ -498,6 +498,7 @@ const bonusList = [
   }
 ]
 
+// Onde serão armazenados todos os efeitos aplicados aos cliques
 const onClickEffects = [
   () => {
     return boost
@@ -553,11 +554,11 @@ let listUpgrades; // lista de upgrades comprados
 let listStructures; // lista de estruturas comprados
 let debug = false; // debugar parte do código
 let currentMusic = null // Controla qual música está tocando no momento
-let comboTimeout = null
-let fadeOutInterval = null
-let fadeInInterval = null
-let gameInterval = null
-let coffeeInterval = null
+let comboTimeout = null // Variável que controla o tempo do combo de cliques
+let fadeOutInterval = null // Variável que controla o fade out da música
+let fadeInInterval = null // Variável que controla o fade in da música
+let gameInterval = null // Variável que controla o intervalo do jogo (define se deve enviar data, atualizar pontos, etc)
+let coffeeInterval = null // Variável que controla o intervalo de spawn dos cafés
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -568,30 +569,60 @@ const coffeeContainer = document.getElementById('coffee-container') // Container
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
 const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
-const mobileTooltip = document.querySelector('.mobile-tooltip')
+const mobileTooltip = document.querySelector('.mobile-tooltip') 
 const companyNameContainer = document.querySelector('.company-text')
 const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
 const lbContentContainer = document.querySelector('.leaderboard-content')
 const lsPersecondContainer = document.querySelector('.ls-persecond')
-const computerCodelinesContainer = document.querySelector(".computer-codelines");
+const computerCodelinesContainer = document.querySelector(".computer-codelines--wrapper");
 const modalContainer = document.querySelector('.modal')
 const modalInput = document.querySelector('.modal-input')
-const modalForm = document.querySelector('.modal-form')
-const modalErrorContainer = document.querySelector('.modal-error')
-const bulkButtons = document.querySelectorAll('.bulk')
+const modalForm = document.querySelector('.modal-form') 
+const modalErrorContainer = document.querySelector('.modal-error') // Container de erro do modal (nome inválido, longo ou já existente)
+const bulkButtons = document.querySelectorAll('.bulk') // Botões de compra em massa (x1, x10, x100)
+const tap = document.querySelector('.tap') // Ícone que aparece quando clica no botão
 
 // PRELOAD (CACHE)
 const iconCache = {}
 
+// Função que pré-carrega os ícones das estruturas e upgrades
+// Isso ajuda a evitar o carregamento lento quando os ícones são usados pela primeira vez
 function preloadIcons(iconList) {
-  iconList.forEach(icon => {
-    const img = new Image()
-    img.src = `/static/assets/icons/${icon}`
-    iconCache[icon] = img
-  })
+  const promises = iconList.map(icon => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = `/static/assets/icons/${icon}`;
+      img.onload = () => resolve({ icon, status: 'loaded' });
+      img.onerror = () => reject({ icon, status: 'error' });
+      iconCache[icon] = img;
+    });
+  });
+
+  return Promise.all(promises);
 }
 
-preloadIcons(estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)))
+// Função que define a imagem de um elemento img com base no ícone, procurando no cache
+function setImg(img, icon) {
+  const newSrc = `/static/assets/icons/${icon}`
+
+  if (img.src !== location.origin + newSrc) {
+    if (iconCache[icon]) {
+      img.src = iconCache[icon].src // já foi carregado
+    } else {
+      img.src = newSrc // fallback, se não estiver no cache
+    }
+  }
+}
+
+const images = estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)).concat(bonusList.filter(b => b.icon).map(b => b.icon))
+
+preloadIcons(images)
+  .then(() => {
+    console.log('Tudo carregado!')
+  })
+  .catch((err) => {
+    console.error('Erro ao carregar algum ícone:', err)
+  })
 
 // FIM PRELOAD
 
@@ -617,13 +648,26 @@ lbContentContainer.addEventListener("transitionend", (e) => {
   }
 })
 
+if (!window.matchMedia('(pointer: coarse)').matches) {
+  leaderboardWrapperContainer.addEventListener("transitionend", (e) => {
+    console.log(e)
+    if (e.propertyName === "transform" && leaderboardWrapperContainer.classList.contains('out')) {
+        leaderboardWrapperContainer.classList.remove('visible')
+        leaderboardWrapperContainer.classList.remove('out')
+    }
+  })
+}
+
 leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
+  leaderboardWrapperContainer.classList.add('visible')
+  leaderboardWrapperContainer.classList.remove('out')
   playSound(`/static/assets/sounds/lb-in.ogg`, .4)
 })
 
 leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
+    leaderboardWrapperContainer.classList.add('out')
   playSound(`/static/assets/sounds/lb-out.ogg`, .4)
 })
 
@@ -725,13 +769,6 @@ function renderLeaderboard(jogadores) {
   })
 }
 
-// Socket para toda vez que receber uma atualização do db
-// socket.onmessage = (e) => {
-//   // ESTRUTURA = {id, companyName, lsCount}
-//   listDataLeaderboard = JSON.parse(e.data).player;
-//   renderLeaderboard(listDataLeaderboard);
-// }
-
 // FIM DO LEADERBOARD
 
 // Pega o nome do player
@@ -810,10 +847,12 @@ function refresh(add) {
   if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos))} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
+  if (pontos !== 0) tap.classList.add('disabled')
   
   if (tabActive == 'Estruturas') renderEstruturas()
   else if (tabActive == 'Upgrades') renderUpgrades()
-  showTooltip()
+  if (getComputedStyle(tooltip).opacity == 1) showTooltip()
+  // if (getComputedStyle(mobileTooltip).opacity == 1) showMobileTooltip()
 }
 
 // Anima os numerozinhos para eles subirem de pouco em pouco
@@ -1071,15 +1110,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     }
 
     const img = tooltip.querySelector('.tooltip-icon')
-    const newSrc = `/static/assets/icons/${data.icon}`
-
-    if (img.src !== location.origin + newSrc) {
-      if (iconCache[data.icon]) {
-        img.src = iconCache[data.icon].src // já foi carregado
-      } else {
-        img.src = newSrc // fallback, se não estiver no cache
-      }
-    }
+    setImg(img, data.icon)
     img.classList.toggle('hidden', !data.unlocked)
     tooltip.querySelector('.tooltip-name').textContent = data.unlocked ? data.nome : '???'
     tooltip.querySelector('.tooltip-price').textContent = formatarNumero(custo)
@@ -1114,15 +1145,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     }
 
     const img = tooltip.querySelector('.tooltip-icon')
-    const newSrc = `/static/assets/icons/${data.icon}`
-
-    if (img.src !== location.origin + newSrc) {
-      if (iconCache[data.icon]) {
-        img.src = iconCache[data.icon].src // já foi carregado
-      } else {
-        img.src = newSrc // fallback, se não estiver no cache
-      }
-    }
+    setImg(img, data.icon)
     tooltip.querySelector('.tooltip-name').textContent = data.nome
     tooltip.querySelector('.tooltip-price').textContent = formatarNumero(data.custo)
     tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < data.custo ? 'high' : 'low'}`
@@ -1169,83 +1192,116 @@ function showMobileTooltip(type, item) {
     bn: 'Bônus'
   }
 
-  const content = document.createElement('div')
-  const close = document.createElement('button')
+  const mobileTitle = mobileTooltip.querySelector('.mobile-tooltip--title')
+  const wrapper = mobileTooltip.querySelector(`.mobile-tooltip--wrapper`)
+  const data = wrapper.dataset?.id
 
-  mobileTooltip.innerHTML = ''
   mobileTooltip.style.opacity = 1
   mobileTooltip.style.pointerEvents = 'all'
 
-  content.className = 'mobile-tooltip--content'
-  content.innerHTML = `<div class="mobile-tooltip--title">${titles[type]}</div>`
+  mobileTitle.textContent = titles[type]
 
   if (type == 'es') {
-    const gerando = (item.comprados*item.ls*lsMultiplier).toFixed(1)
-    content.innerHTML += `
-      <div class="mobile-tooltip--wrapper">
-        <div class="mobile-tooltip--header">
-          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
-          <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name">${item.nome}</span>
-              <span>Comprados: ${item.comprados}</span>
+    const gerando = (item.comprados * item.ls * lsMultiplier).toFixed(1)
+    const percentual = ((gerando / lsTOT) * 100).toFixed(2)
+
+    if (!data) {
+      // Cria o HTML se ainda não existir
+      wrapper.innerHTML = `
+        <div class="mobile-tooltip--wrapper" data-id="${item.id}">
+          <div class="mobile-tooltip--header">
+            <img class="mobile-tooltip--icon"/>
+            <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name"></span>
+              <span class="mobile-tooltip--comprados"></span>
+            </div>
           </div>
-        </div>
-        <div class="monile-tootltip--items">
+          <div class="mobile-tooltip--items">
             <ul>
-              <li>cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LpS</li>
-              <li>${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
-              <li>${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora</li>
+              <li class="tooltip-lps-unico"></li>
+              <li class="tooltip-lps-total"></li>
+              <li class="tooltip-gerado"></li>
             </ul>
+          </div>
+          <span class="tooltip-description"></span>
         </div>
-          <span class="tooltip-description">${item.descricao}</span>
-      </div>
-    `
+      `
+    }
+
+    // Atualiza os dados SEMPRE
+    const img = wrapper.querySelector('.mobile-tooltip--icon')
+    setImg(img, item.icon)
+
+    wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
+    wrapper.querySelector('.mobile-tooltip--comprados').textContent = `Comprados: ${item.comprados}`
+    wrapper.querySelector('.tooltip-lps-unico').textContent = `cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LpS`
+    wrapper.querySelector('.tooltip-lps-total').textContent = `${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${percentual}%)`
+    wrapper.querySelector('.tooltip-gerado').textContent = `${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora`
+    wrapper.querySelector('.tooltip-description').textContent = item.descricao
   } else if (type == 'up') {
-    content.innerHTML += `
-      <div class="mobile-tooltip--wrapper">
-        <div class="mobile-tooltip--header">
-          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
-          <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name">${item.nome}</span>
+    if (!data) {
+      // Cria o HTML se ainda não existir
+      wrapper.innerHTML = `
+        <div class="mobile-tooltip--wrapper" data-id="${item.nome}">
+          <div class="mobile-tooltip--header">
+            <img class="mobile-tooltip--icon" />
+            <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name"></span>
+            </div>
           </div>
+          <span class="tooltip-function"></span>
+          <span class="tooltip-description"></span>
         </div>
-        <span class="tooltip-function">${item.funcao}</span>
-        <span class="tooltip-description">${item.descricao}</span>
-      </div>
-    `
+      `
+    }
+
+    // Atualiza os dados SEMPRE
+    const img = wrapper.querySelector('.mobile-tooltip--icon')
+    setImg(img, item.icon)
+
+    wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
+    wrapper.querySelector('.tooltip-function').textContent = item.funcao
+    wrapper.querySelector('.tooltip-description').textContent = item.descricao
   } else if (type == 'bn') {
-    content.innerHTML += `
-      <div class="mobile-tooltip--wrapper">
-        <div class="mobile-tooltip--header">
-          <img  src="/static/assets/coffees/${item.icon}" class="mobile-tooltip--icon"/>
-          <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name">${item.nome}</span>
+    if (!data) {
+      // Cria o HTML se ainda não existir
+      wrapper.innerHTML = `
+        <div class="mobile-tooltip--wrapper" data-id="${item.nome}">
+          <div class="mobile-tooltip--header">
+            <img class="mobile-tooltip--icon" />
+            <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name"></span>
+            </div>
           </div>
+          <span class="tooltip-function"></span>
+          <span class="tooltip-description"></span>
         </div>
-        <span class="tooltip-function">${item.efeito}</span>
-        <span class="tooltip-description">${item.descricao}</span>
-      </div>
-    `
+      `
+    }
+
+    // Atualiza os dados SEMPRE
+    const img = wrapper.querySelector('.mobile-tooltip--icon')
+    setImg(img, item.icon)
+
+    wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
+    wrapper.querySelector('.tooltip-function').textContent = item.efeito
+    wrapper.querySelector('.tooltip-description').textContent = item.descricao
   }
-
-  close.className = 'close-bttn'
-  close.textContent = 'Fechar'
-
-  addSafeTouchListener(close, (e) => {
-    e.stopPropagation(); // impede que o clique vá para outros elementos
-    e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
-    closeMobileTootip()
-    playSound('/static/assets/sounds/close.ogg', .8)
-  })
-
-  content.appendChild(close)
-  mobileTooltip.appendChild(content)
 }
 
 function closeMobileTootip() {
   mobileTooltip.style.opacity = 0
   mobileTooltip.style.pointerEvents = 'none'
 }
+
+const close = mobileTooltip.querySelector('.close-bttn')
+
+addSafeTouchListener(close, (e) => {
+  e.stopPropagation(); // impede que o clique vá para outros elementos
+  e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
+  closeMobileTootip()
+  playSound('/static/assets/sounds/close.ogg', .8)
+})
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
@@ -1341,22 +1397,16 @@ const renderEstruturas = () => {
     const mobileName = estrutura.querySelector('.mobile-name')
     const mobilePurchased = estrutura.querySelector('.mobile-purchased')
     const comprados = estrutura.querySelector('.item-purchased')
-    const img = estrutura.querySelector('.item-icon')
-    const newSrc = `/static/assets/icons/${item.icon}`
 
-    if (img.src !== location.origin + newSrc) {
-      if (iconCache[item.icon]) {
-        img.src = iconCache[item.icon].src // já foi carregado
-      } else {
-        img.src = newSrc // fallback, se não estiver no cache
-      }
-    }
+    const img = estrutura.querySelector('.item-icon')
+    setImg(img, item.icon)
 
     const custo = Math.round(sumPG(custoAtual(item), 1.15, bulkBuy))
 
     if (item.unlocked) {
       if (item.comprados > 0) {
         comprados.textContent = item.comprados
+        mobilePurchased.classList.add('with-value')
         mobilePurchased.textContent = item.comprados
       }
       if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
@@ -1426,15 +1476,7 @@ const renderUpgrades = () => {
       }
 
       const img = upgrade.querySelector('.item-icon')
-      const newSrc = `/static/assets/icons/${item.icon}`
-
-      if (img.src !== location.origin + newSrc) {
-        if (iconCache[item.icon]) {
-          img.src = iconCache[item.icon].src // já foi carregado
-        } else {
-          img.src = newSrc // fallback, se não estiver no cache
-        }
-      }
+      setImg(img, item.icon)
 
       const custoContainer = upgrade.querySelector('.cust')
 
@@ -1446,6 +1488,7 @@ const renderUpgrades = () => {
     const span = document.createElement("span")
 
     span.style.fontSize = '1.2em'
+    span.style.marginTop = '2em'
     span.textContent = 'Você comprou tudo :('
     contentList.appendChild(span)
   }
@@ -1515,7 +1558,7 @@ const triggerCoffeeEvent = () => {
 let lastBonus = ''
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-function spawnCoffee (bonusId = null)  {
+function spawnCoffee (bonusId = null, duracao = 2000)  {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -1524,24 +1567,24 @@ function spawnCoffee (bonusId = null)  {
     // Insere no DOM
     coffeeContainer.appendChild(div)
     
+    const fadeCSS = getComputedStyle(div).getPropertyValue('--time').trim()
+    const fadeNum = parseFloat(fadeCSS) * 1000 // converte para milissegundos
+    
     // Pega coordenadas aleatórias, respeitando o tamanho da tela
     const { x, y } = randomCoord(div)
     div.style.top = y
     div.style.left = x
 
-    // É necessário um pequeno intervalo para então colocar a opacidade e a escala em 1 (CSS fará a transição suave)
-    setTimeout(() => {
-      div.style.opacity = 1
-      div.style.transform = "scale(1)"
-      div.innerHTML = `<div class="coffee" style="animation: pulse 2s infinite ease-in-out, tilt 5s infinite"></div>`
-    }, 50)
+    div.style.opacity = 1
+    div.style.transform = "scale(1)"
+    div.innerHTML = `<div class="coffee" style="animation: pulse 2s infinite ease-in-out, tilt 5s infinite"></div>`
 
     // Quando se passar 5s, adicionar uma animação de "fade-out"
     setTimeout(() => {
       div.classList.add("fade-out")
       div.style.opacity = 0
       div.style.transform = "scale(0)"
-    }, 5050 + 3000) // 5s (surgimento) + tempo em que ficará na tela
+    }, fadeNum + duracao) // 5s (surgimento) + tempo em que ficará na tela
 
     // Adicionar um listener para saber quando o "fade-out" terminou, para então remover a div do "coffee"
     div.addEventListener("transitionend", (e) => {
@@ -1697,13 +1740,17 @@ function setBonus(bonus) {
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
   div.dataset.id = bonus.id // Coloca um data-set para facilitar a localização dessa div
-  div.style.backgroundImage = `url('/static/assets/coffees/${bonus.icon}')` // Coloca dire
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   addSafeTouchListener(div, () => {
     showMobileTooltip('bn', bonusActive)
     playSound('/static/assets/sounds/open.ogg', .4)
   })
 
+  const img = document.createElement("img")
+  img.className = 'boost-icon'
+  setImg(img, bonus.icon) // Coloca o ícone do bonus
+  div.appendChild(img) // Coloca o ícone dentro da div
+  
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 

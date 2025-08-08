@@ -35,15 +35,14 @@ function setCookie(cookieName, cookieValue, expiresDays){
 }
 
 // Pegar o cookie
-function getCookie(name) {
-  const value = `; ${document.cookie}`; // Recebe o cookie (ele vem em string)
-  const parts = value.split(`; ${name}=`); // Separa o cookie de acordo com um padrão, com o dado que se quer
-  if (parts.length === 2) {
-    return parts.pop().split(';').shift(); // separa esse dado do resto
-  }
-  return null;
+function getCookie(key) {
+    // A expressão regex checa se: está no começo ou se possui um ponto e vírgula com espaços em seguida (";  ")
+    // Se achar isso, procurará por "key=" e depois o número correspondente
+    const regex = new RegExp(`(?:^|;\\s*)${key}=(\\d+)`)
+    const match = document.cookie.match(regex)
+    const cookieId = match?.[1] // [1] retorna o primeiro grupo encontrado que segue esse padrão
+    return cookieId
 }
-
 
 // VARIÁVIES GLOBAIS
 let companyName = document.querySelector('.company-text'); // Nome do player
@@ -73,8 +72,8 @@ function getData(){
     .then(data =>{
         if(idPlayer){
             // caso o idPlayer não tenha valor, ele executa o código abaixo.
-            playerDetails = data.find( obj => obj.id == idPlayer );
-            if(playerDetails){
+            playerDetails = data.find(obj => obj.id == idPlayer);
+            if (playerDetails){
                 dispatchPlayerData(playerDetails); // esse manda todos os dados dp player
                 dispatchNameSubmit('submitSucess', {companyName: playerDetails.companyName});
                 data.sort((a,b)=>{ return b.lsCount - a.lsCount })
@@ -91,7 +90,6 @@ function getData(){
     })
     
 }
-
 
 // Posta no nome da do player
 function postCompany(post){
