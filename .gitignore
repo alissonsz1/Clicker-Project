@@ -19,9 +19,6 @@ pip-delete-this-directory.txt
 # Django stuff:
 db.sqlite3
 db.sqlite3-journal
-media/
-staticfiles/
-#static/
 
 # Migrations (se você quiser ignorar elas, mas geralmente é melhor versionar)
 # **Descomente abaixo se quiser ignorar**

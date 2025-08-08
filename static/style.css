@@ -16,7 +16,7 @@ button, input {
 }
 
 :root {
-    --cs: 86px; /* Coffee Size */
+    --cs: 72px; /* Coffee Size */
     --bs: rgba(0, 0, 0, .6); /* BOX SHADOW */
     --ts: 3px 3px 2px rgba(0, 0, 0, 0.8);
 }
@@ -116,7 +116,13 @@ body.matrix .table {
     opacity: .8;
     background-position: 0 100%;
     background: linear-gradient(to bottom, #00e20093 0%, 2.86624%, rgb(3, 110, 21) 5.73248%, 12.7389%, rgb(0, 64, 18) 19.7452%, 22.9299%, rgb(0, 56, 19) 26.1146%, 63.0573%, rgb(0, 47, 20) 100%);
-    /* box-shadow: inset 0 20px 50px #00e20093 */
+}
+
+body.evil .table {
+    overflow: hidden;
+    opacity: .8;
+    background-position: 0 100%;
+    background: linear-gradient(to bottom, #e2000093 0%, 2.86624%, rgb(110, 3, 3) 5.73248%, 12.7389%, rgb(64, 0, 0) 19.7452%, 22.9299%, rgb(56, 0, 0) 26.1146%, 63.0573%, rgb(47, 0, 0) 100%);
 }
 
 /* O container que envolve a seção da esquerda */
@@ -146,6 +152,16 @@ body.matrix .table {
     width: 100%;
     max-height: 400px;
 }
+/* Cointainer do erro 404 */
+.container-left--computer-error {
+    aspect-ratio: 1/1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-height: 900px;
+}
 
 /* Muda a cor do computador apra um tom de verde */
 body.matrix .container-left--computer {
@@ -159,6 +175,7 @@ body.evil .container-left--computer {
 
 .computer-monitor { background: url("./assets/monitor.png");}
 .computer-back { background: url("./assets/fundo_monitor.png"); }
+.computer-error { background: url("./assets/fundo_error.webp"); }
 .computer-keyboard { background: url("./assets/teclado.png"); transition: all .1s ease;}
 
 /* Ainda será implementado algum tipo de luz saindo do monitor */
@@ -172,6 +189,7 @@ body.evil .container-left--computer {
     background-repeat: no-repeat;
     background-position: 50% 0;
     pointer-events: none;
+    filter: brightness(1.2);
 }
 
 /* Nome da empresa */
@@ -248,6 +266,10 @@ body.evil .container-left--computer {
     transition: width 0.3s;
 }
 
+body.evil .line-number {
+    color: #3e777d;
+}
+
 body.matrix .code-block, body.evil .code-block  {
     background-color: #008080 !important; 
 }
@@ -282,6 +304,11 @@ body.matrix .code-block, body.evil .code-block  {
     white-space: nowrap;
 }
 
+.combo {
+    opacity: .8;
+    font-size: .8em;
+}
+
 .fading-up {
     opacity: 0;
     transform: translate(-50%, -2000%);
@@ -314,9 +341,59 @@ body.matrix .container-right, body.evil .container-right {
     flex-direction: row;
 }
 
+.container-right:has( .upgrade) .items-bulk {
+    display: none;
+    visibility: hidden;
+}
+
+.items-bulk {
+    border-radius: 5px 5px 0 0;
+    margin-top: 2em;
+    background-color: var(--c5);
+    padding: .2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.cust {
+    text-align: left;
+    font-weight: normal;
+}
+
+.container-right:has( [data-bulk^="10"].active):not(:has(.upgrade)) .cust::before {
+    margin-right: 5px;
+    color: rgb(255, 255, 255);
+    font-size: .8em;
+    font-weight: normal;
+}
+
+.container-right:has( [data-bulk="10"].active):not(:has(.upgrade)) .cust::before { content: 'x10'; }
+.container-right:has( [data-bulk="100"].active):not(:has(.upgrade))  .cust::before { content: 'x100'; }
+
+.bulks-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: .5em;
+}
+
+.bulk {
+    font-size: 1em;
+    transition: color .2s ease;
+}
+
+.bulk.active {
+    color: white;
+}
+
 /* Conteúdo do cotainer da direita */
 .container-content {
     overflow-y: auto;
+}
+
+.container-content:has( .upgrade) {
     margin-top: 2em;
 }
 
@@ -402,11 +479,24 @@ body.matrix .content-item, body.evil .content-item { background-color: color-mix
     text-shadow: 3px 3px 2px black;
 }
 
+.item-text--wrapper {
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    gap: 5px;
+}
+
 /* Textos para a estrutura */
-.item-purchased { font-size: 1.8em; color: var(--c2);}
-.item-name { font-size: 1.2em; text-align: left; }
+.mobile-purchased { color: white; font-weight: normal; }
+.item-purchased { font-size: 1.8em; color: var(--c2); font-weight: normal; }
+.item-name, .mobile-name { font-size: 1.2em; text-align: left; }
 .high { color: var(--high);}
 .low { color: var(--low);}
+
+.mobile-name, .mobile-purchased {
+    display: none;
+    visibility: hidden;
+}
 
 .info-bttn {
     display: none;
@@ -541,7 +631,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     height: var(--cs);
     cursor: pointer;
     background-size: var(--cs) var(--cs);
-    background-image: url('./assets/coffee.png');
+    background-image: url('./assets/coffees/coffee.png');
     background-position: 0 0;
 
     pointer-events: auto;
@@ -888,6 +978,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 5px;
     border-bottom: 1px solid var(--c1);
     padding-bottom: 5px;
     text-shadow: var(--ts);
@@ -905,7 +996,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip-icon {
-    /* aspect-ratio: 1/1; */
+    aspect-ratio: 1/1;
     filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.5));
     width: 60px;
 }
@@ -917,6 +1008,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip-price {
+    font-weight: normal;
     text-align: right;
 }
 
@@ -930,6 +1022,15 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     justify-content: space-between;
 }
 
+.tooltip-content:has(+ .tooltip-extra:not(.hidden)) {
+    border-bottom: 1px solid var(--c1);
+}
+
+.tooltip-extra.hidden {
+    display: none;
+    visibility: hidden;
+}
+
 .tooltip-description {
     font-style: italic;
     text-align: right;
@@ -938,9 +1039,6 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     align-self: flex-end;
 }
 
-.tooltip-content:not(:last-child) {
-    border-bottom: 1px solid var(--c1);
-}
 
 .tooltip-description {
     line-height: .8em;
@@ -1287,14 +1385,29 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         visibility: visible;
     }
 
-    .item-name {
+    .item-name, .mobile-name {
         font-size: clamp(.9em, 6vw,1.2em);
+    }
+
+    .estrutura .item-name {
+        display: none;
+        visibility: hidden;
+    }
+
+    .mobile-name, .mobile-purchased {
+        display: block;
+        visibility: visible;
     }
 
     .mobile-tooltip {
         touch-action: none;
         display: block;
         visibility: visible;
+    }
+
+    .tooltip-description {
+        font-size: .8em;
+        max-width: 280px;
     }
 
     .container-boosts {
