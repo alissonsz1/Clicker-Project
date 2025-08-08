@@ -529,7 +529,8 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
+const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+const socket = new WebSocket(protocol + window.location.host + "/ws/leaderboard/");
 const csrfToken = window.csrfToken
 
 // Variaveis
