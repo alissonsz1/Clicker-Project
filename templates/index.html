@@ -18,6 +18,12 @@
     <main>
         <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}"/>
 
+        <div class="loading-screen">
+            <div class="loading-screen--content">
+                <span class="loading-txt">
+                </span>
+            </div>
+        </div>
         <div class="leaderboard-wrapper" id="leaderboard">
             <div class="leaderboard-content">
                 <h2>LEADERBOARD</h2>
@@ -36,6 +42,7 @@
                 <button class="close-bttn">Fechar</button>
             </div>
         </div>
+        <div class="items-modal"></div>
         <div class="modal">
             <div class="modal-content">
                 <span class="modal-title">Qual será o seu nome DEV?</span>
@@ -59,6 +66,8 @@
                 <span class="ls-persecond">por segundo: 0</span>
             </div>
             <div class="container-left--computer">
+                <div class="hacker"></div>
+                <div class="demon"></div>
                 <div class="computer computer-back"></div>
                 <div class="computer computer-codelines">
                     <div class="computer-codelines--wrapper"></div>
@@ -69,7 +78,7 @@
                 <div class="tap"></div>
                 <div class="computer computer-monitor"></div>
                 <div class="computer-hitbox" id="click_button"></div>
-                <div class="computer computer-keyboard"></div>
+                <div id="computer-keyboard" class="computer computer-keyboard"></div>
             </div>
         </div>
         <!-- O container que envolver a seção da direita (upgrades + estruturas) -->

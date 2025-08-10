@@ -110,8 +110,15 @@ main {
     min-height: 150px;
     height: 33vh;
     background-color: var(--c6);
+    background: radial-gradient(ellipse at 30% 100%, var(--c3) 0%, var(--c6) 100%);
     z-index: -1;
     transition: box-shadow .5s ease;
+}
+
+.loading-screen .table {
+    top: 60%;
+    height: 40vh;
+    background: radial-gradient(ellipse at bottom, var(--c3) 0%, var(--c6) 100%);
 }
 
 body.matrix .table {
@@ -181,12 +188,39 @@ body.evil .container-left--computer {
 .computer-error { background: url("./assets/fundo_error.webp"); }
 .computer-keyboard { background: url("./assets/teclado.png"); transition: all .1s ease;}
 
+.hacker, .demon {
+    aspect-ratio: 1/1;
+    background-size: cover;
+    position: absolute;
+    z-index: -5;
+    width: 95%;
+    max-width: 500px;
+    bottom: 30%;
+
+    pointer-events: none;
+    opacity: 0;
+
+    transition: opacity .5s linear;
+}
+
+.hacker.active, .demon.active {
+    opacity: .4;
+}
+
+.hacker { background-image: url("./assets/hacker.png"); }
+.demon { 
+    bottom: 40%;
+    background-image: url("./assets/demon.png"); 
+}
+
 .tap {
     aspect-ratio: 1/1;
-    width: 50px;
+    width: 64px;
     background-image: url("./assets/tap.png");
     background-size: cover;
+    image-rendering: pixelated;
 
+    pointer-events: none;
     position: absolute;
     top: 72%;
     z-index: 2;
@@ -238,8 +272,10 @@ body.evil .container-left--computer {
 }
 
 .light-glow {
+    /* display: none; */
     --times: 2;
     position: absolute;
+    max-width: 100vw;
     width: calc(100% * var(--times));
     height: calc(100% * var(--times));
     background: radial-gradient(circle, rgba(0,255,255,0.4) 0%, rgba(0,255,255,0) 70%);
@@ -255,16 +291,15 @@ body.evil .container-left--computer {
     filter: blur(35px);
   }
   50% {
-    opacity: 0.6;
-    filter: blur(40px);
+    opacity: 0.7;
+    filter: blur(45px);
   }
 }
 
 /* Nome da empresa */
 .company-text {
     color: var(--c2);
-    cursor: pointer;
-    font-size: 1.3em;
+    font-size: 1.5em;
     transition: color .1s ease, text-shadow .1s ease;
 }
 
@@ -401,7 +436,6 @@ body.matrix .code-block, body.evil .code-block  {
     max-height: 600px;
     height: 90dvh;
     box-shadow: 5px 5px 10px var(--bs);
-    /* overflow-y: hidden; */
 }
 
 /* Quando o efeito de matrix estiver ativo, haverá uma pequena opacidade no fundo */
@@ -465,7 +499,40 @@ body.matrix .container-right, body.evil .container-right {
 
 /* Conteúdo do cotainer da direita */
 .container-content {
+    --ob: 1; /* OPACITY BOTTOM */
+    --ot: 0; /* OPACITY TOP */
+    position: relative;
     overflow-y: auto;
+    scrollbar-width: none;
+}
+
+
+.container-content::before, .container-content::after {
+    --h: 30px;
+    --i: .8; /* INITIAL */
+    content: '';
+    display: block;
+    left: 0;
+    right: 0;
+    height: var(--h);
+    margin-top: calc(var(--h) * -1);
+    position: sticky;
+    filter: blur(10px);
+    z-index: 100;
+}
+
+.container-content::before {
+    top: 0px;
+    /* background: radial-gradient(ellipse at top, rgba(0, 0, 0, var(--i)), transparent); */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, var(--i)), transparent);
+    opacity: var(--ot);
+}
+
+.container-content::after {
+    bottom: 0px;
+    /* background: radial-gradient(ellipse at bottom, rgba(0, 0, 0, var(--i)), transparent); */
+    background: linear-gradient(to top, rgba(0, 0, 0, var(--i)), transparent);
+    opacity: var(--ob);
 }
 
 .container-content:has( .upgrade) {
@@ -485,6 +552,7 @@ body.matrix .container-right, body.evil .container-right {
 
 /* Lista que armazena os upgrades/estruturas */
 .content-list {
+    /* opacity: 0; */
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -700,7 +768,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     cursor: pointer;
     background-size: var(--cs) var(--cs);
     background-image: url('./assets/icons/coffee.png');
-    background-position: 0 0;
+    image-rendering: pixelated;
 
     pointer-events: auto;
     transform-origin: center;
@@ -783,7 +851,6 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 /* MODAL */
-/* Ainda será implementado */
 
 .modal {
     position: fixed;
@@ -870,6 +937,8 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     pointer-events: none;
     opacity: 0;
 }
+
+/* ITEMS MODAL */
 
 /* CONTAINER BOOSTS */
 
@@ -1251,7 +1320,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     flex: 1;
     text-align: right;
 }
-.lb-name { font-size: 1.2em; }
+.lb-name { font-size: 1.2em;}
 
 .leaderboard-content li:has(.lb-1), .lb--prev-pos.lb-1 { color: gold; }
 .leaderboard-content li:has(.lb-2), .lb--prev-pos.lb-2 { color: silver; }
@@ -1266,6 +1335,55 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     /* color: white; */
 }
 
+.loading-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, var(--c3) 0%, var(--c6) 100%);
+
+
+    z-index: 999999999;
+}
+
+.loading-screen.invisible {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+.loading-txt {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    position: absolute;
+}
+
+/* HTML: <div class="loader"></div> */
+.loading-txt:before {
+    display: inline-block;
+    width: fit-content;
+}
+
+.loading-screen:not(.invisible) .loading-txt:before { animation: l25 1s infinite; }
+
+.loading-screen .loading-txt:before {
+    content:"Loading..."
+}
+
+@keyframes l25{
+  0%,12.5% {transform: translate(10px,0)}
+  13%,25%  {transform: translate(4px,-4px)}
+  26%,37.5%{transform: translate(2px,8px)}
+  38%,50%  {transform: translate(12px,-6px)}
+  51%,62.5%{transform: translate(0,12px)}
+  63%,75%  {transform: translate(-8px,-4px)}
+  76%,86.5%{transform: translate(-12px,6px)}
+  87%,100% {transform: translate(6px,0)}
+}
 
 /* Essa media query funciona somente em dispositivos que possuem hover (eliminando o mobile) */
 @media (hover: hover) {
@@ -1291,12 +1409,6 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         /* filter: drop-shadow(0 0 4px var(--c1)) drop-shadow(0 0 8px var(--c1)); */
     }
     .computer-hitbox:active ~ .computer-keyboard { transform: scale(1.0); }
-
-    /* Adiciona um pequeno brilho quando hover */
-    .company-text:hover {
-        color: white;
-        /* text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--c2), 0 0 40px var(--c2), 0 0 50px var(--c2), 0 0 60px var(--c2), 0 0 70px var(--c2); */
-    }
 
     .leaderboard-content {
         opacity: 0;
@@ -1409,6 +1521,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         top: 440px;
         height: 240px;
         min-height: auto;
+        background: radial-gradient(ellipse at bottom, var(--c3) 0%, var(--c6) 100%);
     }
 
     .container-left {
@@ -1505,6 +1618,15 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 @media (max-width: 470px) {
+    .loading-screen .table {
+        top: 56%;
+        height: 44%;
+    }
+
+    .loading-txt {
+        font-size: clamp(1.8em, 20vw, 3em);
+    }
+
     .table {
         top: calc(245px + 42vw);
         height: 43vw;

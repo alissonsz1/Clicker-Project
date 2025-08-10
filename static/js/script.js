@@ -374,7 +374,7 @@ const bonusList = [
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
       refresh(ganho) // Atualiza os pontos na tela
-      return `Ganhou ${formatarNumero(ganho)} linhas!`
+      return `Ganhou ${formatarNumero(ganho, true)} linhas!`
     },
   },
   {
@@ -448,7 +448,7 @@ const bonusList = [
     get efeito() {
         const ganho = Math.floor(lsTOT * 60 * 5);
         refresh(ganho)
-        return `Ganhou ${formatarNumero(ganho)} linhas!`
+        return `Ganhou ${formatarNumero(ganho, true)} linhas!`
     },
   },
   {
@@ -559,12 +559,15 @@ let fadeOutInterval = null // Variável que controla o fade out da música
 let fadeInInterval = null // Variável que controla o fade in da música
 let gameInterval = null // Variável que controla o intervalo do jogo (define se deve enviar data, atualizar pontos, etc)
 let coffeeInterval = null // Variável que controla o intervalo de spawn dos cafés
+let mobileTooltipItem = {type: '', item: null} // Guarda o item que está sendo mostrado no tooltip mobile
+let scrollTabs = {estruturas: 0, upgrades: 0}
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
-const keyboard = document.querySelector('.computer-keyboard')
+const keyboard = document.getElementById('computer-keyboard')
 const display = document.getElementById('pontos') // Display das linhas de código
 const buttonsHeader = document.querySelectorAll(".button-header") // Botões para mudar de aba
 const contentList = document.querySelector('.content-list') // Lista de items
+const containerContent = document.querySelector('.container-content')
 const coffeeContainer = document.getElementById('coffee-container') // Container dos cafés
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
 const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
@@ -604,6 +607,7 @@ function preloadIcons(iconList) {
 // Função que define a imagem de um elemento img com base no ícone, procurando no cache
 function setImg(img, icon) {
   const newSrc = `/static/assets/icons/${icon}`
+  // console.log(newSrc, img.src)
 
   if (img.src !== location.origin + newSrc) {
     if (iconCache[icon]) {
@@ -616,13 +620,11 @@ function setImg(img, icon) {
 
 const images = estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)).concat(bonusList.filter(b => b.icon).map(b => b.icon))
 
-preloadIcons(images)
-  .then(() => {
-    console.log('Tudo carregado!')
-  })
-  .catch((err) => {
-    console.error('Erro ao carregar algum ícone:', err)
-  })
+const preloadPromise = preloadIcons(images)
+
+function closeLoading() {
+  document.querySelector('.loading-screen').classList.add('invisible')
+}
 
 // FIM PRELOAD
 
@@ -650,7 +652,6 @@ lbContentContainer.addEventListener("transitionend", (e) => {
 
 if (!window.matchMedia('(pointer: coarse)').matches) {
   leaderboardWrapperContainer.addEventListener("transitionend", (e) => {
-    console.log(e)
     if (e.propertyName === "transform" && leaderboardWrapperContainer.classList.contains('out')) {
         leaderboardWrapperContainer.classList.remove('visible')
         leaderboardWrapperContainer.classList.remove('out')
@@ -757,7 +758,7 @@ function renderLeaderboard(jogadores) {
     li.style.zIndex = pos >= 11 ? 200 : 200-pos
     li.innerHTML = `
       <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
-      <span class="lb-name">${jogador.companyName}${isYou ? ' <strong style="font-size: .8em">(VOCÊ)</strong>' : ''}</span>
+      <span class="lb-name">${jogador.companyName}${isYou ? ' <strong style="font-size: .7em">(VOCÊ)</strong>' : ''}</span>
       <span class="lb-number">${formatarNumero(jogador.lsCount)}</span>
     `
 
@@ -844,15 +845,19 @@ function refresh(add) {
   valorAtual = pontos
   pontos = valorAtual + add
 
-  if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos))} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
+  if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos), true)} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
   if (pontos !== 0) tap.classList.add('disabled')
   
   if (tabActive == 'Estruturas') renderEstruturas()
   else if (tabActive == 'Upgrades') renderUpgrades()
-  if (getComputedStyle(tooltip).opacity == 1) showTooltip()
-  // if (getComputedStyle(mobileTooltip).opacity == 1) showMobileTooltip()
+
+  if (!window.matchMedia('(pointer: coarse)').matches && getComputedStyle(tooltip).opacity == 1) showTooltip()
+  else if (getComputedStyle(mobileTooltip).opacity == 1 && !close.classList.contains('closing')) {
+    const {type, item} = mobileTooltipItem
+    showMobileTooltip(type, item)
+  }
 }
 
 // Anima os numerozinhos para eles subirem de pouco em pouco
@@ -861,7 +866,7 @@ function animarContador(valorInicial, duracao = 700) {
   const add = valorFinal - valorInicial
 
   if (Math.abs(add) == 1) {
-    display.textContent = `${formatarNumero(pontos)} linha${pontos > 1 ? 's' : ''} de código`
+    display.textContent = `${formatarNumero(pontos, true)} linha${pontos > 1 ? 's' : ''} de código`
     if (add > 0) generateCodeLine()
     return
   }
@@ -883,9 +888,9 @@ function animarContador(valorInicial, duracao = 700) {
     const eased = ease(progresso) // aplica easing
 
     const valorInterpolado = Math.floor(valorInicial + range * eased)
-    const valorFormatado = formatarNumero(valorInterpolado)
+    const valorFormatado = formatarNumero(valorInterpolado, true)
 
-    display.textContent = `${valorFormatado} linhas de código`
+    display.textContent = `${valorFormatado} linha${valorInterpolado > 1 ? 's' : ''} de código`
 
     // Gera code lines para cada valor novo que passou
     const diff = valorInterpolado - lastValue;
@@ -906,7 +911,7 @@ function animarContador(valorInicial, duracao = 700) {
 }
 
 // Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
-function formatarNumero(valor) {
+function formatarNumero(valor, de = false) {
   if (valor < 1000000) return Number(valor).toLocaleString('pt-BR')
 
   // Se for maior que o maior limite conhecido
@@ -919,7 +924,7 @@ function formatarNumero(valor) {
     if (valor >= unidade.limite) {
       const valorDividido = valor / unidade.limite
       const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
-      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
+      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}${de ? ' de' : ''}`
     }
   }
 }
@@ -1102,9 +1107,9 @@ function showTooltip(x = mouseX, y = mouseY) {
       const gerando = (data.comprados*data.ls*lsMultiplier).toFixed(1)
       extraInfo = `
           <ul>
-            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LpS</li>
-            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${((gerando/lsTOT)*100).toFixed(2)}%)</li>
-            <li>${formatarNumero(Math.floor(data.gerado))} linhas geradas até agora</li>
+            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1), true)} LpS</li>
+            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando, true)} LpS (${((gerando/(lsTOT || 1))*100).toFixed(2)}%)</li>
+            <li>${formatarNumero(Math.floor(data.gerado), true)} linhas geradas até agora</li>
           </ul>
       `
     }
@@ -1195,6 +1200,7 @@ function showMobileTooltip(type, item) {
   const mobileTitle = mobileTooltip.querySelector('.mobile-tooltip--title')
   const wrapper = mobileTooltip.querySelector(`.mobile-tooltip--wrapper`)
   const data = wrapper.dataset?.id
+  const isItem = data == item.id
 
   mobileTooltip.style.opacity = 1
   mobileTooltip.style.pointerEvents = 'all'
@@ -1203,56 +1209,56 @@ function showMobileTooltip(type, item) {
 
   if (type == 'es') {
     const gerando = (item.comprados * item.ls * lsMultiplier).toFixed(1)
-    const percentual = ((gerando / lsTOT) * 100).toFixed(2)
+    const percentual = ((gerando / (lsTOT || 1)) * 100).toFixed(2)
 
-    if (!data) {
+    if (!isItem) {
       // Cria o HTML se ainda não existir
       wrapper.innerHTML = `
-        <div class="mobile-tooltip--wrapper" data-id="${item.id}">
-          <div class="mobile-tooltip--header">
-            <img class="mobile-tooltip--icon"/>
-            <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name"></span>
-              <span class="mobile-tooltip--comprados"></span>
-            </div>
+        <div class="mobile-tooltip--header">
+          <img class="mobile-tooltip--icon"/>
+          <div class="mobile-tooltip--header-text">
+            <span class="mobile-tooltip--name"></span>
+            <span class="mobile-tooltip--comprados"></span>
           </div>
-          <div class="mobile-tooltip--items">
-            <ul>
-              <li class="tooltip-lps-unico"></li>
-              <li class="tooltip-lps-total"></li>
-              <li class="tooltip-gerado"></li>
-            </ul>
-          </div>
-          <span class="tooltip-description"></span>
         </div>
+        <div class="mobile-tooltip--items">
+          <ul>
+            <li class="tooltip-lps-unico"></li>
+            <li class="tooltip-lps-total"></li>
+            <li class="tooltip-gerado"></li>
+          </ul>
+        </div>
+        <span class="tooltip-description"></span>
       `
+
+      wrapper.dataset.id = item.id // Define o ID do wrapper para o nome da estrutura
     }
 
     // Atualiza os dados SEMPRE
-    const img = wrapper.querySelector('.mobile-tooltip--icon')
+    let img = wrapper.querySelector('.mobile-tooltip--icon')
     setImg(img, item.icon)
 
     wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
     wrapper.querySelector('.mobile-tooltip--comprados').textContent = `Comprados: ${item.comprados}`
-    wrapper.querySelector('.tooltip-lps-unico').textContent = `cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LpS`
+    wrapper.querySelector('.tooltip-lps-unico').textContent = `cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1), true)} LpS`
     wrapper.querySelector('.tooltip-lps-total').textContent = `${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${percentual}%)`
-    wrapper.querySelector('.tooltip-gerado').textContent = `${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora`
+    wrapper.querySelector('.tooltip-gerado').textContent = `${formatarNumero(Math.floor(item.gerado), true)} linhas geradas até agora`
     wrapper.querySelector('.tooltip-description').textContent = item.descricao
   } else if (type == 'up') {
-    if (!data) {
+    if (!isItem) {
       // Cria o HTML se ainda não existir
       wrapper.innerHTML = `
-        <div class="mobile-tooltip--wrapper" data-id="${item.nome}">
-          <div class="mobile-tooltip--header">
-            <img class="mobile-tooltip--icon" />
-            <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name"></span>
-            </div>
+        <div class="mobile-tooltip--header">
+          <img class="mobile-tooltip--icon" />
+          <div class="mobile-tooltip--header-text">
+            <span class="mobile-tooltip--name"></span>
           </div>
-          <span class="tooltip-function"></span>
-          <span class="tooltip-description"></span>
         </div>
+        <span class="tooltip-function"></span>
+        <span class="tooltip-description"></span>
       `
+
+      wrapper.dataset.id = item.id // Define o ID do wrapper para o nome do upgrade
     }
 
     // Atualiza os dados SEMPRE
@@ -1263,10 +1269,9 @@ function showMobileTooltip(type, item) {
     wrapper.querySelector('.tooltip-function').textContent = item.funcao
     wrapper.querySelector('.tooltip-description').textContent = item.descricao
   } else if (type == 'bn') {
-    if (!data) {
+    if (!isItem) {
       // Cria o HTML se ainda não existir
       wrapper.innerHTML = `
-        <div class="mobile-tooltip--wrapper" data-id="${item.nome}">
           <div class="mobile-tooltip--header">
             <img class="mobile-tooltip--icon" />
             <div class="mobile-tooltip--header-text">
@@ -1275,8 +1280,8 @@ function showMobileTooltip(type, item) {
           </div>
           <span class="tooltip-function"></span>
           <span class="tooltip-description"></span>
-        </div>
       `
+      wrapper.dataset.id = item.id // Define o ID do wrapper para o nome do bônus
     }
 
     // Atualiza os dados SEMPRE
@@ -1296,10 +1301,16 @@ function closeMobileTootip() {
 
 const close = mobileTooltip.querySelector('.close-bttn')
 
+close.addEventListener("transitionend", (e) => {
+  if (e.propertyName === "opacity" && div.classList.contains("closing")) close.classList.remove('closing')
+})
+
 addSafeTouchListener(close, (e) => {
-  e.stopPropagation(); // impede que o clique vá para outros elementos
-  e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
+  e.stopPropagation() // impede que o clique vá para outros elementos
+  e.preventDefault() // (opcional) previne o comportamento padrão, se necessário
   closeMobileTootip()
+  close.classList.add('closing')
+  mobileTooltipItem = {type: '', item: null} // Reseta o item
   playSound('/static/assets/sounds/close.ogg', .8)
 })
 
@@ -1340,6 +1351,38 @@ buttonsHeader.forEach((btn) => {
       else return
     })
 })
+
+function setScrollShadows(el) {
+  function updateVars() {
+    const { scrollTop, scrollHeight, clientHeight } = el;
+    console.log(scrollTop)
+    let ot = 1, ob = 1;
+
+    // Sem scroll: ambos 0
+    if (scrollHeight <= clientHeight) {
+      ot = 0;
+      ob = 0;
+    } else {
+      const maxScroll = scrollHeight - clientHeight;
+
+      ot = scrollTop / maxScroll
+      ob = 1 - (scrollTop / maxScroll)
+    }
+
+    el.style.setProperty('--ot', ot);
+    el.style.setProperty('--ob', ob);
+  }
+
+  // Atualiza no load e no scroll
+  updateVars();
+  el.addEventListener('scroll', updateVars);
+
+  // Observa mudanças no tamanho/conteúdo
+  const ro = new ResizeObserver(updateVars);
+  ro.observe(el);
+}
+
+setScrollShadows(containerContent)
 
 // Função que irá rendereizar a lista certa na seção de estruturas
 const renderEstruturas = () => {
@@ -1385,6 +1428,8 @@ const renderEstruturas = () => {
       })
 
       addSafeTouchListener(estrutura.querySelector('.info-bttn'), () => {
+        close.classList.remove('closing')
+        mobileTooltipItem = {item, type: 'es'}
         showMobileTooltip('es', item)
         playSound('/static/assets/sounds/open.ogg', .4)
       })
@@ -1427,7 +1472,9 @@ const renderEstruturas = () => {
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
-  if (!contentList.querySelector('.upgrade')) contentList.innerHTML = ''
+  if (!contentList.querySelector('.upgrade') && !contentList.querySelector('.all-purchased')) {
+    contentList.innerHTML = ''
+  }
 
   const upgradesFiltered = upgrades.filter(item => !item.purchased)
   if (upgradesFiltered.length > 0) {
@@ -1463,6 +1510,8 @@ const renderUpgrades = () => {
         })
     
         addSafeTouchListener(upgrade.querySelector('.info-bttn'), () => {
+          close.classList.remove('closing')
+          mobileTooltipItem = {item, type: 'up'}
           showMobileTooltip('up', item)
           playSound('/static/assets/sounds/open.ogg', .4)
         })
@@ -1485,8 +1534,10 @@ const renderUpgrades = () => {
       upgrade.classList.toggle('unlocked', pontos >= item.custo)
     })
   } else {
+    if (contentList.querySelector('.all-purchased')) return
     const span = document.createElement("span")
 
+    span.className = 'all-purchased'
     span.style.fontSize = '1.2em'
     span.style.marginTop = '2em'
     span.textContent = 'Você comprou tudo :('
@@ -1681,6 +1732,9 @@ function setBonus(bonus) {
     return
   } // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
 
+  if (bonus.nome == 'Café Divino') { document.querySelector('.hacker').classList.add('active') } // Adiciona a classe 'active' para o hacker
+  else if (bonus.nome == 'Café Demoníaco') { document.querySelector('.demon').classList.add('active') } // Adiciona a classe 'active' para o demon
+
   const active = boostsActive.find(b => b.nome == bonus.nome) // Verifica se já tem um boost ativo
 
   // Se o bonus já está ativo, será renovado
@@ -1759,6 +1813,9 @@ function removeBoost(id) {
   const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
+    if (boost.nome == 'Café Divino') { document.querySelector('.hacker').classList.remove('active')} // Remove a classe 
+    else if (boost.nome == 'Café Demoníaco') { document.querySelector('.demon').classList.remove('active')} // Remove a classe 
+
     if (boost.reverter) boost.reverter() // Desfaz o efeito
     boostsActive.splice(index, 1) // Retira o boost da lista
 
@@ -2084,19 +2141,23 @@ modalForm.addEventListener('submit', (e) => {
 })
 
 window.addEventListener('submitError', (e) => {
-  if(modalContainer.classList.contains("disabled")) modalContainer.classList.remove("disabled");
+  if (modalContainer.classList.contains("disabled")) modalContainer.classList.remove("disabled");
   modalErrorContainer.textContent = e.detail.error;
   modalInput.value = ''
 })
 
-window.addEventListener('submitSucess', (e) => {
-  company = e.detail.companyName;
-  companyName.textContent = company;
-  modalErrorMessage = ''
-  closeModal()
-  startGame()
-  if (e.detail.hasToRenderLb) requestLeaderboard()
-})
+const submitPromise = new Promise((resolve) => {
+  window.addEventListener('submitSucess', (e) => {
+    company = e.detail.companyName;
+    companyName.textContent = company;
+    modalErrorMessage = '';
+    closeModal();
+    startGame();
+    if (e.detail.hasToRenderLb) requestLeaderboard();
+
+    resolve(); // Finaliza a promise quando tudo do evento acabar
+  });
+});
 
 // VERIFICAR SE A PÁGINA FOI CARREGADA
 //Seta o data no localStorage
@@ -2192,3 +2253,11 @@ function reset(lsToo = true, cookiesToo = true) {
 
   location.reload()
 }
+
+Promise.all([preloadPromise, submitPromise])
+  .then(() => {
+    closeLoading();
+  })
+  .catch((err) => {
+    console.error('Erro em uma das operações:', err);
+  });
