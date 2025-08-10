@@ -8,7 +8,7 @@ const upgrades = [
 
     icon: 'mouse.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
     // efeito: () => boost *= 2,
   },
   {
@@ -18,7 +18,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'mousepad.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Teclado Mecânico RGB",
@@ -27,7 +27,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'teclado.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "HUB USB",
@@ -36,7 +36,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'usb.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Fone Gamer",
@@ -45,7 +45,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fone.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Cadeira Gamer",
@@ -54,7 +54,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'cadeira.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "PENDRIVE de 2TB",
@@ -63,7 +63,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'pendrive.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "SSD de última geração",
@@ -72,7 +72,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'ssd.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Placa de vídeo",
@@ -81,7 +81,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%',
     icon: 'gpu.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Fibra óptica",
@@ -90,7 +90,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fibra.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Óculos VR",
@@ -99,7 +99,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'vr.png',
     // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Energético",
@@ -109,7 +109,7 @@ const upgrades = [
     icon: 'monster.png',
     // icon: 'placeholder.png',
     efeito: () => {
-      coffeeProb *= 2
+      coffeeProb *= 1.5
       bonusList.filter(b => b.type == 'evil').forEach(b => b.unlocked = true)
     },
   },
@@ -120,7 +120,7 @@ const upgrades = [
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
     icon: 'cafeteira.png',
     // icon: 'placeholder.png',
-    efeito: () => coffeeProb *= 2,
+    efeito: () => coffeeProb *= 1.5,
   },
   {
     nome: "Frigobar",
@@ -129,7 +129,7 @@ const upgrades = [
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
     icon: 'frigobar.png',
     // icon: 'placeholder.png',
-    efeito: () => coffeeProb *= 2,
+    efeito: () => coffeeProb *= 1.5,
   },
   {
     nome: "Certificado Online",
@@ -165,7 +165,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'placa.png',
     // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Ventilador portátil",
@@ -174,7 +174,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'ventilador.png',
     // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Gatinho fofo",
@@ -183,7 +183,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'gatinho.png',
     // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Bot de Commit",
@@ -192,7 +192,7 @@ const upgrades = [
     funcao: 'Cada clique gera +0.5 linha de código para cada construção possuída',
     icon: 'commitbot.png',
     // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5 * estruturaMultiplier),
+    efeito: () => onClickEffects.push(() => countEstruturas() * 0.5 * estruturaMultiplier),
   },
   {
     nome: "ChatGPT Licenciado",
@@ -211,7 +211,7 @@ const upgrades = [
     icon: 'cubo.png',
     // icon: 'placeholder.png',
     efeito: () => onClickEffects.push(() => {
-      const chance = 0.005
+      const chance = 0.01
       if (Math.random() < chance) spawnCoffee()
       return 0
     }),
@@ -247,7 +247,7 @@ const estruturas = [
     comprados: 0,
     icon: 'led.png',
     descricao: 'Não aumenta teu desempenho, mas tua moral sim.',
-    ls: 0.5,
+    lps: 0.5,
     gerado: 0,
   },
   { 
@@ -257,7 +257,7 @@ const estruturas = [
     comprados: 0,
     icon: 'monitor.png',
     descricao: 'Telas nunca são demais.',
-    ls: 5,
+    lps: 5,
     gerado: 0,
   },
   { 
@@ -267,7 +267,7 @@ const estruturas = [
     comprados: 0,
     icon: 'ide.png',
     descricao: 'VS Code? Eclipse? Sublime? IntelliJ IDEA? Por que não TODOS eles?',
-    ls: 40,
+    lps: 40,
     gerado: 0,
   },
   { 
@@ -277,7 +277,7 @@ const estruturas = [
     comprados: 0,
     icon: 'clippy.png',
     descricao: 'Olá! Eu sou o Clippy, teu assistente. Gostaria de uma ajudinha?',
-    ls: 250,
+    lps: 250,
     gerado: 0,
   },
   { 
@@ -287,7 +287,7 @@ const estruturas = [
     comprados: 0,
     icon: 'dev_jr.png',
     descricao: 'Não faz ideia do que está fazendo, mas ele tenta... Tadinho.',
-    ls: 1500,
+    lps: 1500,
     gerado: 0,
   },
   { 
@@ -297,7 +297,7 @@ const estruturas = [
     comprados: 0,
     icon: 'servidor.png',
     descricao: 'Quando teu PC não aguenta mais, você terceiriza.',
-    ls: 8000,
+    lps: 8000,
     gerado: 0,
   },
   { 
@@ -307,7 +307,7 @@ const estruturas = [
     comprados: 0,
     icon: 'dev_pleno.png',
     descricao: 'DEV Júnior+ com uma pitada de independência',
-    ls: 35000,
+    lps: 35000,
     gerado: 0,
   },
   { 
@@ -317,7 +317,7 @@ const estruturas = [
     comprados: 0,
     icon: 'cloud.png',
     descricao: 'Teus códigos agora suspensos no limbo da internet',
-    ls: 200000,
+    lps: 200000,
     gerado: 0,
   },
   { 
@@ -327,7 +327,7 @@ const estruturas = [
     comprados: 0,
     icon: 'dev_senior.png',
     descricao: 'Codifica em silêncio absoluto e surge apenas para resolver os bugs alheios.',
-    ls: 1100000,
+    lps: 1100000,
     gerado: 0,
   },
     { 
@@ -337,7 +337,7 @@ const estruturas = [
     comprados: 0,
     icon: 'data_center.png',
     descricao: 'Armazena zettabytes de memória! (e teus dados mais obscuros).',
-    ls: 7700000,
+    lps: 7700000,
     gerado: 0,
   },
   { 
@@ -347,7 +347,7 @@ const estruturas = [
     comprados: 0,
     icon: 'ia.png',
     descricao: 'É tipo um DEV, só que mais rápido, mais esperto, mais eficaz, mais sagaz, mais sucinto, mais... Deixa pra lá.',
-    ls: 45000000,
+    lps: 45000000,
     gerado: 0,
   },
   { 
@@ -357,7 +357,7 @@ const estruturas = [
     comprados: 0,
     icon: 'quantico.png',
     descricao: 'Resolve os bugs antes mesmo deles surgirem.',
-    ls: 230000000,
+    lps: 230000000,
     gerado: 0,
   },
 
@@ -387,10 +387,10 @@ const bonusList = [
     icon: 'cafe_docinho.png',
     unlocked: true,
     get efeito() {
-      lsMultiplier *= 7;
+      lpsMultiplier *= 7;
       return `LpS x7 por ${this.duracao} segundos!`
     },
-    reverter: () => lsMultiplier /= 7,
+    reverter: () => lpsMultiplier /= 7,
   },
   {
     id: 'bn3',
@@ -402,10 +402,10 @@ const bonusList = [
     icon: 'cafe_perfeito.png',
     unlocked: true,
     get efeito() {
-      lsMultiplier *= 777;
+      lpsMultiplier *= 777;
       return `LpS x777 por ${this.duracao} segundos!!!`
     },
-    reverter: () => lsMultiplier /= 777,
+    reverter: () => lpsMultiplier /= 777,
   },
   {
     id: 'bn4',
@@ -417,10 +417,10 @@ const bonusList = [
     icon: 'cafe_divino.png',
     unlocked: true,
     get efeito() {
-      lsMultiplier *= 1111;
+      lpsMultiplier *= 1111;
       return `LpS x1111 por ${this.duracao} segundos!!!`
     },
-    reverter: () => lsMultiplier /= 1111,
+    reverter: () => lpsMultiplier /= 1111,
   },
   {
     id: 'bn5',
@@ -446,7 +446,7 @@ const bonusList = [
     descricao: "5 min das LpS!",
     unlocked: true,
     get efeito() {
-        const ganho = Math.floor(lsTOT * 60 * 5);
+        const ganho = Math.floor(lpsTOT * 60 * 5);
         refresh(ganho)
         return `Ganhou ${formatarNumero(ganho, true)} linhas!`
     },
@@ -473,12 +473,12 @@ const bonusList = [
     duracao: 30,
     unlocked: false,
     get efeito() {
-      lsMultiplier *= .5
+      lpsMultiplier *= .5
       coffeeProb *= .1
       return `LpS x0.5 por ${this.duracao} segundos...`
     },
     reverter: () => {
-      lsMultiplier /= .5
+      lpsMultiplier /= .5
       coffeeProb /= .1
     },
   },
@@ -491,10 +491,10 @@ const bonusList = [
     duracao: 6,
     unlocked: false,
     get efeito() {
-      lsMultiplier *= 666
+      lpsMultiplier *= 666
       return `LpS x666 por ${this.duracao} segundos...`
     },
-    reverter: () => lsMultiplier /= 666,
+    reverter: () => lpsMultiplier /= 666,
   }
 ]
 
@@ -530,6 +530,10 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function countEstruturas() {
+  return estruturas.reduce((sum, obj) => sum + obj.comprados, 0)
+}
+
 const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
 const csrfToken = window.csrfToken
 
@@ -538,8 +542,8 @@ let id = -1
 let company = ''
 let pontos = 0 // Linhas de código
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
-let lsTOT = 0 // Quantas LpS estão sendo geradas
-let lsMultiplier = 1 // Multiplicador para as LpS
+let lpsTOT = 0 // Quantas LpS estão sendo geradas
+let lpsMultiplier = 1 // Multiplicador para as LpS
 let bulkBuy = 1 // Quantas estruturas serão comprados por vez (x1, x10, x100)
 let comboMultiplier = 1
 let estruturaMultiplier = 1
@@ -561,6 +565,11 @@ let gameInterval = null // Variável que controla o intervalo do jogo (define se
 let coffeeInterval = null // Variável que controla o intervalo de spawn dos cafés
 let mobileTooltipItem = {type: '', item: null} // Guarda o item que está sendo mostrado no tooltip mobile
 let scrollTabs = {estruturas: 0, upgrades: 0}
+let defaultStats = {
+  totalClicks: 0,
+  handmadeLines: 0,
+  totalCoffees: 0,
+}
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.getElementById('computer-keyboard')
@@ -576,7 +585,7 @@ const mobileTooltip = document.querySelector('.mobile-tooltip')
 const companyNameContainer = document.querySelector('.company-text')
 const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
 const lbContentContainer = document.querySelector('.leaderboard-content')
-const lsPersecondContainer = document.querySelector('.ls-persecond')
+const lpsPersecondContainer = document.querySelector('.lps-persecond')
 const computerCodelinesContainer = document.querySelector(".computer-codelines--wrapper");
 const modalContainer = document.querySelector('.modal')
 const modalInput = document.querySelector('.modal-input')
@@ -584,6 +593,7 @@ const modalForm = document.querySelector('.modal-form')
 const modalErrorContainer = document.querySelector('.modal-error') // Container de erro do modal (nome inválido, longo ou já existente)
 const bulkButtons = document.querySelectorAll('.bulk') // Botões de compra em massa (x1, x10, x100)
 const tap = document.querySelector('.tap') // Ícone que aparece quando clica no botão
+const statsContainer = document.querySelector('.stats')
 
 // PRELOAD (CACHE)
 const iconCache = {}
@@ -607,7 +617,6 @@ function preloadIcons(iconList) {
 // Função que define a imagem de um elemento img com base no ícone, procurando no cache
 function setImg(img, icon) {
   const newSrc = `/static/assets/icons/${icon}`
-  // console.log(newSrc, img.src)
 
   if (img.src !== location.origin + newSrc) {
     if (iconCache[icon]) {
@@ -772,6 +781,118 @@ function renderLeaderboard(jogadores) {
 
 // FIM DO LEADERBOARD
 
+// INÍCIO DOS STATS
+
+function updateStat(key, value) {
+  const stats = defaultStats
+  
+  if (Array.isArray(stats[key])) {
+    // Arrays (como lista de upgrades)
+    if (!stats[key].includes(value)) {
+      stats[key].push(value);
+    }
+  } else if (typeof stats[key] === 'number') {
+    // Números
+    stats[key] += value;
+  } else {
+    // Outros tipos (boolean, string, etc.)
+    stats[key] = value;
+  }
+}
+
+const itemsModal = document.querySelector('.items-modal')
+
+itemsModal.addEventListener('click', (e) => {
+  const hasTouchedContent = e.target.closest('.items-modal--content')
+  if (hasTouchedContent) return
+  itemsModal.classList.add('closing')
+  toggleStats()
+})
+
+itemsModal.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "opacity" && itemsModal.classList.contains("closing")) {
+      itemsModal.classList.remove('enabled')
+      itemsModal.classList.remove('closing')
+    }
+  })
+
+statsContainer.addEventListener('click', toggleStats)
+
+function toggleStats() {
+  const isEnabled = itemsModal.classList.contains('enabled')
+
+  if (isEnabled) {
+    itemsModal.style.opacity = 0
+    itemsModal.classList.add('closing')
+    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+  } else {
+    itemsModal.classList.toggle('enabled')
+    itemsModal.classList.remove('closing')
+    renderStats()
+    void itemsModal.offsetWidth
+    itemsModal.style.opacity = 1
+    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+  }
+}
+
+function renderStats() {
+  function setText(el, txt) {
+    el.querySelectorAll('span')[1].textContent = txt
+  }
+
+  const upgradesOwned = upgrades.filter(up => up.purchased)
+  const upgradesOwnedCount = upgradesOwned.length
+  const upgradesLength = upgrades.length
+
+  setText(itemsModal.querySelector('.ct'), defaultStats.totalCoffees)
+  setText(itemsModal.querySelector('.tt'), defaultStats.totalClicks)
+  setText(itemsModal.querySelector('.lgm'), formatarNumero(defaultStats.handmadeLines.toFixed(0)))
+  setText(itemsModal.querySelector('.mlps'), 'x'+formatarNumero(lpsMultiplier.toFixed(2)))
+  setText(itemsModal.querySelector('.ec'), countEstruturas())
+  setText(itemsModal.querySelector('.items-upgrades-owned'), `${upgradesOwnedCount}/${upgradesLength} (${Number(upgradesOwnedCount/upgradesLength*100).toFixed(1)}%)`)
+
+  const itemUpgrades = itemsModal.querySelector('.item-upgrades--container')
+
+  if (upgradesOwned.length == 0) {
+    itemUpgrades.style.display = 'none'
+    return
+  }
+
+  itemUpgrades.style.display = 'flex'
+
+  upgradesOwned.forEach(up => {
+      const id = `stats-upgrade-${up.id}`
+      let upgrade = itemUpgrades.querySelector(`#${id}`)
+
+      if (!upgrade) {
+        upgrade = document.createElement('div')
+        upgrade.className = 'stats-upgrades'
+        upgrade.id = id
+    
+        upgrade.innerHTML = (`
+          <span class="item-name">${up.nome}</span>
+          <div class="item-icon--wrapper">
+            <img class="item-icon"/>
+          </div>
+        `)
+
+        itemUpgrades.appendChild(upgrade)
+
+        upgrade.addEventListener('click', () => {
+          showMobileTooltip('up', up)
+        })
+      }
+
+      const img = upgrade.querySelector('.item-icon')
+      setImg(img, up.icon)
+  })
+
+}
+
+setScrollShadows(itemsModal.querySelector('.item-upgrades--container'))
+
+// FIM DOS STATS
+
 // Pega o nome do player
 window.addEventListener("updateCompany", (e) => {
   company = e.detail.company
@@ -787,10 +908,14 @@ window.addEventListener("dispatchPlayerData", (event) => {
   company = loadingPlayer.companyName
   companyName.textContent = company
 
+  const statsSaved = JSON.parse(localStorage.getItem('stats'))
 
   // Verifica quais estrutras e upgrades estão salvos e atualiza da lista principal
   listUpgrades = JSON.parse(localStorage.getItem("upgrades"))?.salve || []
   listStructures = JSON.parse(localStorage.getItem("estruturas"))?.salve || []
+
+  if (statsSaved) defaultStats = statsSaved
+  
 
   listUpgrades.forEach(item => {
     upgrades.forEach((upgrade, index) => {
@@ -856,7 +981,8 @@ function refresh(add) {
   if (!window.matchMedia('(pointer: coarse)').matches && getComputedStyle(tooltip).opacity == 1) showTooltip()
   else if (getComputedStyle(mobileTooltip).opacity == 1 && !close.classList.contains('closing')) {
     const {type, item} = mobileTooltipItem
-    showMobileTooltip(type, item)
+    if (type !== 'es') return
+    showMobileTooltip(type, item, false)
   }
 }
 
@@ -990,7 +1116,7 @@ button.addEventListener('click', (e) => {
     y: e.pageY,
   }
 
-  handleClicker(coords)
+  handleClick(coords)
 })
 
 button.addEventListener('touchstart', (e) => {
@@ -999,11 +1125,14 @@ button.addEventListener('touchstart', (e) => {
     x: currentTouch.pageX,
     y: currentTouch.pageY,
   }
-  handleClicker(coords)
+  handleClick(coords)
 })
 
-function handleClicker({x, y}) {
+function handleClick({x, y}) {
   const [toAdd, actualComboMultiplier] = onClick()
+
+  updateStat('totalClicks', 1)
+  updateStat('handmadeLines', toAdd)
 
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
@@ -1058,7 +1187,10 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (window.matchMedia('(pointer: coarse)').matches || !modalContainer.classList.contains('disabled')) return
+  if (window.matchMedia('(pointer: coarse)').matches 
+      || !modalContainer.classList.contains('disabled')
+      || itemsModal.classList.contains('enabled')
+  ) return
 
   mouseX = e.clientX
   mouseY = e.clientY
@@ -1104,11 +1236,11 @@ function showTooltip(x = mouseX, y = mouseY) {
     let extraInfo = ``
 
     if (data.unlocked && data.comprados > 0) {
-      const gerando = (data.comprados*data.ls*lsMultiplier).toFixed(1)
+      const gerando = (data.comprados*data.lps*lpsMultiplier).toFixed(1)
       extraInfo = `
           <ul>
-            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1), true)} LpS</li>
-            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando, true)} LpS (${((gerando/(lsTOT || 1))*100).toFixed(2)}%)</li>
+            <li>cada ${data.nome} gera ${formatarNumero((data.lps * lpsMultiplier).toFixed(1), true)} LpS</li>
+            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando, true)} LpS (${((gerando/(lpsTOT || 1))*100).toFixed(2)}%)</li>
             <li>${formatarNumero(Math.floor(data.gerado), true)} linhas geradas até agora</li>
           </ul>
       `
@@ -1190,26 +1322,29 @@ function showTooltip(x = mouseX, y = mouseY) {
   }
 }
 
-function showMobileTooltip(type, item) {
+function showMobileTooltip(type, item, touched = true) {
   const titles = {
     es: 'Estruturas',
     up: 'Upgrades',
     bn: 'Bônus'
   }
 
+  if (touched) playSound('/static/assets/sounds/open.ogg', .4)
+
   const mobileTitle = mobileTooltip.querySelector('.mobile-tooltip--title')
   const wrapper = mobileTooltip.querySelector(`.mobile-tooltip--wrapper`)
-  const data = wrapper.dataset?.id
+  const data = wrapper.dataset?.mobileid
   const isItem = data == item.id
 
+  mobileTooltip.classList.add('enabled')
+  void mobileTooltip.offsetHeight
   mobileTooltip.style.opacity = 1
-  mobileTooltip.style.pointerEvents = 'all'
 
   mobileTitle.textContent = titles[type]
 
   if (type == 'es') {
-    const gerando = (item.comprados * item.ls * lsMultiplier).toFixed(1)
-    const percentual = ((gerando / (lsTOT || 1)) * 100).toFixed(2)
+    const gerando = (item.comprados * item.lps * lpsMultiplier).toFixed(1)
+    const percentual = ((gerando / (lpsTOT || 1)) * 100).toFixed(2)
 
     if (!isItem) {
       // Cria o HTML se ainda não existir
@@ -1231,7 +1366,7 @@ function showMobileTooltip(type, item) {
         <span class="tooltip-description"></span>
       `
 
-      wrapper.dataset.id = item.id // Define o ID do wrapper para o nome da estrutura
+      wrapper.dataset.mobileid = item.id // Define o ID do wrapper para o nome da estrutura
     }
 
     // Atualiza os dados SEMPRE
@@ -1240,7 +1375,7 @@ function showMobileTooltip(type, item) {
 
     wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
     wrapper.querySelector('.mobile-tooltip--comprados').textContent = `Comprados: ${item.comprados}`
-    wrapper.querySelector('.tooltip-lps-unico').textContent = `cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1), true)} LpS`
+    wrapper.querySelector('.tooltip-lps-unico').textContent = `cada ${item.nome} gera ${formatarNumero((item.lps * lpsMultiplier).toFixed(1), true)} LpS`
     wrapper.querySelector('.tooltip-lps-total').textContent = `${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${percentual}%)`
     wrapper.querySelector('.tooltip-gerado').textContent = `${formatarNumero(Math.floor(item.gerado), true)} linhas geradas até agora`
     wrapper.querySelector('.tooltip-description').textContent = item.descricao
@@ -1258,7 +1393,7 @@ function showMobileTooltip(type, item) {
         <span class="tooltip-description"></span>
       `
 
-      wrapper.dataset.id = item.id // Define o ID do wrapper para o nome do upgrade
+      wrapper.dataset.mobileid = item.id // Define o ID do wrapper para o nome do upgrade
     }
 
     // Atualiza os dados SEMPRE
@@ -1281,7 +1416,7 @@ function showMobileTooltip(type, item) {
           <span class="tooltip-function"></span>
           <span class="tooltip-description"></span>
       `
-      wrapper.dataset.id = item.id // Define o ID do wrapper para o nome do bônus
+      wrapper.dataset.mobileid = item.id // Define o ID do wrapper para o nome do bônus
     }
 
     // Atualiza os dados SEMPRE
@@ -1296,23 +1431,28 @@ function showMobileTooltip(type, item) {
 
 function closeMobileTootip() {
   mobileTooltip.style.opacity = 0
-  mobileTooltip.style.pointerEvents = 'none'
 }
 
 const close = mobileTooltip.querySelector('.close-bttn')
 
-close.addEventListener("transitionend", (e) => {
-  if (e.propertyName === "opacity" && div.classList.contains("closing")) close.classList.remove('closing')
+mobileTooltip.addEventListener("transitionend", (e) => {
+  if (e.propertyName === "opacity" && mobileTooltip.classList.contains('closing')) {
+    mobileTooltip.classList.remove('closing')
+    mobileTooltip.classList.remove('enabled')
+  }
 })
 
-addSafeTouchListener(close, (e) => {
+close.addEventListener('click', (e) => {
+  if (getComputedStyle(mobileTooltip).opacity != 1) return
+
   e.stopPropagation() // impede que o clique vá para outros elementos
   e.preventDefault() // (opcional) previne o comportamento padrão, se necessário
   closeMobileTootip()
-  close.classList.add('closing')
+  mobileTooltip.classList.add('closing')
   mobileTooltipItem = {type: '', item: null} // Reseta o item
   playSound('/static/assets/sounds/close.ogg', .8)
 })
+
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
@@ -1355,7 +1495,6 @@ buttonsHeader.forEach((btn) => {
 function setScrollShadows(el) {
   function updateVars() {
     const { scrollTop, scrollHeight, clientHeight } = el;
-    console.log(scrollTop)
     let ot = 1, ob = 1;
 
     // Sem scroll: ambos 0
@@ -1431,7 +1570,6 @@ const renderEstruturas = () => {
         close.classList.remove('closing')
         mobileTooltipItem = {item, type: 'es'}
         showMobileTooltip('es', item)
-        playSound('/static/assets/sounds/open.ogg', .4)
       })
     
       contentList.appendChild(estrutura)
@@ -1513,7 +1651,6 @@ const renderUpgrades = () => {
           close.classList.remove('closing')
           mobileTooltipItem = {item, type: 'up'}
           showMobileTooltip('up', item)
-          playSound('/static/assets/sounds/open.ogg', .4)
         })
         
         contentList.appendChild(upgrade)
@@ -1609,7 +1746,7 @@ const triggerCoffeeEvent = () => {
 let lastBonus = ''
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-function spawnCoffee (bonusId = null, duracao = 2000)  {
+function spawnCoffee (bonusId = null, duracao = 2500)  {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -1645,6 +1782,7 @@ function spawnCoffee (bonusId = null, duracao = 2000)  {
     // Ao clicar no café:
     div.addEventListener('click', () => {
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
+      updateStat('totalCoffees', 1)
       const bonus = bonusList.find(b => b.id == bonusId) ?? escolherBonusComPeso(bonusList)
       setBonus(bonus) // Coloca o bônus na tela
       spawnAlert(x, y)
@@ -1746,7 +1884,7 @@ function setBonus(bonus) {
       removeBoost(bonus.id)
     }, bonus.duracao * 1000)
 
-    const boostDiv = document.querySelector(`[data-id="${bonus.id}"]`)
+    const boostDiv = document.querySelector(`[data-bonusid="${bonus.id}"]`)
     lastBonus = {
       nome: active.nome,
       efeito: active.efeito,
@@ -1793,11 +1931,10 @@ function setBonus(bonus) {
   const div = document.createElement("div")
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
-  div.dataset.id = bonus.id // Coloca um data-set para facilitar a localização dessa div
+  div.dataset.bonusid = bonus.id // Coloca um data-set para facilitar a localização dessa div
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   addSafeTouchListener(div, () => {
     showMobileTooltip('bn', bonusActive)
-    playSound('/static/assets/sounds/open.ogg', .4)
   })
 
   const img = document.createElement("img")
@@ -1819,7 +1956,7 @@ function removeBoost(id) {
     if (boost.reverter) boost.reverter() // Desfaz o efeito
     boostsActive.splice(index, 1) // Retira o boost da lista
 
-    const boostDiv = document.querySelector(`[data-id="${id}"]`) // Pega a div com o boost ativo
+    const boostDiv = document.querySelector(`[data-bonusid="${id}"]`) // Pega a div com o boost ativo
     stopMatrix(id) // Para com a respectiva matrix
     boostDiv.remove()
     showTooltip()
@@ -1991,15 +2128,15 @@ function gerarPassivamente() {
   let totalGerado = 0;
 
   estruturas.forEach(estrutura => {
-    const geradoPorEssa = estrutura.ls * estrutura.comprados * lsMultiplier * timing
+    const geradoPorEssa = estrutura.lps * estrutura.comprados * lpsMultiplier * timing
     estrutura.gerado += geradoPorEssa
     totalGerado += geradoPorEssa
   })
 
 
   if (totalGerado == 0) return
-  lsTOT = totalGerado / timing
-  lsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lsTOT.toFixed(1))}` 
+  lpsTOT = totalGerado / timing
+  lpsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lpsTOT.toFixed(1))}` 
   refresh(totalGerado)
 }
 
@@ -2147,6 +2284,8 @@ window.addEventListener('submitError', (e) => {
 })
 
 const submitPromise = new Promise((resolve) => {
+  if (!idPlayer) { resolve() } 
+
   window.addEventListener('submitSucess', (e) => {
     company = e.detail.companyName;
     companyName.textContent = company;
@@ -2156,8 +2295,8 @@ const submitPromise = new Promise((resolve) => {
     if (e.detail.hasToRenderLb) requestLeaderboard();
 
     resolve(); // Finaliza a promise quando tudo do evento acabar
-  });
-});
+  })
+})
 
 // VERIFICAR SE A PÁGINA FOI CARREGADA
 //Seta o data no localStorage
@@ -2186,6 +2325,7 @@ function setData(){
 
   localStorage.setItem("upgrades", JSON.stringify({salve: listPatchUpgrades}));
   localStorage.setItem("estruturas", JSON.stringify({salve: listPatchStructures}));
+  localStorage.setItem('stats', JSON.stringify(defaultStats))
 }
 
 // Toda vez que atualizar a página, ele atualiza os dados
@@ -2224,11 +2364,19 @@ function startGame() {
     requestLeaderboard()
   }, 1000 * 5);
 
-  setTimeout(() => {
+  const setCoffeeInterval = () => {
     coffeeInterval = setInterval(() => {
       if (Math.random() < coffeeProb) spawnCoffee()
     }, 1000)
-  }, 1000 * 15)
+  }
+
+  if (pontos == 0) {
+    setTimeout(() => {
+      setCoffeeInterval()
+    }, 1000 * 15)
+  } else {
+    setCoffeeInterval()
+  }
 }
 
 function endGame() {
@@ -2240,6 +2388,7 @@ function reset(lsToo = true, cookiesToo = true) {
   debug = true
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
+  localStorage.removeItem('stats')
   if (lsToo) {
     refresh(-pontos)
     atualizarPontos(pontos)
