@@ -536,7 +536,8 @@ function countEstruturas() {
   return estruturas.reduce((sum, obj) => sum + obj.comprados, 0)
 }
 
-const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
+const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+const socket = new WebSocket(protocol + window.location.host + "/ws/leaderboard/");
 const csrfToken = window.csrfToken
 
 // Variaveis
