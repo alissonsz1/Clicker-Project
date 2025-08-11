@@ -6,3 +6,4 @@ from django.db import models
 class Companies(models.Model):
     companyName = models.TextField()
     lsCount = models.TextField(default="0")
+    lsHighest = models.TextField(default="0")
