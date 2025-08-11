@@ -6,8 +6,8 @@ const upgrades = [
     descricao: 'Ninguém sabe pra que servem todos esses botões, mas eles estão lá.',
     funcao: 'Aumenta geração de LpS em 5%.',
 
-    icon: 'mouse.png',
-    // icon: 'placeholder.png',
+    icon: 'mouse.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
     // efeito: () => boost *= 2,
   },
@@ -16,8 +16,8 @@ const upgrades = [
     custo: 1000000,
     descricao: 'Previne você de ter uma tendinite (e ainda vem com um LED maneiro).',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'mousepad.png',
-    // icon: 'placeholder.png',
+    icon: 'mousepad.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -25,8 +25,8 @@ const upgrades = [
     custo: 2000000,
     descricao: 'Faz um barulho gostosinho ao teclar e possui mais de 16M de cores para você testar. Uau!',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'teclado.png',
-    // icon: 'placeholder.png',
+    icon: 'teclado.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -34,8 +34,8 @@ const upgrades = [
     custo: 10000000,
     descricao: 'Organiza (ou pelo menos tenta) o teu emaranhado de cabos e fios.',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'usb.png',
-    // icon: 'placeholder.png',
+    icon: 'usb.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -43,8 +43,8 @@ const upgrades = [
     custo: 20000000,
     descricao: 'Abafa tudo: os cachorros latindo, a obra do vizinho e teus familiares te chamando.',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'fone.png',
-    // icon: 'placeholder.png',
+    icon: 'fone.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -52,8 +52,8 @@ const upgrades = [
     custo: 100000000,
     descricao: 'Melhora teu conforto e transforma tua coluna lentamente em uma espiral.',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'cadeira.png',
-    // icon: 'placeholder.png',
+    icon: 'cadeira.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -61,8 +61,8 @@ const upgrades = [
     custo: 1000000000,
     descricao: 'Por algum motivo, diz que já está 97% cheio...',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'pendrive.png',
-    // icon: 'placeholder.png',
+    icon: 'pendrive.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -70,8 +70,8 @@ const upgrades = [
     custo: 2000000000,
     descricao: 'Faz milagres quando tudo que você possui é uma placa integrada.',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'ssd.png',
-    // icon: 'placeholder.png',
+    icon: 'ssd.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -79,8 +79,8 @@ const upgrades = [
     custo: 10000000000,
     descricao: 'Uma RTX 5090 só pra assistir tutoriais em 8K!',
     funcao: 'Aumenta geração de LpS em 5%',
-    icon: 'gpu.png',
-    // icon: 'placeholder.png',
+    icon: 'gpu.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -88,8 +88,8 @@ const upgrades = [
     custo: 20000000000,
     descricao: 'Chega de ping alto no lolzinho!',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'fibra.png',
-    // icon: 'placeholder.png',
+    icon: 'fibra.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -97,8 +97,8 @@ const upgrades = [
     custo: 200000000000,
     descricao: 'Te leva para fora dessa realidade cruel, monótona e apática, repleta de violência e ódio gratuito, onde sonhos são sufocados, esmagados, triturados - e tua força de trabalho é sugada até tua última gota de suor. Um ótimo gadget!',
     funcao: 'Aumenta geração de LpS em 5%.',
-    icon: 'vr.png',
-    // icon: 'placeholder.png',
+    icon: 'vr.webp',
+    // icon: 'placeholder.webp',
     efeito: () => lsMultiplier *= 1.05,
   },
   {
@@ -106,8 +106,8 @@ const upgrades = [
     custo: 88888,
     descricao: 'Junte com café e veja os poderes incríveis da cafeína.',
     funcao: 'Aumenta as chances de se aparecer um cafézinho (lide com as consequências).',
-    icon: 'monster.png',
-    // icon: 'placeholder.png',
+    icon: 'monster.webp',
+    // icon: 'placeholder.webp',
     efeito: () => {
       coffeeProb *= 2
       bonusList.filter(b => b.type == 'evil').forEach(b => b.unlocked = true)
@@ -118,8 +118,8 @@ const upgrades = [
     custo: 8888888,
     descricao: 'Teus cafés mais rápidos e mais gostosos!',
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
-    icon: 'cafeteira.png',
-    // icon: 'placeholder.png',
+    icon: 'cafeteira.webp',
+    // icon: 'placeholder.webp',
     efeito: () => coffeeProb *= 2,
   },
   {
@@ -127,8 +127,8 @@ const upgrades = [
     custo: 888888888,
     descricao: 'Menos idas à cozinha, mais linhas de código.',
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
-    icon: 'frigobar.png',
-    // icon: 'placeholder.png',
+    icon: 'frigobar.webp',
+    // icon: 'placeholder.webp',
     efeito: () => coffeeProb *= 2,
   },
   {
@@ -136,8 +136,8 @@ const upgrades = [
     custo: 100,
     descricao: 'Aumenta exponencialmente suas chances de arranjar um emprego - Obrigado, Guanabara!',
     funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'certificado.png',
-    // icon: 'placeholder.png',
+    icon: 'certificado.webp',
+    // icon: 'placeholder.webp',
     efeito: () => boost *= 2,
   },
   {
@@ -145,8 +145,8 @@ const upgrades = [
     custo: 500,
     descricao: 'Te ajuda com os cálculos que o professor jura que são triviais.',
     funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'calculadora.png',
-    // icon: 'placeholder.png',
+    icon: 'calculadora.webp',
+    // icon: 'placeholder.webp',
     efeito: () => boost *= 2,
   },
   {
@@ -154,8 +154,8 @@ const upgrades = [
     custo: 10000,
     descricao: 'Previne você de zerar quatro provas seguidas de Cálculo I (acredite, é possível).',
     funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'livro.png',
-    // icon: 'placeholder.png',
+    icon: 'livro.webp',
+    // icon: 'placeholder.webp',
     efeito: () => boost *= 2,
   },
   {
@@ -163,8 +163,8 @@ const upgrades = [
     custo: 50000,
     descricao: 'Impede teu irmão caçula de perturbar teu foco sagrado.',
     funcao: '+1% das suas LpS por clique.',
-    icon: 'placa.png',
-    // icon: 'placeholder.png',
+    icon: 'placa.webp',
+    // icon: 'placeholder.webp',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
   },
   {
@@ -172,8 +172,8 @@ const upgrades = [
     custo: 5000000,
     descricao: 'Para esfriar tua cabeça (e evitar um burnout).',
     funcao: '+1% das suas LpS por clique.',
-    icon: 'ventilador.png',
-    // icon: 'placeholder.png',
+    icon: 'ventilador.webp',
+    // icon: 'placeholder.webp',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
   },
   {
@@ -181,8 +181,8 @@ const upgrades = [
     custo: 500000000,
     descricao: 'Meoow',
     funcao: '+1% das suas LpS por clique.',
-    icon: 'gatinho.png',
-    // icon: 'placeholder.png',
+    icon: 'gatinho.webp',
+    // icon: 'placeholder.webp',
     efeito: () => onClickEffects.push(() => lsTOT * 0.01),
   },
   {
@@ -190,8 +190,8 @@ const upgrades = [
     custo: 100000,
     descricao: 'feat: lê e commita com base nos teus pensamentos.',
     funcao: 'Cada clique gera +0.5 linha de código para cada construção possuída',
-    icon: 'commitbot.png',
-    // icon: 'placeholder.png',
+    icon: 'commitbot.webp',
+    // icon: 'placeholder.webp',
     efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5 * estruturaMultiplier),
   },
   {
@@ -199,8 +199,8 @@ const upgrades = [
     custo: 100000000,
     descricao: 'Agora com 5% menos alucinações.',
     funcao: 'Multiplica o ganho do Bot de Commit por 10',
-    icon: 'chatgpt.png',
-    // icon: 'placeholder.png',
+    icon: 'chatgpt.webp',
+    // icon: 'placeholder.webp',
     efeito: () => estruturaMultiplier *= 10,
   },
   {
@@ -208,8 +208,8 @@ const upgrades = [
     custo: 43252003,
     descricao: 'Você sabia que existem mais combinações possíveis em um cubo mágico do que átomos no universo? Pois é, na verdade é mentira...',
     funcao: 'Cada clique passa a ter uma chance mínima de fazer surgir um café',
-    icon: 'cubo.png',
-    // icon: 'placeholder.png',
+    icon: 'cubo.webp',
+    // icon: 'placeholder.webp',
     efeito: () => onClickEffects.push(() => {
       const chance = 0.005
       if (Math.random() < chance) spawnCoffee()
@@ -221,8 +221,8 @@ const upgrades = [
     custo: 802007,
     descricao: 'Receba instantaneamente o follow de uma garota que usa foto de dinossauro, luta boxe, desenha extremamente bem, ama patos e é terrivelmente boa em tudo (e se apaixone perdidamente por ela).',
     funcao: 'Clicar consecutivamente aumenta o multiplicador de cliques',
-    icon: 'carta.png',
-    // icon: 'placeholder.png',
+    icon: 'carta.webp',
+    // icon: 'placeholder.webp',
     efeito: () => hasCombo = true,
   },
   {
@@ -230,8 +230,8 @@ const upgrades = [
     custo: 999999,
     descricao: 'Mergulha nos cantos mais obscuros da internet em busca dos melhores cupons de desconto.',
     funcao: 'Reduz o preço de todas as estruturas em 10%',
-    icon: 'preco.png',
-    // icon: 'placeholder.png',
+    icon: 'preco.webp',
+    // icon: 'placeholder.webp',
     efeito: () => {
       estruturas.forEach(e => e.custoBase *= 0.9)
     },
@@ -245,7 +245,7 @@ const estruturas = [
     plural: "LEDs",
     custoBase: 15, 
     comprados: 0,
-    icon: 'led.png',
+    icon: 'led.webp',
     descricao: 'Não aumenta teu desempenho, mas tua moral sim.',
     ls: 0.5,
     gerado: 0,
@@ -255,7 +255,7 @@ const estruturas = [
     plural: "Monitores",
     custoBase: 100, 
     comprados: 0,
-    icon: 'monitor.png',
+    icon: 'monitor.webp',
     descricao: 'Telas nunca são demais.',
     ls: 5,
     gerado: 0,
@@ -265,7 +265,7 @@ const estruturas = [
     plural: "IDEs",
     custoBase: 1100, 
     comprados: 0,
-    icon: 'ide.png',
+    icon: 'ide.webp',
     descricao: 'VS Code? Eclipse? Sublime? IntelliJ IDEA? Por que não TODOS eles?',
     ls: 40,
     gerado: 0,
@@ -275,7 +275,7 @@ const estruturas = [
     plural: "Clippies",
     custoBase: 12000, 
     comprados: 0,
-    icon: 'clippy.png',
+    icon: 'clippy.webp',
     descricao: 'Olá! Eu sou o Clippy, teu assistente. Gostaria de uma ajudinha?',
     ls: 250,
     gerado: 0,
@@ -285,7 +285,7 @@ const estruturas = [
     plural: "DEVs Júniores",
     custoBase: 130000, 
     comprados: 0,
-    icon: 'dev_jr.png',
+    icon: 'dev_jr.webp',
     descricao: 'Não faz ideia do que está fazendo, mas ele tenta... Tadinho.',
     ls: 1500,
     gerado: 0,
@@ -295,7 +295,7 @@ const estruturas = [
     plural: "Servidores locais",
     custoBase: 1400000,
     comprados: 0,
-    icon: 'servidor.png',
+    icon: 'servidor.webp',
     descricao: 'Quando teu PC não aguenta mais, você terceiriza.',
     ls: 8000,
     gerado: 0,
@@ -305,7 +305,7 @@ const estruturas = [
     plural: "DEVs Plenos",
     custoBase: 20000000, 
     comprados: 0,
-    icon: 'dev_pleno.png',
+    icon: 'dev_pleno.webp',
     descricao: 'DEV Júnior+ com uma pitada de independência',
     ls: 35000,
     gerado: 0,
@@ -315,7 +315,7 @@ const estruturas = [
     plural: "Clouds",
     custoBase: 330000000, 
     comprados: 0,
-    icon: 'cloud.png',
+    icon: 'cloud.webp',
     descricao: 'Teus códigos agora suspensos no limbo da internet',
     ls: 200000,
     gerado: 0,
@@ -325,7 +325,7 @@ const estruturas = [
     plural: "DEVs Sêniores",
     custoBase: 5100000000, 
     comprados: 0,
-    icon: 'dev_senior.png',
+    icon: 'dev_senior.webp',
     descricao: 'Codifica em silêncio absoluto e surge apenas para resolver os bugs alheios.',
     ls: 1100000,
     gerado: 0,
@@ -335,7 +335,7 @@ const estruturas = [
     plural: "Data Centers",
     custoBase: 75000000000, 
     comprados: 0,
-    icon: 'data_center.png',
+    icon: 'data_center.webp',
     descricao: 'Armazena zettabytes de memória! (e teus dados mais obscuros).',
     ls: 7700000,
     gerado: 0,
@@ -345,7 +345,7 @@ const estruturas = [
     plural: "IAs ultra-generativas",
     custoBase: 1000000000000, 
     comprados: 0,
-    icon: 'ia.png',
+    icon: 'ia.webp',
     descricao: 'É tipo um DEV, só que mais rápido, mais esperto, mais eficaz, mais sagaz, mais sucinto, mais... Deixa pra lá.',
     ls: 45000000,
     gerado: 0,
@@ -355,7 +355,7 @@ const estruturas = [
     plural: "PCs quânticos",
     custoBase: 14000000000000, 
     comprados: 0,
-    icon: 'quantico.png',
+    icon: 'quantico.webp',
     descricao: 'Resolve os bugs antes mesmo deles surgirem.',
     ls: 230000000,
     gerado: 0,
@@ -384,7 +384,7 @@ const bonusList = [
     type: 'matrix',
     duracao: 30,
     peso: 30,
-    icon: 'cafe_docinho.png',
+    icon: 'cafe_docinho.webp',
     unlocked: true,
     get efeito() {
       lsMultiplier *= 7;
@@ -399,7 +399,7 @@ const bonusList = [
     type: 'matrix',
     duracao: 15,
     peso: 4,
-    icon: 'cafe_perfeito.png',
+    icon: 'cafe_perfeito.webp',
     unlocked: true,
     get efeito() {
       lsMultiplier *= 777;
@@ -414,7 +414,7 @@ const bonusList = [
     type: 'matrix',
     duracao: 10,
     peso: 1,
-    icon: 'cafe_divino.png',
+    icon: 'cafe_divino.webp',
     unlocked: true,
     get efeito() {
       lsMultiplier *= 1111;
@@ -468,7 +468,7 @@ const bonusList = [
     nome: 'Café Estragado',
         descricao: '',
     type: 'evil',
-    icon: 'cafe_estragado.png',
+    icon: 'cafe_estragado.webp',
     peso: 10,
     duracao: 30,
     unlocked: false,
@@ -486,7 +486,7 @@ const bonusList = [
     id: 'bn9',
     nome: 'Café Demoníaco',
     type: 'evil',
-    icon: 'cafe_demoniaco.png',
+    icon: 'cafe_demoniaco.webp',
     peso: 2,
     duracao: 6,
     unlocked: false,
@@ -559,6 +559,7 @@ let fadeOutInterval = null
 let fadeInInterval = null
 let gameInterval = null
 let coffeeInterval = null
+let lsHighest = null;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.querySelector('.computer-keyboard')
@@ -601,8 +602,15 @@ preloadIcons(estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)))
 //Atualização o arquivo em outros arquivos js
 function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
+
+  const newPoints = Number(novoValor).toFixed(0);
+
+  if(lsHighest < newPoints) lsHighest = newPoints;
+  
+
+
   const evento = new CustomEvent("pontosAtualizados", {
-    detail: { newPoints: novoValor }
+    detail: { "newPoints": newPoints, "newHighestPoint": lsHighest }
   })
 
   window.dispatchEvent(evento); // Notifica outros scripts
@@ -743,6 +751,8 @@ window.addEventListener("dispatchPlayerData", (event) => {
   company = loadingPlayer.companyName
   companyName.textContent = company
 
+  lsHighest = loadingPlayer.lsHighest;
+
 
   // Verifica quais estrutras e upgrades estão salvos e atualiza da lista principal
   listUpgrades = JSON.parse(localStorage.getItem("upgrades"))?.salve || []
@@ -767,6 +777,8 @@ window.addEventListener("dispatchPlayerData", (event) => {
       }
     })
   })
+
+
 
   refresh(loadingPlayer.lsCount)
 })
