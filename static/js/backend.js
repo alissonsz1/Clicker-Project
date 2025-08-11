@@ -9,15 +9,14 @@ function setCookie(cookieName, cookieValue, expiresDays){
 }
 
 // Pegar o cookie
-function getCookie(name) {
-  const value = `; ${document.cookie}`; // Recebe o cookie (ele vem em string)
-  const parts = value.split(`; ${name}=`); // Separa o cookie de acordo com um padrão, com o dado que se quer
-  if (parts.length === 2) {
-    return parts.pop().split(';').shift(); // separa esse dado do resto
-  }
-  return null;
+function getCookie(key) {
+    // A expressão regex checa se: está no começo ou se possui um ponto e vírgula com espaços em seguida (";  ")
+    // Se achar isso, procurará por "key=" e depois o número correspondente
+    const regex = new RegExp(`(?:^|;\\s*)${key}=(\\d+)`)
+    const match = document.cookie.match(regex)
+    const cookieId = match?.[1] // [1] retorna o primeiro grupo encontrado que segue esse padrão
+    return cookieId
 }
-
 
 // VARIÁVIES GLOBAIS
 let companyName = document.querySelector('.company-text'); // Nome do player
