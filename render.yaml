@@ -1,0 +1,75 @@
+version: "1"
+
+databases:
+  - name: devClicker-db
+    databaseName: devclicker_db
+    user: devclicker_db_user
+    plan: free
+    region: oregon
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+    postgresMajorVersion: "17"
+
+services:
+
+- type: web
+
+  name: devclicker
+
+  runtime: python
+
+  repo: https://github.com/webcaique/codelab-each
+
+  branch: server
+
+  plan: free
+
+  envVars:
+
+  - key: DATABASE_URL
+
+    sync: false
+
+  - key: DJANGO_ALLOWED_HOST
+
+    sync: false
+
+  - key: DEBUG
+
+    sync: false
+
+  - key: DJANGO_SECRET_KEY
+
+    sync: false
+  - key: CSRF_TRUSTED_ORIGINS
+  
+    sync: false
+
+  region: oregon
+
+  buildCommand: pip install -r requirements.txt
+
+  startCommand: |
+    python manage.py migrate &&
+    python manage.py createadmin &&
+    python manage.py collectstatic --noinput &&
+    daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application
+    
+
+  autoDeployTrigger: commit
+- type: keyvalue
+
+  name: devclicker-rediskey
+
+  plan: free
+
+  region: oregon
+
+  maxmemoryPolicy: allkeys-lru
+
+  ipAllowList:
+
+  - source: 177.50.42.248/32
+
+    description: Webcaique (sidraocaique@gmail.com)

@@ -1,33 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import json
+from django.contrib.auth import authenticate, login
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-
+import json
+import os
 
 from .models import Companies
-
-# FUNÇÕES
-
-# Detecta qualquer atualização no banco de dados (por exemplo, pontuação de uma empresa mudou)
-def updateDetect(players):
-    # Obtém o "channel layer" configurado no settings (Redis ou InMemory)
-    channel_layer = get_channel_layer()
-
-    # Envia uma mensagem para todos os clientes conectados ao grupo "leaderboard"
-    async_to_sync(channel_layer.group_send)(
-        "leaderboard",            # nome do grupo para broadcast
-        {
-            "type": "leaderboard.update",       # tipo da mensagem → invoca leaderboard_update no consumer
-            "data": {
-                "player": players,  # dados que serão enviados no payload
-            }
-        }
-    )
-
-# Ele formata o dados para poder enviar para o leaderboard
-def leaderboardFormat():
-    return list(Companies.objects.all().order_by('-lsCount').values("id","companyName", "lsCount"))
 
 # FETCH
 
@@ -61,10 +40,13 @@ def companiesPostName(request, *args, **kwargs):
                 companyName = company_name,
             )
 
+            # Caso o usuário seja o nome do admin, ele já realiza o login
+            if company_name == str(os.environ.get("DJANGO_SUPERUSER_USERNAME")):
+                user = authenticate(request, username=company_name, password= os.environ.get("DJANGO_SUPERUSER_PASSWORD"))
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
 
-            leaderboardList = leaderboardFormat()
-
-            updateDetect(leaderboardList)
             
             #Retorna uma mensagem para o request
             return JsonResponse({
@@ -99,10 +81,6 @@ def lsPatch(request, *args, **kwargs):
             
             company.save()
 
-            leaderboardList = leaderboardFormat()
-
-            updateDetect(leaderboardList)
-
             return JsonResponse({
                 "menssage":"OK",
             }, status=200)
@@ -113,10 +91,11 @@ def lsPatch(request, *args, **kwargs):
         
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
+
 # Requisita os dados para o leaderboard
 def leaderboard_data(request, *args, **kwargs):
     if request.method == "GET":
-        players = Companies.objects.order_by('-lsCount') # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
+        players = Companies.objects.all() # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
 
         # converte em lista
         data = list(players.values("companyName", "lsCount", "id"))

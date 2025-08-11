@@ -529,7 +529,8 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const socket = new WebSocket("ws://" + window.location.host + "/ws/leaderboard/");
+const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+const socket = new WebSocket(protocol + window.location.host + "/ws/leaderboard/");
 const csrfToken = window.csrfToken
 
 // Variaveis
@@ -724,13 +725,6 @@ function renderLeaderboard(jogadores) {
     li.style.transform = `translateY(${index*100}%)`
   })
 }
-
-// Socket para toda vez que receber uma atualização do db
-// socket.onmessage = (e) => {
-//   // ESTRUTURA = {id, companyName, lsCount}
-//   listDataLeaderboard = JSON.parse(e.data).player;
-//   renderLeaderboard(listDataLeaderboard);
-// }
 
 // FIM DO LEADERBOARD
 
