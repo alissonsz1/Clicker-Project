@@ -76,12 +76,13 @@ function getData(){
             // caso o idPlayer não tenha valor, ele executa o código abaixo.
             playerDetails = data.find( obj => obj.id == idPlayer ); // Encontra o player
             playerDetails.lsCount = Number(playerDetails.lsCount); // Converte os pontos em notação em números
+            playerDetails.lsHighest = Number(playerDetails.lsHighest); // Converte os pontos em notação em números
             if(playerDetails){
                 dispatchPlayerData(playerDetails); // esse manda todos os dados do player
                 dispatchNameSubmit('submitSucess', {companyName: playerDetails.companyName});
-                data.sort((a,b)=>{ return b.lsCount - a.lsCount }); // organiza os dados em relação aos pontos
-                dataComplet = data.map(item => { return {...item, lsCount: Number(item.lsCount)}} ); // tranforma os pontos em notação científica em número inteiro
-                dispatchLeaderboard(dataComplet);
+                dataComplete = data.map(item => { return {...item, lsCount: Number(item.lsHighest)}} );// tranforma os pontos em notação científica em número inteiro
+                dataComplete.sort((a,b)=>{ return b.lsCount - a.lsCount }); // organiza os dados em relação aos pontos
+                dispatchLeaderboard(dataComplete);
             } else {
                 // AQUI, TEM O PLAYER TEM UM ID NO COOKIE, MAS NÃO TEM ESSE ID CADASTRADO NO BD
                 dispatchNameSubmit('submitError', {error: "Player não encontrado"});
@@ -187,13 +188,16 @@ if (idPlayer){
 
 // Traz os pontos do script.js através do evento criado
 window.addEventListener("pontosAtualizados", (event) => {
-  const novoValor = event.detail.newPoints;
-  lsCount = novoValor;
+    const novoValor = event.detail.newPoints;
+    const novoValorMaior = event.detail.newHighestPoint;
+
+    lsHighest = novoValorMaior;
+    lsCount = novoValor;
 
   // CASO O NÚMERO CHEGA À 1 MILHÃO, COMEÇA A ANOTAR EM NOTAÇÃO CIENTÍFICA
   if(lsCount > 1e6) lsCount = lsCount.toExponential(3);
 
-  patchLS({"id": idPlayer, "lsCount": lsCount});
+  patchLS({"id": idPlayer, "lsCount": lsCount, "lsHighest": lsHighest });
 
 });
 
@@ -217,9 +221,9 @@ window.addEventListener("requestLeaderboard", (e) => {
     })
     .then(data => {
 
-        data.sort((a,b)=>{ return b.lsCount - a.lsCount }); // Organiza por ordem de pontos
-        dataComplet = data.map(item => { return {...item, lsCount: Number(item.lsCount)}} ); // converte os pontos em notação científicas para números
-        dispatchLeaderboard(dataComplet);
+        dataComplete = data.map(item => { return {...item, lsCount: Number(item.lsHighest)}} ); // converte os pontos em notação científicas para números
+        dataComplete.sort((a,b)=>{ return b.lsCount - a.lsCount }); // Organiza por ordem de pontos
+        dispatchLeaderboard(dataComplete);
     })
     .catch( err => {
       console.error("ERRO AO CARREGAR O LEADERBOARD: ", err);

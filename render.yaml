@@ -14,50 +14,41 @@ databases:
 services:
 
 - type: web
-
   name: devclicker
-
   runtime: python
-
-  repo: https://github.com/webcaique/codelab-each
-
+  repo: https://github.com/alissonsz1/Clicker-Project
   branch: server
-
   plan: free
-
   envVars:
-
-  - key: DATABASE_URL
-
+  - key: DJANGO_SUPERUSER_USERNAME
     sync: false
-
-  - key: DJANGO_ALLOWED_HOST
-
+  - key: DJANGO_SUPERUSER_PASSWORD
     sync: false
-
-  - key: DEBUG
-
+  - key: DJANGO_SUPERUSER_EMAIL
     sync: false
-
-  - key: DJANGO_SECRET_KEY
-
+  - key: REDIS_PORT
+    sync: false
+  - key: REDIS_HOST
     sync: false
   - key: CSRF_TRUSTED_ORIGINS
-  
     sync: false
-
+  - key: DJANGO_SECRET_KEY
+    sync: false
+  - key: DJANGO_ALLOWED_HOST
+    sync: false
+  - key: DATABASE_URL
+    sync: false
+  - key: DEBUG
+    sync: false
   region: oregon
-
   buildCommand: pip install -r requirements.txt
-
   startCommand: |
     python manage.py migrate &&
     python manage.py createadmin &&
     python manage.py collectstatic --noinput &&
     daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application
-    
-
   autoDeployTrigger: commit
+
 - type: keyvalue
 
   name: devclicker-rediskey

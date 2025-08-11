@@ -72,12 +72,14 @@ def lsPatch(request, *args, **kwargs):
             # Coloca os dados no body em variáveis
             company_id = data.get("id")
             new_ls = data.get("lsCount")
+            new_ls_highest = data.get("lsHighest")
 
             # requisita os campos em relação ao id
             company = Companies.objects.get(id=company_id)
 
             if new_ls or new_ls >= 0:
                 company.lsCount = new_ls
+                company.lsHighest = new_ls_highest
             
             company.save()
 
@@ -98,7 +100,7 @@ def leaderboard_data(request, *args, **kwargs):
         players = Companies.objects.all() # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
 
         # converte em lista
-        data = list(players.values("companyName", "lsCount", "id"))
+        data = list(players.values("companyName", "lsHighest", "id"))
         return JsonResponse(data, safe=False)
 
 

@@ -76,7 +76,7 @@ body {
 
     --c1b: 3px solid var(--c1);
 
-    background: url("./assets/background.png");
+    background: url("./assets/background.webp");
     background-position: -2px -9px;
     background-size: 50%;
     display: flex;
@@ -183,10 +183,10 @@ body.evil .container-left--computer {
     filter: hue-rotate(140deg) contrast(1.2);
 }
 
-.computer-monitor { background: url("./assets/monitor.png");}
-.computer-back { background: url("./assets/fundo_monitor.png"); }
+.computer-monitor { background: url("./assets/monitor.webp");}
+.computer-back { background: url("./assets/fundo_monitor.webp"); }
 .computer-error { background: url("./assets/fundo_error.webp"); }
-.computer-keyboard { background: url("./assets/teclado.png"); transition: all .1s ease;}
+.computer-keyboard { background: url("./assets/teclado.webp"); transition: all .1s ease;}
 
 .hacker, .demon {
     aspect-ratio: 1/1;
@@ -756,7 +756,8 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     height: var(--cs);
     cursor: pointer;
     background-size: var(--cs) var(--cs);
-    background-image: url('./assets/icons/coffee.png');
+    background-image: url('./assets/coffees/coffee.webp');
+    background-position: 0 0;
     image-rendering: pixelated;
 
     pointer-events: auto;
@@ -1382,7 +1383,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     justify-content: flex-end;
     background-size: cover;
     background-color: var(--c3);
-    /* background-image: url('./assets/placeholder.png'); */
+    /* background-image: url('./assets/placeholder.webp'); */
 }
 
 .lb-svg {
