@@ -380,7 +380,7 @@ const bonusList = [
   {
     id: 'bn2',
     nome: "Café Docinho",
-    descricao: "LpS x7",
+    descricao: "Uma colher de açúcar + uma pitada de amor materno",
     type: 'matrix',
     duracao: 30,
     peso: 30,
@@ -395,7 +395,7 @@ const bonusList = [
   {
     id: 'bn3',
     nome: "Café Perfeito",
-    descricao: "LpS x777",
+    descricao: "Temperatura ideal, sabor equilibrado e um aroma leve e perfumado. Perfeito!",
     type: 'matrix',
     duracao: 15,
     peso: 4,
@@ -410,7 +410,7 @@ const bonusList = [
   {
     id: 'bn4',
     nome: "Café Divino",
-    descricao: "LpS x1111",
+    descricao: "Preparado diretamente pelos deuses olimpianos. O néctar supremo, o elixir celestial, o suprassumo do prazer!",
     type: 'matrix',
     duracao: 10,
     peso: 1,
@@ -442,7 +442,7 @@ const bonusList = [
   // STORM BONUS SÓ É ATIVADO PELO BONUS 5
   {
     id: 'bn6',
-    nome: "STORM BONUS",
+    nome: "Café Expresso",
     descricao: "5 min das LpS!",
     unlocked: true,
     get efeito() {
@@ -469,6 +469,7 @@ const bonusList = [
         descricao: '',
     type: 'evil',
     icon: 'cafe_estragado.png',
+    descricao: 'Você não consegue descrever... é um gosto pungente, insosso, desagradável. Eca!',
     peso: 10,
     duracao: 30,
     unlocked: false,
@@ -487,6 +488,7 @@ const bonusList = [
     nome: 'Café Demoníaco',
     type: 'evil',
     icon: 'cafe_demoniaco.png',
+    descricao: 'Um gole e sua alma já não lhe pertence. Um pacto sombrio foi selado para toda eternidade.',
     peso: 2,
     duracao: 6,
     unlocked: false,
@@ -1224,7 +1226,7 @@ function showTooltip(x = mouseX, y = mouseY) {
               <img class="tooltip-icon"/>
               <strong class="tooltip-name"></strong>
             </div>
-            <span class="tooltip-price"></span>
+            <span class="tooltip-price coin"></span>
           </div>
           <div class="tooltip-content">
             <span class="tooltip-description"></span>
@@ -1251,7 +1253,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     img.classList.toggle('hidden', !data.unlocked)
     tooltip.querySelector('.tooltip-name').textContent = data.unlocked ? data.nome : '???'
     tooltip.querySelector('.tooltip-price').textContent = formatarNumero(custo)
-    tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price coin ${pontos < custo ? 'high' : 'low'}`
     tooltip.querySelector('.tooltip-description').textContent = data.unlocked ? data.descricao : '???'
     tooltip.querySelector('.tooltip-extra').innerHTML = extraInfo
     tooltip.querySelector('.tooltip-extra').classList.toggle('hidden', !extraInfo)
@@ -1272,7 +1274,7 @@ function showTooltip(x = mouseX, y = mouseY) {
             <img class="tooltip-icon"/>
             <strong class="tooltip-name"></strong>
           </div>
-          <span class="tooltip-price"></span>
+          <span class="tooltip-price coin"></span>
         </div>
         <div class="tooltip-content">
           <span class="tooltip-function"></span>
@@ -1285,7 +1287,7 @@ function showTooltip(x = mouseX, y = mouseY) {
     setImg(img, data.icon)
     tooltip.querySelector('.tooltip-name').textContent = data.nome
     tooltip.querySelector('.tooltip-price').textContent = formatarNumero(data.custo)
-    tooltip.querySelector('.tooltip-price').className = `tooltip-price ${pontos < data.custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price coin ${pontos < data.custo ? 'high' : 'low'}`
     tooltip.querySelector('.tooltip-function').textContent = data.funcao
     tooltip.querySelector('.tooltip-description').textContent = data.descricao
 
@@ -1552,7 +1554,9 @@ const renderEstruturas = () => {
               <span class="mobile-name"></span>
               <span class="item-name"></span>
             </div>
-            <span class="cust"></span>
+            <div class="cust-wrapper">
+              <span class="cust"></span>
+            </div>
           </div>
           <span class="item-purchased"></span>
           <button class="info-bttn">INFO</button>
@@ -1604,7 +1608,7 @@ const renderEstruturas = () => {
     }
 
     custoContainer.textContent = formatarNumero(custo)
-    custoContainer.classList = `cust ${custo > pontos ? 'high' : 'low'}`
+    custoContainer.classList = `cust coin ${custo > pontos ? 'high' : 'low'}`
   })
 }
 
@@ -1629,7 +1633,7 @@ const renderUpgrades = () => {
           <div class="item-content">
             <div class="item-text">
               <span class="item-name">${item.nome}</span>
-              <span class="cust"></span>
+              <span class="cust coin"></span>
             </div>
             <button class="info-bttn">INFO</button>
           </div>
@@ -1667,7 +1671,7 @@ const renderUpgrades = () => {
       const custoContainer = upgrade.querySelector('.cust')
 
       custoContainer.textContent = formatarNumero(item.custo)
-      custoContainer.className = `cust ${item.custo > pontos ? 'high' : 'low'}`
+      custoContainer.className = `cust coin ${item.custo > pontos ? 'high' : 'low'}`
       upgrade.classList.toggle('unlocked', pontos >= item.custo)
     })
   } else {

@@ -473,15 +473,34 @@ body.matrix .container-right, body.evil .container-right {
     font-weight: normal;
 }
 
-.container-right:has( [data-bulk^="10"].active):not(:has(.upgrade)) .cust::before {
+.coin::before {
+    content: "<\002F>"; /* </> */
+    aspect-ratio: 1/1;
+    width: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 3px;
     margin-right: 5px;
+    font-family: monospace;
+    text-align: center;
+    /* letter-spacing: -2px; */
+    background-color: var(--c6);
+    border-radius: 5px;
+    font-size: .6rem;
+    text-shadow: none;
+    color: var(--c1);
+}
+
+.container-right:has( [data-bulk^="10"].active):not(:has(.upgrade)) .cust-wrapper::before {
     color: rgb(255, 255, 255);
     font-size: .8em;
     font-weight: normal;
 }
 
-.container-right:has( [data-bulk="10"].active):not(:has(.upgrade)) .cust::before { content: 'x10'; }
-.container-right:has( [data-bulk="100"].active):not(:has(.upgrade))  .cust::before { content: 'x100'; }
+.container-right:has( [data-bulk="10"].active):not(:has(.upgrade)) .cust-wrapper::before { content: 'x10'; }
+.container-right:has( [data-bulk="100"].active):not(:has(.upgrade))  .cust-wrapper::before { content: 'x100'; }
 
 .bulks-wrapper {
     display: flex;
@@ -1210,7 +1229,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .tooltip {
-    width: 400px;
+    width: 450px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1264,7 +1283,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 .tooltip-name {
     text-align: left;
     font-weight: bold;
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .tooltip-price {
@@ -1416,7 +1435,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     width: 100%;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     gap: 5px;
     padding: .2em .5em;
     /* margin: 0 0 4px; */
@@ -1436,10 +1455,17 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
  }
 
 .lb-number {
-    flex: 1;
+    margin-left: auto;
     text-align: right;
+    white-space: nowrap;
 }
-.lb-name { font-size: 1.2em;}
+.lb-name { 
+    flex: 1;
+    text-align: left;
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 .leaderboard-content li:has(.lb-1), .lb--prev-pos.lb-1 { color: gold; }
 .leaderboard-content li:has(.lb-2), .lb--prev-pos.lb-2 { color: silver; }
@@ -1643,8 +1669,8 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         visibility: hidden;
 
         --cont-w: 90%;
-        --cont-h: 378px;
-        max-width: 320px;
+        --cont-h: 348px;
+        max-width: 350px;
         border: var(--c1b);
         border-radius: 5px;
         inset: 1em;
@@ -1661,6 +1687,10 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         transform: none;
         touch-action: none;
         z-index: 100000;
+    }
+
+    .lb-name {
+        font-size: 1em;
     }
 
     .leaderboard-wrapper.enabled .leaderboard-content {
