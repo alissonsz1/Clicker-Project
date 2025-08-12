@@ -571,7 +571,7 @@ let defaultStats = {
   handmadeLines: 0,
   totalCoffees: 0,
 }
-let lsHighest;
+let lsHighest = 0;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.getElementById('computer-keyboard')
@@ -2296,7 +2296,11 @@ window.addEventListener('submitError', (e) => {
 })
 
 const submitPromise = new Promise((resolve) => {
-  if (!idPlayer) { resolve() } 
+  if (!idPlayer) { resolve() }
+
+  window.addEventListener('submitError', (e) => {
+    resolve();
+  })
 
   window.addEventListener('submitSucess', (e) => {
     company = e.detail.companyName;

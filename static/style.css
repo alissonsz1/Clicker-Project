@@ -756,7 +756,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     height: var(--cs);
     cursor: pointer;
     background-size: var(--cs) var(--cs);
-    background-image: url('./assets/coffees/coffee.webp');
+    background-image: url('./assets/icons/coffee.webp');
     background-position: 0 0;
     image-rendering: pixelated;
 
