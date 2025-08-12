@@ -571,6 +571,7 @@ let defaultStats = {
   handmadeLines: 0,
   totalCoffees: 0,
 }
+let lsHighest;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.getElementById('computer-keyboard')
@@ -645,10 +646,6 @@ function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
 
   const newPoints = Number(novoValor).toFixed(0);
-
-  if(lsHighest < newPoints) lsHighest = newPoints;
-  
-
 
   const evento = new CustomEvent("pontosAtualizados", {
     detail: { "newPoints": newPoints, "newHighestPoint": lsHighest }
@@ -981,6 +978,7 @@ window.addEventListener("dispatchStructList", (event)=> {
 function refresh(add) {
   valorAtual = pontos
   pontos = valorAtual + add
+  if(add > 0) lsHighest += add;
 
   if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos), true)} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)

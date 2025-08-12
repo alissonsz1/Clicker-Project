@@ -191,11 +191,12 @@ window.addEventListener("pontosAtualizados", (event) => {
     const novoValor = event.detail.newPoints;
     const novoValorMaior = event.detail.newHighestPoint;
 
-    lsHighest = novoValorMaior;
-    lsCount = novoValor;
+    lsHighest = Number(novoValorMaior);
+    lsCount = Number(novoValor);
 
   // CASO O NÚMERO CHEGA À 1 MILHÃO, COMEÇA A ANOTAR EM NOTAÇÃO CIENTÍFICA
   if(lsCount > 1e6) lsCount = lsCount.toExponential(3);
+  if(lsHighest > 1e6) lsHighest = lsHighest.toExponential(3);
 
   patchLS({"id": idPlayer, "lsCount": lsCount, "lsHighest": lsHighest });
 
