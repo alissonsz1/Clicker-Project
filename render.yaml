@@ -17,7 +17,7 @@ services:
   name: devclicker
   runtime: python
   repo: https://github.com/alissonsz1/Clicker-Project
-  branch: server
+  branch: main
   plan: free
   envVars:
   - key: DJANGO_SUPERUSER_USERNAME
