@@ -8,7 +8,7 @@ const upgrades = [
 
     icon: 'mouse.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
     // efeito: () => boost *= 2,
   },
   {
@@ -18,7 +18,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'mousepad.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Teclado Mecânico RGB",
@@ -27,7 +27,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'teclado.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "HUB USB",
@@ -36,7 +36,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'usb.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Fone Gamer",
@@ -45,7 +45,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fone.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Cadeira Gamer",
@@ -54,7 +54,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'cadeira.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "PENDRIVE de 2TB",
@@ -63,7 +63,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'pendrive.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "SSD de última geração",
@@ -72,7 +72,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'ssd.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Placa de vídeo",
@@ -81,7 +81,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%',
     icon: 'gpu.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Fibra óptica",
@@ -90,7 +90,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fibra.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Óculos VR",
@@ -99,7 +99,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'vr.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Energético",
@@ -120,7 +120,7 @@ const upgrades = [
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
     icon: 'cafeteira.webp',
     // icon: 'placeholder.webp',
-    efeito: () => coffeeProb *= 2,
+    efeito: () => coffeeProb *= 1.5,
   },
   {
     nome: "Frigobar",
@@ -129,7 +129,7 @@ const upgrades = [
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
     icon: 'frigobar.webp',
     // icon: 'placeholder.webp',
-    efeito: () => coffeeProb *= 2,
+    efeito: () => coffeeProb *= 1.5,
   },
   {
     nome: "Certificado Online",
@@ -138,7 +138,7 @@ const upgrades = [
     funcao: 'Cada clique gera o dobro de linhas.',
     icon: 'certificado.webp',
     // icon: 'placeholder.webp',
-    efeito: () => boost *= 2,
+    efeito: () => boost *= 1.5,
   },
   {
     nome: "Calculadora científica",
@@ -165,7 +165,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'placa.webp',
     // icon: 'placeholder.webp',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Ventilador portátil",
@@ -174,7 +174,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'ventilador.webp',
     // icon: 'placeholder.webp',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Gatinho fofo",
@@ -183,7 +183,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'gatinho.webp',
     // icon: 'placeholder.webp',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Bot de Commit",
@@ -646,7 +646,7 @@ function atualizarPontos(novoValor) {
 
   const newPoints = Number(novoValor).toFixed(0);
 
-  if(lsHighest < newPoints) lsHighest = newPoints;
+  if (lsHighest < newPoints) lsHighest = newPoints;
   
 
 
@@ -1964,11 +1964,14 @@ function removeBoost(id) {
   const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
+    
     if (boost.nome == 'Café Divino') { document.querySelector('.hacker').classList.remove('active')} // Remove a classe 
     else if (boost.nome == 'Café Demoníaco') { document.querySelector('.demon').classList.remove('active')} // Remove a classe 
-
+    
     if (boost.reverter) boost.reverter() // Desfaz o efeito
     boostsActive.splice(index, 1) // Retira o boost da lista
+
+    renderStats()
 
     const boostDiv = document.querySelector(`[data-bonusid="${id}"]`) // Pega a div com o boost ativo
     stopMatrix(id) // Para com a respectiva matrix
@@ -2398,12 +2401,12 @@ function endGame() {
   coffeeInterval = null
 }
 
-function reset(lsToo = true, cookiesToo = true) {
+function reset(linesToo = true, cookiesToo = true) {
   debug = true
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
   localStorage.removeItem('stats')
-  if (lsToo) {
+  if (linesToo) {
     refresh(-pontos)
     atualizarPontos(pontos)
   }
