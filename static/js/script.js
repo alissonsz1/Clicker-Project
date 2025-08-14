@@ -165,7 +165,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'placa.webp',
     // icon: 'placeholder.webp',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Ventilador portátil",
@@ -174,7 +174,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'ventilador.webp',
     // icon: 'placeholder.webp',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Gatinho fofo",
@@ -183,7 +183,7 @@ const upgrades = [
     funcao: '+1% das suas LpS por clique.',
     icon: 'gatinho.webp',
     // icon: 'placeholder.webp',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
   },
   {
     nome: "Bot de Commit",
@@ -677,13 +677,13 @@ leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
   leaderboardWrapperContainer.classList.add('visible')
   leaderboardWrapperContainer.classList.remove('out')
-  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+  playSound(`/static/assets/sounds/lb-in.mp3`, .4)
 })
 
 leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
     leaderboardWrapperContainer.classList.add('out')
-  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+  playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 })
 
 function toggleMobileLeaderboard(e) {
@@ -695,14 +695,14 @@ function toggleMobileLeaderboard(e) {
   if (isEnabled) {
     lbContentContainer.style.opacity = 0
     leaderboardWrapperContainer.style.background = 'transparent'
-    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 
   } else {
     leaderboardWrapperContainer.classList.toggle('enabled')
     void lbContentContainer.offsetWidth
     lbContentContainer.style.opacity = 1
     leaderboardWrapperContainer.style.background = 'var(--bs)'
-    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-in.mp3`, .4)
   }
 }
 
@@ -829,14 +829,14 @@ function toggleStats() {
   if (isEnabled) {
     itemsModal.style.opacity = 0
     itemsModal.classList.add('closing')
-    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-out.mp3`, .4)
   } else {
     itemsModal.classList.toggle('enabled')
     itemsModal.classList.remove('closing')
     renderStats()
     void itemsModal.offsetWidth
     itemsModal.style.opacity = 1
-    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-in.mp3`, .4)
   }
 }
 
@@ -1092,7 +1092,7 @@ function atualizarIndicadores() {
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
 
-  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.ogg', .4)
+  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.mp3', .4)
 }
 
 function addSafeTouchListener(element, onValidTouchEnd) {
@@ -1155,7 +1155,7 @@ function handleClick({x, y}) {
   click.classList.add('fading-up')
 
 
-  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .4)
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.mp3`, .4)
 
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
@@ -1339,7 +1339,7 @@ function showMobileTooltip(type, item, touched = true) {
     bn: 'Bônus'
   }
 
-  if (touched) playSound('/static/assets/sounds/open.ogg', .4)
+  if (touched) playSound('/static/assets/sounds/open.mp3', .4)
 
   const mobileTitle = mobileTooltip.querySelector('.mobile-tooltip--title')
   const wrapper = mobileTooltip.querySelector(`.mobile-tooltip--wrapper`)
@@ -1460,7 +1460,7 @@ close.addEventListener('click', (e) => {
   closeMobileTootip()
   mobileTooltip.classList.add('closing')
   mobileTooltipItem = {type: '', item: null} // Reseta o item
-  playSound('/static/assets/sounds/close.ogg', .8)
+  playSound('/static/assets/sounds/close.mp3', .8)
 })
 
 
@@ -1470,7 +1470,9 @@ bulkButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) return
 
-    playSound(`/static/assets/sounds/tab.ogg`, .5)
+    console.log("Teste");
+
+    playSound(`/static/assets/sounds/tab.mp3`, .5)
 
     bulkButtons.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
     btn.classList.add('active') // Depois, adiciona somente no que foi clicado
@@ -1493,7 +1495,7 @@ buttonsHeader.forEach((btn) => {
       notificacoes.estruturas.clear()
       atualizarIndicadores()
 
-      playSound(`/static/assets/sounds/tab.ogg`, .5)
+      playSound(`/static/assets/sounds/tab.mp3`, .5)
       // Através do conteúdo, verifica qual botão foi clicado
       tabActive = btn.querySelector('.text').textContent
       if (tabActive == 'Upgrades') renderUpgrades() // Irá renderizar UPGRADES
@@ -1721,7 +1723,7 @@ const buyEstrutura = (id) => {
   if (quantidadeComprada > 0) {
     estrutura.comprados += quantidadeComprada;
     refresh(-custo);
-    playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5);
+    playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.mp3`, .5);
   } else {
     // Se não for possível comprar nenhuma, a função simplesmente retorna
     return;
@@ -1739,7 +1741,7 @@ const buyUpgrade = (id) => {
 
   refresh(-upgrade.custo)
   
-  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.mp3`, .5)
 
   return true
 }
@@ -1799,7 +1801,7 @@ function spawnCoffee (bonusId = null, duracao = 2500)  {
       setBonus(bonus) // Coloca o bônus na tela
       spawnAlert(x, y)
       
-      playSound(`/static/assets/sounds/coffee.ogg`, .5)
+      playSound(`/static/assets/sounds/coffee.mp3`, .5)
       div.remove() // Remove o café
     })
 }

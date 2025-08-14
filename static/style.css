@@ -208,10 +208,10 @@ body.evil .container-left--computer {
     opacity: .4;
 }
 
-.hacker { background-image: url("./assets/hacker.png"); }
+.hacker { background-image: url("./assets/hacker.webp"); }
 .demon { 
     bottom: 40%;
-    background-image: url("./assets/demon.png"); 
+    background-image: url("./assets/demon.webp"); 
 }
 
 .tap {
