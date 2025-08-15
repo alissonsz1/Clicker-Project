@@ -571,6 +571,7 @@ let defaultStats = {
   handmadeLines: 0,
   totalCoffees: 0,
 }
+let lpsHighest = 0;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.getElementById('computer-keyboard')
@@ -645,13 +646,10 @@ function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
 
   const newPoints = Number(novoValor).toFixed(0);
-
-  if (lsHighest < newPoints) lsHighest = newPoints;
-  
-
+  const newHighestPoint = Number(lpsHighest).toFixed(0);  
 
   const evento = new CustomEvent("pontosAtualizados", {
-    detail: { "newPoints": newPoints, "newHighestPoint": lsHighest }
+    detail: { "newPoints": newPoints, "newHighestPoint": newHighestPoint }
   })
 
   window.dispatchEvent(evento); // Notifica outros scripts
@@ -680,13 +678,13 @@ leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
   leaderboardWrapperContainer.classList.add('visible')
   leaderboardWrapperContainer.classList.remove('out')
-  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+  playSound(`/static/assets/sounds/lb-in.mp3`, .4)
 })
 
 leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
     leaderboardWrapperContainer.classList.add('out')
-  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+  playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 })
 
 function toggleMobileLeaderboard(e) {
@@ -698,14 +696,14 @@ function toggleMobileLeaderboard(e) {
   if (isEnabled) {
     lbContentContainer.style.opacity = 0
     leaderboardWrapperContainer.style.background = 'transparent'
-    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 
   } else {
     leaderboardWrapperContainer.classList.toggle('enabled')
     void lbContentContainer.offsetWidth
     lbContentContainer.style.opacity = 1
     leaderboardWrapperContainer.style.background = 'var(--bs)'
-    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-in.mp3`, .4)
   }
 }
 
@@ -832,14 +830,14 @@ function toggleStats() {
   if (isEnabled) {
     itemsModal.style.opacity = 0
     itemsModal.classList.add('closing')
-    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-out.mp3`, .4)
   } else {
     itemsModal.classList.toggle('enabled')
     itemsModal.classList.remove('closing')
     renderStats()
     void itemsModal.offsetWidth
     itemsModal.style.opacity = 1
-    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-in.mp3`, .4)
   }
 }
 
@@ -916,7 +914,7 @@ window.addEventListener("dispatchPlayerData", (event) => {
   company = loadingPlayer.companyName
   companyName.textContent = company
 
-  lsHighest = loadingPlayer.lsHighest;
+  lpsHighest = Number(loadingPlayer.lsHighest);
 
   const statsSaved = JSON.parse(localStorage.getItem('stats'))
 
@@ -980,7 +978,8 @@ window.addEventListener("dispatchStructList", (event)=> {
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
 function refresh(add) {
   valorAtual = pontos
-  pontos = valorAtual + add
+  pontos = valorAtual + add;
+  if(add > 0) lpsHighest += add;
 
   if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos), true)} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
@@ -1022,7 +1021,7 @@ function animarContador(valorInicial, duracao = 700) {
   function step(timestamp) {
     if (!start) start = timestamp
     const tempoDecorrido = timestamp - start
-    const progresso = Math.min(tempoDecorrido / duracao, 1) // entre 0 e 1
+    const progresso = Math.min(tempoDecorrido / (duracao || 1), 1) // entre 0 e 1
     const eased = ease(progresso) // aplica easing
 
     const valorInterpolado = Math.floor(valorInicial + range * eased)
@@ -1094,7 +1093,7 @@ function atualizarIndicadores() {
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
 
-  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.ogg', .4)
+  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.mp3', .4)
 }
 
 function addSafeTouchListener(element, onValidTouchEnd) {
@@ -1129,6 +1128,7 @@ button.addEventListener('click', (e) => {
   }
 
   handleClick(coords)
+
 })
 
 button.addEventListener('touchstart', (e) => {
@@ -1157,7 +1157,7 @@ function handleClick({x, y}) {
   click.classList.add('fading-up')
 
 
-  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .4)
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.mp3`, .4)
 
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
@@ -1184,7 +1184,7 @@ function onClick() {
       }, 400)
   }
   
-  refresh(toAdd)
+  refresh(toAdd);
   return [toAdd, actualCombo]
 }
 
@@ -1341,7 +1341,7 @@ function showMobileTooltip(type, item, touched = true) {
     bn: 'Bônus'
   }
 
-  if (touched) playSound('/static/assets/sounds/open.ogg', .4)
+  if (touched) playSound('/static/assets/sounds/open.mp3', .4)
 
   const mobileTitle = mobileTooltip.querySelector('.mobile-tooltip--title')
   const wrapper = mobileTooltip.querySelector(`.mobile-tooltip--wrapper`)
@@ -1462,7 +1462,7 @@ close.addEventListener('click', (e) => {
   closeMobileTootip()
   mobileTooltip.classList.add('closing')
   mobileTooltipItem = {type: '', item: null} // Reseta o item
-  playSound('/static/assets/sounds/close.ogg', .8)
+  playSound('/static/assets/sounds/close.mp3', .8)
 })
 
 
@@ -1472,7 +1472,7 @@ bulkButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) return
 
-    playSound(`/static/assets/sounds/tab.ogg`, .5)
+    playSound(`/static/assets/sounds/tab.mp3`, .5)
 
     bulkButtons.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
     btn.classList.add('active') // Depois, adiciona somente no que foi clicado
@@ -1495,7 +1495,7 @@ buttonsHeader.forEach((btn) => {
       notificacoes.estruturas.clear()
       atualizarIndicadores()
 
-      playSound(`/static/assets/sounds/tab.ogg`, .5)
+      playSound(`/static/assets/sounds/tab.mp3`, .5)
       // Através do conteúdo, verifica qual botão foi clicado
       tabActive = btn.querySelector('.text').textContent
       if (tabActive == 'Upgrades') renderUpgrades() // Irá renderizar UPGRADES
@@ -1723,7 +1723,7 @@ const buyEstrutura = (id) => {
   if (quantidadeComprada > 0) {
     estrutura.comprados += quantidadeComprada;
     refresh(-custo);
-    playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5);
+    playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.mp3`, .5);
   } else {
     // Se não for possível comprar nenhuma, a função simplesmente retorna
     return;
@@ -1741,7 +1741,7 @@ const buyUpgrade = (id) => {
 
   refresh(-upgrade.custo)
   
-  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.mp3`, .5)
 
   return true
 }
@@ -1801,7 +1801,7 @@ function spawnCoffee (bonusId = null, duracao = 2500)  {
       setBonus(bonus) // Coloca o bônus na tela
       spawnAlert(x, y)
       
-      playSound(`/static/assets/sounds/coffee.ogg`, .5)
+      playSound(`/static/assets/sounds/coffee.mp3`, .5)
       div.remove() // Remove o café
     })
 }
@@ -2136,7 +2136,7 @@ function generateCodeLine(add = 1) {
 
 // INICIO LINHAS POR SEGUNDO (FINALMENTE)
 
-const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/(q - 1)
+const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/((q - 1)||1)
 const custoAtual = (el) => Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
 
 const timing = 0.1
@@ -2152,7 +2152,7 @@ function gerarPassivamente() {
 
 
   if (totalGerado == 0) return
-  lpsTOT = totalGerado / timing
+  lpsTOT = totalGerado / (timing || 1)
   lpsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lpsTOT.toFixed(1))}` 
   refresh(totalGerado)
 }
@@ -2219,12 +2219,12 @@ function playMusic(url, finalVolume = 1, loop = true, fadeDuration = 2000) {
 
     // Fade-in
     const steps = 20;
-    const interval = fadeDuration / steps;
+    const interval = fadeDuration / (steps || 1);
     let currentStep = 0;
 
     fadeInInterval = setInterval(() => {
       currentStep++;
-      const newVolume = finalVolume * (currentStep / steps);
+      const newVolume = finalVolume * (currentStep / (steps || 1));
       audio.volume = Math.min(finalVolume, newVolume);
 
       if (currentStep >= steps) {
@@ -2244,13 +2244,13 @@ function stopMusic(useFade = true, fadeDuration = 1000) {
 
   if (useFade) {
     const steps = 20;
-    const interval = fadeDuration / steps;
+    const interval = fadeDuration / (steps || 1);
     let currentStep = 0;
     const startVolume = currentMusic.volume;
 
     fadeOutInterval = setInterval(() => {
       currentStep++;
-      const newVolume = startVolume * (1 - currentStep / steps);
+      const newVolume = startVolume * (1 - currentStep / (steps || 1));
       currentMusic.volume = Math.max(0, newVolume);
 
       if (currentStep >= steps) {
@@ -2301,7 +2301,11 @@ window.addEventListener('submitError', (e) => {
 })
 
 const submitPromise = new Promise((resolve) => {
-  if (!idPlayer) { resolve() } 
+  if (!idPlayer) { resolve() }
+
+  window.addEventListener('submitError', (e) => {
+    resolve();
+  })
 
   window.addEventListener('submitSucess', (e) => {
     company = e.detail.companyName;

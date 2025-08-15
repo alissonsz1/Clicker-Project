@@ -75,9 +75,9 @@ function getData(){
         if(idPlayer){
             // caso o idPlayer não tenha valor, ele executa o código abaixo.
             playerDetails = data.find( obj => obj.id == idPlayer ); // Encontra o player
-            playerDetails.lsCount = Number(playerDetails.lsCount); // Converte os pontos em notação em números
-            playerDetails.lsHighest = Number(playerDetails.lsHighest); // Converte os pontos em notação em números
             if(playerDetails){
+                playerDetails.lsCount = Number(playerDetails.lsCount); // Converte os pontos em notação em números
+                playerDetails.lsHighest = Number(playerDetails.lsHighest); // Converte os pontos em notação em números
                 dispatchPlayerData(playerDetails); // esse manda todos os dados do player
                 dispatchNameSubmit('submitSucess', {companyName: playerDetails.companyName});
                 dataComplete = data.map(item => { return {...item, lsCount: Number(item.lsHighest)}} );// tranforma os pontos em notação científica em número inteiro
@@ -191,11 +191,12 @@ window.addEventListener("pontosAtualizados", (event) => {
     const novoValor = event.detail.newPoints;
     const novoValorMaior = event.detail.newHighestPoint;
 
-    lsHighest = novoValorMaior;
-    lsCount = novoValor;
+    lsHighest = Number(novoValorMaior);
+    lsCount = Number(novoValor);
 
   // CASO O NÚMERO CHEGA À 1 MILHÃO, COMEÇA A ANOTAR EM NOTAÇÃO CIENTÍFICA
-  if(lsCount > 1e6) lsCount = lsCount.toExponential(3);
+  if(lsCount > 1e6) lsCount = Number(lsCount).toExponential(3);
+  if(lsHighest > 1e6) lsHighest = Number(lsHighest).toExponential(3);
 
   patchLS({"id": idPlayer, "lsCount": lsCount, "lsHighest": lsHighest });
 
