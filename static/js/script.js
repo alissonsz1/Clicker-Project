@@ -8,7 +8,7 @@ const upgrades = [
 
     icon: 'mouse.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
     // efeito: () => boost *= 2,
   },
   {
@@ -18,7 +18,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'mousepad.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Teclado Mecânico RGB",
@@ -27,7 +27,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'teclado.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "HUB USB",
@@ -36,7 +36,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'usb.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Fone Gamer",
@@ -45,7 +45,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fone.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Cadeira Gamer",
@@ -54,7 +54,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'cadeira.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "PENDRIVE de 2TB",
@@ -63,7 +63,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'pendrive.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "SSD de última geração",
@@ -72,7 +72,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'ssd.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Placa de vídeo",
@@ -81,7 +81,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%',
     icon: 'gpu.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Fibra óptica",
@@ -90,7 +90,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'fibra.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Óculos VR",
@@ -99,7 +99,7 @@ const upgrades = [
     funcao: 'Aumenta geração de LpS em 5%.',
     icon: 'vr.webp',
     // icon: 'placeholder.webp',
-    efeito: () => lsMultiplier *= 1.05,
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Energético",
