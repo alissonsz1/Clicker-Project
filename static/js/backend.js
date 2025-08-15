@@ -195,10 +195,10 @@ window.addEventListener("pontosAtualizados", (event) => {
     lsCount = Number(novoValor);
 
   // CASO O NÚMERO CHEGA À 1 MILHÃO, COMEÇA A ANOTAR EM NOTAÇÃO CIENTÍFICA
-  if(lsCount > 1e6) lsCount = lsCount.toExponential(3);
-  if(lsHighest > 1e6) lsHighest = lsHighest.toExponential(3);
+  if(lsCount > 1e6) lsCount = Number(lsCount).toExponential(3);
+  if(lsHighest > 1e6) lsHighest = Number(lsHighest).toExponential(3);
 
-  patchLS({"id": idPlayer, "lsCount": lsCount, "lsHighest": lsHighest||"0" });
+  patchLS({"id": idPlayer, "lsCount": lsCount, "lsHighest": lsHighest });
 
 });
 

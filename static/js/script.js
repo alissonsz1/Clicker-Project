@@ -571,7 +571,7 @@ let defaultStats = {
   handmadeLines: 0,
   totalCoffees: 0,
 }
-let lsHighest = 0;
+let lpsHighest = 0;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.getElementById('computer-keyboard')
@@ -646,9 +646,12 @@ function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
 
   const newPoints = Number(novoValor).toFixed(0);
+  const newHighestPoint = Number(lpsHighest).toFixed(0);
+  
+  
 
   const evento = new CustomEvent("pontosAtualizados", {
-    detail: { "newPoints": newPoints, "newHighestPoint": lsHighest }
+    detail: { "newPoints": newPoints, "newHighestPoint": newHighestPoint }
   })
 
   window.dispatchEvent(evento); // Notifica outros scripts
@@ -913,7 +916,7 @@ window.addEventListener("dispatchPlayerData", (event) => {
   company = loadingPlayer.companyName
   companyName.textContent = company
 
-  lsHighest = loadingPlayer.lsHighest;
+  lpsHighest = Number(loadingPlayer.lsHighest);
 
   const statsSaved = JSON.parse(localStorage.getItem('stats'))
 
@@ -977,8 +980,8 @@ window.addEventListener("dispatchStructList", (event)=> {
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
 function refresh(add) {
   valorAtual = pontos
-  pontos = valorAtual + add
-  if(add > 0) lsHighest += add;
+  pontos = valorAtual + add;
+  if(add > 0) lpsHighest += add;
 
   if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos), true)} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
@@ -1020,7 +1023,7 @@ function animarContador(valorInicial, duracao = 700) {
   function step(timestamp) {
     if (!start) start = timestamp
     const tempoDecorrido = timestamp - start
-    const progresso = Math.min(tempoDecorrido / duracao, 1) // entre 0 e 1
+    const progresso = Math.min(tempoDecorrido / (duracao || 1), 1) // entre 0 e 1
     const eased = ease(progresso) // aplica easing
 
     const valorInterpolado = Math.floor(valorInicial + range * eased)
@@ -1127,6 +1130,7 @@ button.addEventListener('click', (e) => {
   }
 
   handleClick(coords)
+
 })
 
 button.addEventListener('touchstart', (e) => {
@@ -1182,7 +1186,7 @@ function onClick() {
       }, 400)
   }
   
-  refresh(toAdd)
+  refresh(toAdd);
   return [toAdd, actualCombo]
 }
 
@@ -1469,8 +1473,6 @@ close.addEventListener('click', (e) => {
 bulkButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) return
-
-    console.log("Teste");
 
     playSound(`/static/assets/sounds/tab.mp3`, .5)
 
@@ -2133,7 +2135,7 @@ function generateCodeLine(add = 1) {
 
 // INICIO LINHAS POR SEGUNDO (FINALMENTE)
 
-const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/(q - 1)
+const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/((q - 1)||1)
 const custoAtual = (el) => Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
 
 const timing = 0.1
@@ -2149,7 +2151,7 @@ function gerarPassivamente() {
 
 
   if (totalGerado == 0) return
-  lpsTOT = totalGerado / timing
+  lpsTOT = totalGerado / (timing || 1)
   lpsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lpsTOT.toFixed(1))}` 
   refresh(totalGerado)
 }
@@ -2216,12 +2218,12 @@ function playMusic(url, finalVolume = 1, loop = true, fadeDuration = 2000) {
 
     // Fade-in
     const steps = 20;
-    const interval = fadeDuration / steps;
+    const interval = fadeDuration / (steps || 1);
     let currentStep = 0;
 
     fadeInInterval = setInterval(() => {
       currentStep++;
-      const newVolume = finalVolume * (currentStep / steps);
+      const newVolume = finalVolume * (currentStep / (steps || 1));
       audio.volume = Math.min(finalVolume, newVolume);
 
       if (currentStep >= steps) {
@@ -2241,13 +2243,13 @@ function stopMusic(useFade = true, fadeDuration = 1000) {
 
   if (useFade) {
     const steps = 20;
-    const interval = fadeDuration / steps;
+    const interval = fadeDuration / (steps || 1);
     let currentStep = 0;
     const startVolume = currentMusic.volume;
 
     fadeOutInterval = setInterval(() => {
       currentStep++;
-      const newVolume = startVolume * (1 - currentStep / steps);
+      const newVolume = startVolume * (1 - currentStep / (steps || 1));
       currentMusic.volume = Math.max(0, newVolume);
 
       if (currentStep >= steps) {
