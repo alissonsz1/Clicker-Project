@@ -572,6 +572,8 @@ let defaultStats = {
   totalCoffees: 0,
 }
 let lpsHighest = 0;
+let statusPage;
+
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
 const keyboard = document.getElementById('computer-keyboard')
@@ -595,7 +597,8 @@ const modalForm = document.querySelector('.modal-form')
 const modalErrorContainer = document.querySelector('.modal-error') // Container de erro do modal (nome inválido, longo ou já existente)
 const bulkButtons = document.querySelectorAll('.bulk') // Botões de compra em massa (x1, x10, x100)
 const tap = document.querySelector('.tap') // Ícone que aparece quando clica no botão
-const statsContainer = document.querySelector('.stats')
+const statsContainer = document.querySelector('.stats');
+const loadingScreen = document.querySelector('.loading-screen');
 
 // PRELOAD (CACHE)
 const iconCache = {}
@@ -634,7 +637,7 @@ const images = estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)).con
 const preloadPromise = preloadIcons(images)
 
 function closeLoading() {
-  document.querySelector('.loading-screen').classList.add('invisible')
+  if(statusPage != "pause") loadingScreen.classList.add('invisible');
 }
 
 // FIM PRELOAD
@@ -664,7 +667,9 @@ addSafeTouchListener(leaderboardWrapperContainer, toggleMobileLeaderboard)
 lbContentContainer.addEventListener("transitionend", (e) => {
   if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
     leaderboardWrapperContainer.classList.remove('enabled')
+    console.log("AQUI 0");
   }
+  console.log("AQUI 1");
 })
 
 if (!window.matchMedia('(pointer: coarse)').matches) {
@@ -684,12 +689,14 @@ leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
 })
 
 leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
+  console.log("AQUI 3");
   if (window.matchMedia('(pointer: coarse)').matches) return
     leaderboardWrapperContainer.classList.add('out')
   playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 })
 
 function toggleMobileLeaderboard(e) {
+  console.log("AQUI 4");
   const touchedContent = e.target.closest('.leaderboard-content')
   if (touchedContent) return
 
@@ -710,7 +717,8 @@ function toggleMobileLeaderboard(e) {
 }
 
 window.addEventListener('dispatchLeaderboard', (e) => {
-  renderLeaderboard(e.detail.lb)
+  if(statusPage != "pause") return renderLeaderboard(e.detail.lb);
+
 })
 
 function requestLeaderboard() {
@@ -790,9 +798,14 @@ function renderLeaderboard(jogadores) {
 // Socket para parar o jogo
 socket.onmessage = (e) => {
   // ESTRUTURA = {id, companyName, lsCount}
-  let status = JSON.parse(e.data).status;  
-  if(status == "pause"){
-    console.log("ALGUMA AÇÃO");
+  statusPage = JSON.parse(e.data).status;
+  console.log(statusPage);
+  if(statusPage == "pause"){
+    loadingScreen.classList.remove('invisible');
+    
+
+  } else {
+    loadingScreen.classList.add('invisible');
   }
 }
 
@@ -2150,7 +2163,8 @@ const custoAtual = (el) => Math.floor(el.custoBase * Math.pow(1.15, el.comprados
 const timing = 0.1
 
 function gerarPassivamente() {
-  let totalGerado = 0;
+  if(statusPage != "pause"){
+    let totalGerado = 0;
 
   estruturas.forEach(estrutura => {
     const geradoPorEssa = estrutura.lps * estrutura.comprados * lpsMultiplier * timing
@@ -2163,6 +2177,7 @@ function gerarPassivamente() {
   lpsTOT = totalGerado / (timing || 1)
   lpsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lpsTOT.toFixed(1))}` 
   refresh(totalGerado)
+  }
 }
 
 setInterval(gerarPassivamente, 1000*timing)

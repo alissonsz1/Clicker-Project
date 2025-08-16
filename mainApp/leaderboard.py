@@ -25,6 +25,12 @@ class LeaderboardConsumer(AsyncWebsocketConsumer):
         # Remove o canal deste cliente do grupo 'leaderboard'
         await self.channel_layer.group_discard("leaderboard", self.channel_name)
 
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+
+        game_status['status'] = data['status']
+        await self.send(text_data=json.dumps(game_status["status"]))
+
     async def leaderboard_update(self, event):
         # Quando o backend envia um evento do tipo "leaderboard.update" (via group_send),
         # este método é chamado automaticamente com o payload em event["data"]

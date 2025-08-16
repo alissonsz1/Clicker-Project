@@ -19,6 +19,11 @@ const stopGame = () => {
     }
 }
 
+const resumeGame = () => {
+    socket.send(JSON.stringify({status:"running"}));
+}
+
+
 // Manda os dados do Player para o 
 
 function dispatchLeaderboard(leaderboardList){
