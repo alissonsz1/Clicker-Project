@@ -1,6 +1,6 @@
 // Funções
 const stopGame = () => {
-    if(user == "admin"){
+    if(user == "codelab-admin"){
         fetch('/stop-game/', {
             method:"PUT",
             headers:{

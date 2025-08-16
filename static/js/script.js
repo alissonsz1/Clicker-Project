@@ -791,7 +791,9 @@ function renderLeaderboard(jogadores) {
 socket.onmessage = (e) => {
   // ESTRUTURA = {id, companyName, lsCount}
   let status = JSON.parse(e.data).status;  
-  console.log("SOCKET");
+  if(status == "pause"){
+    console.log("ALGUMA AÇÃO");
+  }
 }
 
 // FIM DO LEADERBOARD

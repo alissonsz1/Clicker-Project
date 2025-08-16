@@ -15,6 +15,7 @@
 
 <body>
     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token }}"/>
+    <input type="hidden" name="user" id="user" value="{{ request.user }}">
     <!-- O corpo principal do projeto -->
     <main>
         <div class="loading-screen">
