@@ -2,170 +2,241 @@
 const upgrades = [
   {
     nome: "Mouse gamer",
-    custo: 100,
+    custo: 200000,
     descricao: 'Ninguém sabe pra que servem todos esses botões, mas eles estão lá.',
-    funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'mouse.png',
-    // icon: 'placeholder.png',
-    efeito: () => boost *= 2,
+    funcao: 'Aumenta geração de LpS em 5%.',
+
+    icon: 'mouse.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+    // efeito: () => boost *= 2,
   },
   {
-    nome: "Cadeira Gamer",
-    custo: 250,
-    descricao: 'Ergonomia duvidosa, produtividade inegável.',
-    funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'cadeira.png',
-    // icon: 'placeholder.png',
-    efeito: () => boost *= 2,
+    nome: "Mousepad ergonômico",
+    custo: 1000000,
+    descricao: 'Previne você de ter uma tendinite (e ainda vem com um LED maneiro).',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'mousepad.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
     nome: "Teclado Mecânico RGB",
-    custo: 50000,
-    descricao: 'Cada cor te deixa 1% mais feliz. São 16M de cores.',
-    funcao: 'Cada clique gera 1% das suas LS.',
-    icon: 'teclado.png',
-    // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => lsTOT * 0.01),
+    custo: 2000000,
+    descricao: 'Faz um barulho gostosinho ao teclar e possui mais de 16M de cores para você testar. Uau!',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'teclado.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
-    nome: "Bot de Commit",
-    custo: 12000,
-    descricao: 'feat: commita com base nos seus pensamentos.',
-    funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'commitbot.png',
-    // icon: 'placeholder.png',
-    efeito: () => boost *= 2,
+    nome: "HUB USB",
+    custo: 10000000,
+    descricao: 'Organiza (ou pelo menos tenta) o teu emaranhado de cabos e fios.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'usb.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
-    nome: "Placa gamer",
-    custo: 1500,
-    descricao: 'Impede seu irmão caçula de perturbar seu foco.',
-    funcao: 'Aumenta geração de LS em 10%.',
-    icon: 'placa.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.1,
+    nome: "Fone Gamer",
+    custo: 20000000,
+    descricao: 'Abafa tudo: os cachorros latindo, a obra do vizinho e teus familiares te chamando.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'fone.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
   },
   {
-    nome: "ChatGPT Licenciado",
-    custo: 4000,
-    descricao: 'Agora com 5% menos alucinações.',
-    funcao: 'Aumenta geração de LS em 10%.',
-    icon: 'chatgpt.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.1,
+    nome: "Cadeira Gamer",
+    custo: 100000000,
+    descricao: 'Melhora teu conforto e transforma tua coluna lentamente em uma espiral.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'cadeira.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+  },
+  {
+    nome: "PENDRIVE de 2TB",
+    custo: 1000000000,
+    descricao: 'Por algum motivo, diz que já está 97% cheio...',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'pendrive.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+  },
+  {
+    nome: "SSD de última geração",
+    custo: 2000000000,
+    descricao: 'Faz milagres quando tudo que você possui é uma placa integrada.',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'ssd.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+  },
+  {
+    nome: "Placa de vídeo",
+    custo: 10000000000,
+    descricao: 'Uma RTX 5090 só pra assistir tutoriais em 8K!',
+    funcao: 'Aumenta geração de LpS em 5%',
+    icon: 'gpu.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+  },
+  {
+    nome: "Fibra óptica",
+    custo: 20000000000,
+    descricao: 'Chega de ping alto no lolzinho!',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'fibra.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+  },
+  {
+    nome: "Óculos VR",
+    custo: 200000000000,
+    descricao: 'Te leva para fora dessa realidade cruel, monótona e apática, repleta de violência e ódio gratuito, onde sonhos são sufocados, esmagados, triturados - e tua força de trabalho é sugada até tua última gota de suor. Um ótimo gadget!',
+    funcao: 'Aumenta geração de LpS em 5%.',
+    icon: 'vr.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => lpsMultiplier *= 1.05,
+  },
+  {
+    nome: "Energético",
+    custo: 88888,
+    descricao: 'Junte com café e veja os poderes incríveis da cafeína.',
+    funcao: 'Aumenta as chances de se aparecer um cafézinho (lide com as consequências).',
+    icon: 'monster.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => {
+      coffeeProb *= 1.5
+      bonusList.filter(b => b.type == 'evil').forEach(b => b.unlocked = true)
+    },
   },
   {
     nome: "Cafeteira elétrica",
-    custo: 100000,
-    descricao: 'Seus cafés mais rápidos e mais gostosos!',
-    funcao: 'Dobra a chance de aparecer um cafézinho.',
-    icon: 'cafeteira.png',
-    // icon: 'placeholder.png',
+    custo: 8888888,
+    descricao: 'Teus cafés mais rápidos e mais gostosos!',
+    funcao: 'Aumenta as chances de se aparecer um cafézinho.',
+    icon: 'cafeteira.webp',
+    // icon: 'placeholder.webp',
     efeito: () => coffeeProb *= 2,
   },
   {
     nome: "Frigobar",
-    custo: 2500,
-    descricao: 'Menos idas à cozinha, mais código.',
-    funcao: 'Aumenta geração de LS em 10%.',
-    icon: 'frigobar.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.10,
-  },
-  {
-    nome: "PENDRIVE de 2TB",
-    custo: 2000,
-    descricao: 'Por algum motivo, diz que já está 97% cheio...',
-    funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'pendrive.png',
-    // icon: 'placeholder.png',
-    efeito: () => boost *= 2,
-  },
-  {
-    nome: "Gatinho fofo",
-    custo: 10000,
-    descricao: 'Meoow',
-    funcao: 'Aumenta consideravelmente suas LS.',
-    icon: 'gatinho.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 2,
-  },
-  {
-    nome: "Mousepad ergonômico",
-    custo: 3000,
-    descricao: 'Previne você de ter uma tendinite.',
-    funcao: 'Aumenta geração de LS em 5%.',
-    icon: 'mousepad.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
-  },
-  {
-    nome: "Fibra óptica",
-    custo: 5000,
-    descricao: 'Chega de ping alto no lolzinho!',
-    funcao: 'Aumenta geração de LS em 5%.',
-    icon: 'fibra.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.05,
-  },
-  {
-    nome: "Cubo mágico",
-    custo: 4500,
-    descricao: 'Save a diferença entre o cubo mágico e a programação? É que da programação eu desisto.',
-    funcao: 'Chance de 5% de dobrar um clique.',
-    icon: 'cubo.png',
-    // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => {
-      if (Math.random() < 0.05) return boost
-      else return 0
-    }),
-  },
-  {
-    nome: "Ventilador portátil",
-    custo: 3500,
-    descricao: 'Para esfriar sua cabeça (e evitar um burnout).',
-    funcao: 'Aumenta geração de LS em 10%.',
-    icon: 'ventilador.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.10,
-  },
-  {
-    nome: "Fone antirruído",
-    custo: 6500,
-    descricao: 'Abafa até 99,999999999999999999999999999999999999999999999999999% dos ruídos.',
-    funcao: 'Aumenta geração de LS em 10%.',
-    icon: 'fone.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.10,
+    custo: 888888888,
+    descricao: 'Menos idas à cozinha, mais linhas de código.',
+    funcao: 'Aumenta as chances de se aparecer um cafézinho.',
+    icon: 'frigobar.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => coffeeProb *= 2,
   },
   {
     nome: "Certificado Online",
-    custo: 7500,
+    custo: 100,
     descricao: 'Aumenta exponencialmente suas chances de arranjar um emprego - Obrigado, Guanabara!',
-    funcao: 'Cada clique gera +0.5 linha de código para cada construção comprada',
-    icon: 'certificado.png',
-    // icon: 'placeholder.png',
-    efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5),
-  },
-  {
-    nome: "SSD de última geração",
-    custo: 12000,
-    descricao: 'HD é coisa do passado, agora a moda é comprar SSD usado.',
-    funcao: 'Aumenta geração de LS em 10%.',
-    icon: 'ssd.png',
-    // icon: 'placeholder.png',
-    efeito: () => lsMultiplier *= 1.10,
-  },
-  {
-    nome: "Placa de vídeo",
-    custo: 20000,
-    descricao: 'RTX 5090 só pra assistir tutoriais em 8K!',
     funcao: 'Cada clique gera o dobro de linhas.',
-    icon: 'gpu.png',
-    // icon: 'placeholder.png',
+    icon: 'certificado.webp',
+    // icon: 'placeholder.webp',
     efeito: () => boost *= 2,
   },
-].map((up, i) => ({...up, id: `up${i+1}`})).sort((a, b) => a.custo - b.custo)
+  {
+    nome: "Calculadora científica",
+    custo: 500,
+    descricao: 'Te ajuda com os cálculos que o professor jura que são triviais.',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'calculadora.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => boost *= 2,
+  },
+  {
+    nome: "Livro de Cálculo",
+    custo: 10000,
+    descricao: 'Previne você de zerar quatro provas seguidas de Cálculo I (acredite, é possível).',
+    funcao: 'Cada clique gera o dobro de linhas.',
+    icon: 'livro.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => boost *= 2,
+  },
+  {
+    nome: "Placa gamer",
+    custo: 50000,
+    descricao: 'Impede teu irmão caçula de perturbar teu foco sagrado.',
+    funcao: '+1% das suas LpS por clique.',
+    icon: 'placa.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
+  },
+  {
+    nome: "Ventilador portátil",
+    custo: 5000000,
+    descricao: 'Para esfriar tua cabeça (e evitar um burnout).',
+    funcao: '+1% das suas LpS por clique.',
+    icon: 'ventilador.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
+  },
+  {
+    nome: "Gatinho fofo",
+    custo: 500000000,
+    descricao: 'Meoow',
+    funcao: '+1% das suas LpS por clique.',
+    icon: 'gatinho.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => onClickEffects.push(() => lpsTOT * 0.01),
+  },
+  {
+    nome: "Bot de Commit",
+    custo: 100000,
+    descricao: 'feat: lê e commita com base nos teus pensamentos.',
+    funcao: 'Cada clique gera +0.5 linha de código para cada construção possuída',
+    icon: 'commitbot.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => onClickEffects.push(() => estruturas.reduce((sum, obj) => sum + obj.comprados, 0) * 0.5 * estruturaMultiplier),
+  },
+  {
+    nome: "ChatGPT Licenciado",
+    custo: 100000000,
+    descricao: 'Agora com 5% menos alucinações.',
+    funcao: 'Multiplica o ganho do Bot de Commit por 10',
+    icon: 'chatgpt.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => estruturaMultiplier *= 10,
+  },
+  {
+    nome: "Cubo mágico",
+    custo: 43252003,
+    descricao: 'Você sabia que existem mais combinações possíveis em um cubo mágico do que átomos no universo? Pois é, na verdade é mentira...',
+    funcao: 'Cada clique passa a ter uma chance mínima de fazer surgir um café',
+    icon: 'cubo.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => onClickEffects.push(() => {
+      const chance = 0.01
+      if (Math.random() < chance) spawnCoffee()
+      return 0
+    }),
+  },
+  {
+    nome: "Stalker cibernética",
+    custo: 802007,
+    descricao: 'Receba instantaneamente o follow de uma garota que usa foto de dinossauro, luta boxe, desenha extremamente bem, ama patos e é terrivelmente boa em tudo (e se apaixone perdidamente por ela).',
+    funcao: 'Clicar consecutivamente aumenta o multiplicador de cliques',
+    icon: 'carta.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => hasCombo = true,
+  },
+  {
+    nome: "Extensão Caça-Cupom",
+    custo: 999999,
+    descricao: 'Mergulha nos cantos mais obscuros da internet em busca dos melhores cupons de desconto.',
+    funcao: 'Reduz o preço de todas as estruturas em 10%',
+    icon: 'preco.webp',
+    // icon: 'placeholder.webp',
+    efeito: () => {
+      estruturas.forEach(e => e.custoBase *= 0.9)
+    },
+  },
+].map((up, i) => ({...up, id: `up${i+1}`, unlocked: false, purchased: false})).sort((a, b) => a.custo - b.custo)
 
 // Estruturas "place holder" só para o código funcionar
 const estruturas = [
@@ -174,9 +245,9 @@ const estruturas = [
     plural: "LEDs",
     custoBase: 15, 
     comprados: 0,
-    icon: 'led.png',
-    descricao: 'Não aumenta seu desempenho, mas sua moral sim.',
-    ls: .5,
+    icon: 'led.webp',
+    descricao: 'Não aumenta teu desempenho, mas tua moral sim.',
+    lps: 0.5,
     gerado: 0,
   },
   { 
@@ -184,9 +255,9 @@ const estruturas = [
     plural: "Monitores",
     custoBase: 100, 
     comprados: 0,
-    icon: 'monitor.png',
+    icon: 'monitor.webp',
     descricao: 'Telas nunca são demais.',
-    ls: 5,
+    lps: 5,
     gerado: 0,
   },
   { 
@@ -194,9 +265,9 @@ const estruturas = [
     plural: "IDEs",
     custoBase: 1100, 
     comprados: 0,
-    icon: 'ide.png',
+    icon: 'ide.webp',
     descricao: 'VS Code? Eclipse? Sublime? IntelliJ IDEA? Por que não TODOS eles?',
-    ls: 40,
+    lps: 40,
     gerado: 0,
   },
   { 
@@ -204,9 +275,9 @@ const estruturas = [
     plural: "Clippies",
     custoBase: 12000, 
     comprados: 0,
-    icon: 'clippy.png',
-    descricao: 'Olá! Eu sou o Clippy, seu assistente. Gostaria de uma ajudinha?',
-    ls: 250,
+    icon: 'clippy.webp',
+    descricao: 'Olá! Eu sou o Clippy, teu assistente. Gostaria de uma ajudinha?',
+    lps: 250,
     gerado: 0,
   },
   { 
@@ -214,9 +285,9 @@ const estruturas = [
     plural: "DEVs Júniores",
     custoBase: 130000, 
     comprados: 0,
-    icon: 'dev_jr.png',
+    icon: 'dev_jr.webp',
     descricao: 'Não faz ideia do que está fazendo, mas ele tenta... Tadinho.',
-    ls: 1500,
+    lps: 1500,
     gerado: 0,
   },
   { 
@@ -224,9 +295,9 @@ const estruturas = [
     plural: "Servidores locais",
     custoBase: 1400000,
     comprados: 0,
-    icon: 'servidor.png',
-    descricao: 'Quando seu PC não aguenta mais, você terceiriza.',
-    ls: 8000,
+    icon: 'servidor.webp',
+    descricao: 'Quando teu PC não aguenta mais, você terceiriza.',
+    lps: 8000,
     gerado: 0,
   },
   { 
@@ -234,9 +305,9 @@ const estruturas = [
     plural: "DEVs Plenos",
     custoBase: 20000000, 
     comprados: 0,
-    icon: 'dev_pleno.png',
+    icon: 'dev_pleno.webp',
     descricao: 'DEV Júnior+ com uma pitada de independência',
-    ls: 35000,
+    lps: 35000,
     gerado: 0,
   },
   { 
@@ -244,9 +315,9 @@ const estruturas = [
     plural: "Clouds",
     custoBase: 330000000, 
     comprados: 0,
-    icon: 'cloud.png',
-    descricao: 'Seus códigos agora suspensos no limbo da internet',
-    ls: 200000,
+    icon: 'cloud.webp',
+    descricao: 'Teus códigos agora suspensos no limbo da internet',
+    lps: 200000,
     gerado: 0,
   },
   { 
@@ -254,9 +325,9 @@ const estruturas = [
     plural: "DEVs Sêniores",
     custoBase: 5100000000, 
     comprados: 0,
-    icon: 'dev_senior.png',
+    icon: 'dev_senior.webp',
     descricao: 'Codifica em silêncio absoluto e surge apenas para resolver os bugs alheios.',
-    ls: 1100000,
+    lps: 1100000,
     gerado: 0,
   },
     { 
@@ -264,9 +335,9 @@ const estruturas = [
     plural: "Data Centers",
     custoBase: 75000000000, 
     comprados: 0,
-    icon: 'data_center.png',
-    descricao: 'Armazena zettabytes de memória! (e seus dados mais obscuros).',
-    ls: 7700000,
+    icon: 'data_center.webp',
+    descricao: 'Armazena zettabytes de memória! (e teus dados mais obscuros).',
+    lps: 7700000,
     gerado: 0,
   },
   { 
@@ -274,9 +345,9 @@ const estruturas = [
     plural: "IAs ultra-generativas",
     custoBase: 1000000000000, 
     comprados: 0,
-    icon: 'ia.png',
+    icon: 'ia.webp',
     descricao: 'É tipo um DEV, só que mais rápido, mais esperto, mais eficaz, mais sagaz, mais sucinto, mais... Deixa pra lá.',
-    ls: 45000000,
+    lps: 45000000,
     gerado: 0,
   },
   { 
@@ -284,9 +355,9 @@ const estruturas = [
     plural: "PCs quânticos",
     custoBase: 14000000000000, 
     comprados: 0,
-    icon: 'quantico.png',
+    icon: 'quantico.webp',
     descricao: 'Resolve os bugs antes mesmo deles surgirem.',
-    ls: 230000000,
+    lps: 230000000,
     gerado: 0,
   },
 
@@ -296,64 +367,69 @@ const estruturas = [
 const bonusList = [
   {
     id: 'bn1',
-    nome: "CAFÉZINHO",
+    nome: "Cafézinho",
     descricao: "15% das linhas + 13",
     peso: 100,
+    unlocked: true,
     get efeito() {
       const ganho = Math.floor(pontos * 0.15 + 13);
       refresh(ganho) // Atualiza os pontos na tela
-      return `Ganhou ${formatarNumero(ganho)} linhas!`
+      return `Ganhou ${formatarNumero(ganho, true)} linhas!`
     },
   },
   {
     id: 'bn2',
-    nome: "CAFÉ DOCINHO",
-    descricao: "LS x7",
+    nome: "Café Docinho",
+    descricao: "Uma colher de açúcar + uma pitada de amor materno",
     type: 'matrix',
     duracao: 30,
     peso: 30,
-    icon: 'placeholder.png',
+    icon: 'cafe_docinho.webp',
+    unlocked: true,
     get efeito() {
-      lsMultiplier *= 7;
-      return `LS x7 por ${this.duracao} segundos!`
+      lpsMultiplier *= 7;
+      return `LpS x7 por ${this.duracao} segundos!`
     },
-    reverter: () => lsMultiplier /= 7,
+    reverter: () => lpsMultiplier /= 7,
   },
   {
     id: 'bn3',
-    nome: "CAFÉ PERFEITO",
-    descricao: "LS x777",
+    nome: "Café Perfeito",
+    descricao: "Temperatura ideal, sabor equilibrado e um aroma leve e perfumado. Perfeito!",
     type: 'matrix',
     duracao: 15,
     peso: 4,
-    icon: 'placeholder.png',
+    icon: 'cafe_perfeito.webp',
+    unlocked: true,
     get efeito() {
-      lsMultiplier *= 777;
-      return `LS x777 por ${this.duracao} segundos!!!`
+      lpsMultiplier *= 777;
+      return `LpS x777 por ${this.duracao} segundos!!!`
     },
-    reverter: () => lsMultiplier /= 777,
+    reverter: () => lpsMultiplier /= 777,
   },
   {
     id: 'bn4',
-    nome: "CAFÉ DIVINO",
-    descricao: "LS x1111",
+    nome: "Café Divino",
+    descricao: "Preparado diretamente pelos deuses olimpianos. O néctar supremo, o elixir celestial, o suprassumo do prazer!",
     type: 'matrix',
     duracao: 10,
     peso: 1,
-    icon: 'placeholder.png',
+    icon: 'cafe_divino.webp',
+    unlocked: true,
     get efeito() {
-      lsMultiplier *= 1111;
-      return `LS x1111 por ${this.duracao} segundos!!!`
+      lpsMultiplier *= 1111;
+      return `LpS x1111 por ${this.duracao} segundos!!!`
     },
-    reverter: () => lsMultiplier /= 1111,
+    reverter: () => lpsMultiplier /= 1111,
   },
   {
     id: 'bn5',
-    nome: "TEMPESTADE DE CAFÉ",
+    nome: "Tempestade de Café",
     peso: 5,
+    unlocked: true,
     get efeito() {
         var coffeeStorm = setInterval(() => {
-            spawnCoffe('bn6')
+            spawnCoffee('bn6', 500)
         }, 400)
 
         setTimeout(() => {
@@ -366,55 +442,63 @@ const bonusList = [
   // STORM BONUS SÓ É ATIVADO PELO BONUS 5
   {
     id: 'bn6',
-    nome: "STORM BONUS",
-    descricao: "5 min das LS!",
+    nome: "Café Expresso",
+    descricao: "5 min das LpS!",
+    unlocked: true,
     get efeito() {
-        const ganho = Math.floor(lsTOT * 60 * 5);
+        const ganho = Math.floor(lpsTOT * 60 * 5);
         refresh(ganho)
-        return `Ganhou ${formatarNumero(ganho)} linhas!`
+        return `Ganhou ${formatarNumero(ganho, true)} linhas!`
     },
   },
   {
     id: 'bn7',
-    nome: 'CAFÉ VENCIDO',
+    nome: 'Café Vencido',
+    descricao: '',
+    type: 'evil',
     descricao: 'Não faz nada...',
     peso: 2,
+    unlocked: false,
     get efeito() {
       return 'Não faz nada... Absolutamente nada.'
     },
   },
   {
     id: 'bn8',
-    nome: 'CAFÉ DO MAL',
+    nome: 'Café Estragado',
+        descricao: '',
     type: 'evil',
-    icon: 'placeholder.png',
+    icon: 'cafe_estragado.webp',
     peso: 10,
     duracao: 30,
+    unlocked: false,
     get efeito() {
-      lsMultiplier *= .5
+      lpsMultiplier *= .5
       coffeeProb *= .1
-      return `LS x0.5 por ${this.duracao} segundos...`
+      return `LpS x0.5 por ${this.duracao} segundos...`
     },
     reverter: () => {
-      lsMultiplier /= .5
+      lpsMultiplier /= .5
       coffeeProb /= .1
     },
   },
     {
     id: 'bn9',
-    nome: 'CAFÉ DEMONÍACO',
+    nome: 'Café Demoníaco',
     type: 'evil',
-    icon: 'placeholder.png',
+    icon: 'cafe_demoniaco.webp',
     peso: 2,
     duracao: 6,
+    unlocked: false,
     get efeito() {
-      lsMultiplier *= 666
-      return `LS x666 por ${this.duracao} segundos...`
+      lpsMultiplier *= 666
+      return `LpS x666 por ${this.duracao} segundos...`
     },
-    reverter: () => lsMultiplier /= 666,
+    reverter: () => lpsMultiplier /= 666,
   }
 ]
 
+// Onde serão armazenados todos os efeitos aplicados aos cliques
 const onClickEffects = [
   () => {
     return boost
@@ -446,18 +530,25 @@ function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function countEstruturas() {
+  return estruturas.reduce((sum, obj) => sum + obj.comprados, 0)
+}
+
 const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
 const socket = new WebSocket(protocol + window.location.host + "/ws/leaderboard/");
-
 const csrfToken = window.csrfToken
 
 // Variaveis
 let id = -1
 let company = ''
-let pontos = 0;
+let pontos = 0 // Linhas de código
 let boost = 1 // Incrementa os CLIQUES (ou TECLADADAS no futuro)
-let lsTOT = 0
-let lsMultiplier = 1 // Multiplicador para as LS
+let lpsTOT = 0 // Quantas LpS estão sendo geradas
+let lpsMultiplier = 1 // Multiplicador para as LpS
+let bulkBuy = 1 // Quantas estruturas serão comprados por vez (x1, x10, x100)
+let comboMultiplier = 1
+let estruturaMultiplier = 1
+let hasCombo = false // Se possui o upgrade para gerar o combo de cliques
 let coffeeProb = 0.03 // Probabilidade de aparecer um café na tela (AUMENTAR CASO QUEIRA DEBUGAR)
 let boostsActive = [] // Array que armazena todos os boosts ativos
 let tabActive = 'Estruturas' // Qual a aba ativa atualmente
@@ -468,38 +559,99 @@ let listUpgrades; // lista de upgrades comprados
 let listStructures; // lista de estruturas comprados
 let debug = false; // debugar parte do código
 let currentMusic = null // Controla qual música está tocando no momento
-let fadeOutInterval = null
-let fadeInInterval = null
-let gameInterval = null
-let coffeeInterval = null
+let comboTimeout = null // Variável que controla o tempo do combo de cliques
+let fadeOutInterval = null // Variável que controla o fade out da música
+let fadeInInterval = null // Variável que controla o fade in da música
+let gameInterval = null // Variável que controla o intervalo do jogo (define se deve enviar data, atualizar pontos, etc)
+let coffeeInterval = null // Variável que controla o intervalo de spawn dos cafés
+let mobileTooltipItem = {type: '', item: null} // Guarda o item que está sendo mostrado no tooltip mobile
+let scrollTabs = {estruturas: 0, upgrades: 0}
+let defaultStats = {
+  totalClicks: 0,
+  handmadeLines: 0,
+  totalCoffees: 0,
+}
+let lpsHighest = 0;
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
-const keyboard = document.querySelector('.computer-keyboard')
+const keyboard = document.getElementById('computer-keyboard')
 const display = document.getElementById('pontos') // Display das linhas de código
 const buttonsHeader = document.querySelectorAll(".button-header") // Botões para mudar de aba
 const contentList = document.querySelector('.content-list') // Lista de items
+const containerContent = document.querySelector('.container-content')
 const coffeeContainer = document.getElementById('coffee-container') // Container dos cafés
 const boostsContainer = document.querySelector('.container-boosts') // Container dos boosts
 const clicksContainer = document.querySelector('.clicks-container') // Container que armazena os pequenos incrementos dos cliques
 const tooltip = document.querySelector('.tooltip') // Container que armazenas as descrições quando passa o mouse por cima
-const mobileTooltip = document.querySelector('.mobile-tooltip')
+const mobileTooltip = document.querySelector('.mobile-tooltip') 
 const companyNameContainer = document.querySelector('.company-text')
 const leaderboardWrapperContainer = document.querySelector('.leaderboard-wrapper')
 const lbContentContainer = document.querySelector('.leaderboard-content')
-const lsPersecondContainer = document.querySelector('.ls-persecond')
-const computerCodelinesContainer = document.querySelector(".computer-codelines");
+const lpsPersecondContainer = document.querySelector('.lps-persecond')
+const computerCodelinesContainer = document.querySelector(".computer-codelines--wrapper");
 const modalContainer = document.querySelector('.modal')
 const modalInput = document.querySelector('.modal-input')
-const modalForm = document.querySelector('.modal-form')
-const modalErrorContainer = document.querySelector('.modal-error')
+const modalForm = document.querySelector('.modal-form') 
+const modalErrorContainer = document.querySelector('.modal-error') // Container de erro do modal (nome inválido, longo ou já existente)
+const bulkButtons = document.querySelectorAll('.bulk') // Botões de compra em massa (x1, x10, x100)
+const tap = document.querySelector('.tap') // Ícone que aparece quando clica no botão
+const statsContainer = document.querySelector('.stats')
+
+// PRELOAD (CACHE)
+const iconCache = {}
+
+// Função que pré-carrega os ícones das estruturas e upgrades
+// Isso ajuda a evitar o carregamento lento quando os ícones são usados pela primeira vez
+function preloadIcons(iconList) {
+  const promises = iconList.map(icon => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = `/static/assets/icons/${icon}`;
+      img.onload = () => resolve({ icon, status: 'loaded' });
+      img.onerror = () => reject({ icon, status: 'error' });
+      iconCache[icon] = img;
+    });
+  });
+
+  return Promise.all(promises);
+}
+
+// Função que define a imagem de um elemento img com base no ícone, procurando no cache
+function setImg(img, icon) {
+  const newSrc = `/static/assets/icons/${icon}`
+
+  if (img.src !== location.origin + newSrc) {
+    if (iconCache[icon]) {
+      img.src = iconCache[icon].src // já foi carregado
+    } else {
+      img.src = newSrc // fallback, se não estiver no cache
+    }
+  }
+}
+
+const images = estruturas.map(e => e.icon).concat(upgrades.map(u => u.icon)).concat(bonusList.filter(b => b.icon).map(b => b.icon))
+
+const preloadPromise = preloadIcons(images)
+
+function closeLoading() {
+  document.querySelector('.loading-screen').classList.add('invisible')
+}
+
+// FIM PRELOAD
 
 // ESTRUTURAS QUE MANDA EVENTOS
 
 //Atualização o arquivo em outros arquivos js
 function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
+
+  const newPoints = Number(novoValor).toFixed(0);
+  const newHighestPoint = Number(lpsHighest).toFixed(0);
+  
+  
+
   const evento = new CustomEvent("pontosAtualizados", {
-    detail: { newPoints: novoValor }
+    detail: { "newPoints": newPoints, "newHighestPoint": newHighestPoint }
   })
 
   window.dispatchEvent(evento); // Notifica outros scripts
@@ -515,14 +667,26 @@ lbContentContainer.addEventListener("transitionend", (e) => {
   }
 })
 
+if (!window.matchMedia('(pointer: coarse)').matches) {
+  leaderboardWrapperContainer.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "transform" && leaderboardWrapperContainer.classList.contains('out')) {
+        leaderboardWrapperContainer.classList.remove('visible')
+        leaderboardWrapperContainer.classList.remove('out')
+    }
+  })
+}
+
 leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
-  playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+  leaderboardWrapperContainer.classList.add('visible')
+  leaderboardWrapperContainer.classList.remove('out')
+  playSound(`/static/assets/sounds/lb-in.mp3`, .4)
 })
 
 leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
   if (window.matchMedia('(pointer: coarse)').matches) return
-  playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+    leaderboardWrapperContainer.classList.add('out')
+  playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 })
 
 function toggleMobileLeaderboard(e) {
@@ -534,14 +698,14 @@ function toggleMobileLeaderboard(e) {
   if (isEnabled) {
     lbContentContainer.style.opacity = 0
     leaderboardWrapperContainer.style.background = 'transparent'
-    playSound(`/static/assets/sounds/lb-out.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 
   } else {
     leaderboardWrapperContainer.classList.toggle('enabled')
     void lbContentContainer.offsetWidth
     lbContentContainer.style.opacity = 1
     leaderboardWrapperContainer.style.background = 'var(--bs)'
-    playSound(`/static/assets/sounds/lb-in.ogg`, .4)
+    playSound(`/static/assets/sounds/lb-in.mp3`, .4)
   }
 }
 
@@ -611,7 +775,7 @@ function renderLeaderboard(jogadores) {
     li.style.zIndex = pos >= 11 ? 200 : 200-pos
     li.innerHTML = `
       <span class="lb-pos lb-${pos} ${pos >= 11 ? 'lb-last': ''}">${pos}</span>
-      <span class="lb-name">${jogador.companyName}${isYou ? ' <strong>(VOCÊ)</strong>' : ''}</span>
+      <span class="lb-name">${jogador.companyName}${isYou ? ' <strong style="font-size: .7em">(VOCÊ)</strong>' : ''}</span>
       <span class="lb-number">${formatarNumero(jogador.lsCount)}</span>
     `
 
@@ -632,10 +796,122 @@ socket.onmessage = (e) => {
 
 // FIM DO LEADERBOARD
 
+// INÍCIO DOS STATS
+
+function updateStat(key, value) {
+  const stats = defaultStats
+  
+  if (Array.isArray(stats[key])) {
+    // Arrays (como lista de upgrades)
+    if (!stats[key].includes(value)) {
+      stats[key].push(value);
+    }
+  } else if (typeof stats[key] === 'number') {
+    // Números
+    stats[key] += value;
+  } else {
+    // Outros tipos (boolean, string, etc.)
+    stats[key] = value;
+  }
+}
+
+const itemsModal = document.querySelector('.items-modal')
+
+itemsModal.addEventListener('click', (e) => {
+  const hasTouchedContent = e.target.closest('.items-modal--content')
+  if (hasTouchedContent) return
+  itemsModal.classList.add('closing')
+  toggleStats()
+})
+
+itemsModal.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "opacity" && itemsModal.classList.contains("closing")) {
+      itemsModal.classList.remove('enabled')
+      itemsModal.classList.remove('closing')
+    }
+  })
+
+statsContainer.addEventListener('click', toggleStats)
+
+function toggleStats() {
+  const isEnabled = itemsModal.classList.contains('enabled')
+
+  if (isEnabled) {
+    itemsModal.style.opacity = 0
+    itemsModal.classList.add('closing')
+    playSound(`/static/assets/sounds/lb-out.mp3`, .4)
+  } else {
+    itemsModal.classList.toggle('enabled')
+    itemsModal.classList.remove('closing')
+    renderStats()
+    void itemsModal.offsetWidth
+    itemsModal.style.opacity = 1
+    playSound(`/static/assets/sounds/lb-in.mp3`, .4)
+  }
+}
+
+function renderStats() {
+  function setText(el, txt) {
+    el.querySelectorAll('span')[1].textContent = txt
+  }
+
+  const upgradesOwned = upgrades.filter(up => up.purchased)
+  const upgradesOwnedCount = upgradesOwned.length
+  const upgradesLength = upgrades.length
+
+  setText(itemsModal.querySelector('.ct'), defaultStats.totalCoffees)
+  setText(itemsModal.querySelector('.tt'), defaultStats.totalClicks)
+  setText(itemsModal.querySelector('.lgm'), formatarNumero(defaultStats.handmadeLines.toFixed(0)))
+  setText(itemsModal.querySelector('.mlps'), 'x'+formatarNumero(lpsMultiplier.toFixed(2)))
+  setText(itemsModal.querySelector('.ec'), countEstruturas())
+  setText(itemsModal.querySelector('.items-upgrades-owned'), `${upgradesOwnedCount}/${upgradesLength} (${Number(upgradesOwnedCount/upgradesLength*100).toFixed(1)}%)`)
+
+  const itemUpgrades = itemsModal.querySelector('.item-upgrades--container')
+
+  if (upgradesOwned.length == 0) {
+    itemUpgrades.style.display = 'none'
+    return
+  }
+
+  itemUpgrades.style.display = 'flex'
+
+  upgradesOwned.forEach(up => {
+      const id = `stats-upgrade-${up.id}`
+      let upgrade = itemUpgrades.querySelector(`#${id}`)
+
+      if (!upgrade) {
+        upgrade = document.createElement('div')
+        upgrade.className = 'stats-upgrades'
+        upgrade.id = id
+    
+        upgrade.innerHTML = (`
+          <span class="item-name">${up.nome}</span>
+          <div class="item-icon--wrapper">
+            <img class="item-icon"/>
+          </div>
+        `)
+
+        itemUpgrades.appendChild(upgrade)
+
+        upgrade.addEventListener('click', () => {
+          showMobileTooltip('up', up)
+        })
+      }
+
+      const img = upgrade.querySelector('.item-icon')
+      setImg(img, up.icon)
+  })
+
+}
+
+setScrollShadows(itemsModal.querySelector('.item-upgrades--container'))
+
+// FIM DOS STATS
+
 // Pega o nome do player
 window.addEventListener("updateCompany", (e) => {
-  company = e.detail.company;
-  companyName.textContent = company;
+  company = e.detail.company
+  companyName.textContent = company
   
 })
 
@@ -643,33 +919,42 @@ window.addEventListener("updateCompany", (e) => {
 
 window.addEventListener("dispatchPlayerData", (event) => {
   //Coleta os dados do player e coloca em variáveis e postam no index
-  let loadingPlayer = event.detail.player;
+  let loadingPlayer = event.detail.player
   company = loadingPlayer.companyName
-  companyName.textContent = company;
+  companyName.textContent = company
 
+  lpsHighest = Number(loadingPlayer.lsHighest);
+
+  const statsSaved = JSON.parse(localStorage.getItem('stats'))
 
   // Verifica quais estrutras e upgrades estão salvos e atualiza da lista principal
   listUpgrades = JSON.parse(localStorage.getItem("upgrades"))?.salve || []
   listStructures = JSON.parse(localStorage.getItem("estruturas"))?.salve || []
 
+  if (statsSaved) defaultStats = statsSaved
+  
+
   listUpgrades.forEach(item => {
     upgrades.forEach((upgrade, index) => {
-      if(upgrade.id == item){
-        upgrades[index].purchased = true;
-        upgrades[index].efeito();
+      if (upgrade.id == item.id){
+        upgrades[index].purchased = item.purchased
+        upgrades[index].unlocked = item.unlocked
+        if (item.purchased) upgrades[index].efeito()
       }
     })
   })
 
   listStructures.forEach(item => {
     estruturas.forEach((estrutura, index)=>{
-      if(estrutura.id == item.id){
-        estruturas[index].comprados = item.comprados;
-        estruturas[index].gerado = item.gerado;
-        estruturas[index].unlocked = true;
+      if (estrutura.id == item.id){
+        estruturas[index].comprados = item.comprados
+        estruturas[index].gerado = item.gerado
+        estruturas[index].unlocked = true
       }
     })
   })
+
+
 
   refresh(loadingPlayer.lsCount)
 })
@@ -702,15 +987,23 @@ window.addEventListener("dispatchStructList", (event)=> {
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
 function refresh(add) {
   valorAtual = pontos
-  pontos = valorAtual + add
+  pontos = valorAtual + add;
+  if(add > 0) lpsHighest += add;
 
-  if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos))} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
+  if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos), true)} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
   animarContador(valorAtual)
+  if (pontos !== 0) tap.classList.add('disabled')
   
   if (tabActive == 'Estruturas') renderEstruturas()
   else if (tabActive == 'Upgrades') renderUpgrades()
-  showTooltip()
+
+  if (!window.matchMedia('(pointer: coarse)').matches && getComputedStyle(tooltip).opacity == 1) showTooltip()
+  else if (getComputedStyle(mobileTooltip).opacity == 1 && !close.classList.contains('closing')) {
+    const {type, item} = mobileTooltipItem
+    if (type !== 'es') return
+    showMobileTooltip(type, item, false)
+  }
 }
 
 // Anima os numerozinhos para eles subirem de pouco em pouco
@@ -719,7 +1012,7 @@ function animarContador(valorInicial, duracao = 700) {
   const add = valorFinal - valorInicial
 
   if (Math.abs(add) == 1) {
-    display.textContent = `${formatarNumero(pontos)} linha${pontos > 1 ? 's' : ''} de código`
+    display.textContent = `${formatarNumero(pontos, true)} linha${pontos > 1 ? 's' : ''} de código`
     if (add > 0) generateCodeLine()
     return
   }
@@ -737,13 +1030,13 @@ function animarContador(valorInicial, duracao = 700) {
   function step(timestamp) {
     if (!start) start = timestamp
     const tempoDecorrido = timestamp - start
-    const progresso = Math.min(tempoDecorrido / duracao, 1) // entre 0 e 1
+    const progresso = Math.min(tempoDecorrido / (duracao || 1), 1) // entre 0 e 1
     const eased = ease(progresso) // aplica easing
 
     const valorInterpolado = Math.floor(valorInicial + range * eased)
-    const valorFormatado = formatarNumero(valorInterpolado)
+    const valorFormatado = formatarNumero(valorInterpolado, true)
 
-    display.textContent = `${valorFormatado} linhas de código`
+    display.textContent = `${valorFormatado} linha${valorInterpolado > 1 ? 's' : ''} de código`
 
     // Gera code lines para cada valor novo que passou
     const diff = valorInterpolado - lastValue;
@@ -764,7 +1057,7 @@ function animarContador(valorInicial, duracao = 700) {
 }
 
 // Essa função formata números grandes (10e6) para valores mais amigáveis (1 milhão)
-function formatarNumero(valor) {
+function formatarNumero(valor, de = false) {
   if (valor < 1000000) return Number(valor).toLocaleString('pt-BR')
 
   // Se for maior que o maior limite conhecido
@@ -777,7 +1070,7 @@ function formatarNumero(valor) {
     if (valor >= unidade.limite) {
       const valorDividido = valor / unidade.limite
       const nome = valorDividido >= 2 ? unidade.plural : unidade.nome
-      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}`
+      return `${valorDividido.toFixed(3).replace('.', ',')} ${nome}${de ? ' de' : ''}`
     }
   }
 }
@@ -791,6 +1084,14 @@ function checarDesbloqueios(pontos) {
       atualizarIndicadores()
     }
   })
+
+  upgrades.forEach((upgrade, index) => {
+    if (pontos >= upgrade.custo && !upgrade.unlocked) {
+      notificacoes.upgrades.add(index)
+      upgrade.unlocked = true
+      atualizarIndicadores()
+    }
+  })
 }
 
 // Essa função é chamada sempre que há um desbloqueio, para atualizar o iconezinho vermelho de "notificação"
@@ -801,7 +1102,7 @@ function atualizarIndicadores() {
   upgradesBtn.classList.toggle("has-notification", notificacoes.upgrades.size > 0)
   estruturasBtn.classList.toggle("has-notification", notificacoes.estruturas.size > 0)
 
-  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.ogg', .4)
+  if ((notificacoes.upgrades.size > 0 && tabActive != 'Upgrades') || (notificacoes.estruturas.size > 0 && tabActive != 'Estruturas')) playSound('/static/assets/sounds/not.mp3', .4)
 }
 
 function addSafeTouchListener(element, onValidTouchEnd) {
@@ -828,37 +1129,72 @@ function addSafeTouchListener(element, onValidTouchEnd) {
 
 // Quando o botão é clicado, adiciona pontos e atualiza o display com a função refresh()
 button.addEventListener('click', (e) => {
-  const toAdd = onClick()
+  if (window.matchMedia('(pointer: coarse)').matches) return
+
+  const coords = {
+    x: e.pageX,
+    y: e.pageY,
+  }
+
+  handleClick(coords)
+
+})
+
+button.addEventListener('touchstart', (e) => {
+  const currentTouch = [...e.touches].at(-1)
+  const coords = {
+    x: currentTouch.pageX,
+    y: currentTouch.pageY,
+  }
+  handleClick(coords)
+})
+
+function handleClick({x, y}) {
+  const [toAdd, actualComboMultiplier] = onClick()
+
+  updateStat('totalClicks', 1)
+  updateStat('handmadeLines', toAdd)
 
   const click = document.createElement('div')
   const randomOffset = Math.random() * 8
   click.className = 'click'
-  click.textContent = `+${formatarNumero(toAdd.toFixed(1))}`
-  click.style.left = `calc(${e.pageX}px + ${randomOffset}px)`
-  click.style.top = `${e.pageY}px`
+  click.innerHTML = `<span>+${formatarNumero(toAdd.toFixed(1))}</span>${hasCombo ? ` <span class="combo">x${actualComboMultiplier.toFixed(1)}</span>` : ''}`
+  click.style.left = `calc(${x}px + ${randomOffset}px)`
+  click.style.top = `${y}px`
   clicksContainer.appendChild(click)
   void click.offsetHeight
   click.classList.add('fading-up')
 
 
-  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.ogg`, .4)
+  playSound(`/static/assets/sounds/k${randomBetween(1, 3)}.mp3`, .4)
 
   click.addEventListener("transitionend", (e) => {
     if (e.propertyName === "opacity" && click.classList.contains("fading-up")) click.remove()
   })
-
-})
+}
 
 function onClick() {
   let toAdd = 0
 
   // Executa todos os efeitos extras adicionados por upgrades
-  onClickEffects.forEach(fn => {
-    toAdd += fn()
-  })
+  onClickEffects.forEach(fn => toAdd += fn())
 
-  refresh(toAdd)
-  return toAdd
+  let actualCombo = comboMultiplier
+  toAdd *= comboMultiplier
+
+  if (hasCombo) {
+    
+    comboMultiplier = Math.min(2, comboMultiplier + .02)
+    if (comboTimeout) clearTimeout(comboTimeout)
+      
+      comboTimeout = setTimeout(() => {
+        comboTimeout = null
+        comboMultiplier = 1
+      }, 400)
+  }
+  
+  refresh(toAdd);
+  return [toAdd, actualCombo]
 }
 
 // No celular, 'active' fica muito bugado, portanto iremos colocar uma animação manualmente de pulo no teclado ao ser clicado
@@ -872,7 +1208,10 @@ function triggerAnimation() {
 
 document.body.addEventListener('mousemove', (e) => {
   // Essa condição verifica se é um dispositivo com suporte a toque ou não
-  if (window.matchMedia('(pointer: coarse)').matches || !modalContainer.classList.contains('disabled')) return
+  if (window.matchMedia('(pointer: coarse)').matches 
+      || !modalContainer.classList.contains('disabled')
+      || itemsModal.classList.contains('enabled')
+  ) return
 
   mouseX = e.clientX
   mouseY = e.clientY
@@ -896,35 +1235,48 @@ function showTooltip(x = mouseX, y = mouseY) {
 
   if (atributtePre === 'es') {
     const data = estruturas.find(es => es.id === id)
+    const custo = custoAtual(data)
+
+    if (!tooltip.classList.contains('estrutura')) {
+      tooltip.className = 'tooltip estrutura'
+      tooltip.innerHTML = `
+          <div class="tooltip-header">
+            <div class="tooltip-header--left">
+              <img class="tooltip-icon"/>
+              <strong class="tooltip-name"></strong>
+            </div>
+            <span class="tooltip-price coin"></span>
+          </div>
+          <div class="tooltip-content">
+            <span class="tooltip-description"></span>
+          </div>
+          <div class="tooltip-extra"></div>
+      `
+    }
 
     let extraInfo = ``
 
     if (data.unlocked && data.comprados > 0) {
+      const gerando = (data.comprados*data.lps*lpsMultiplier).toFixed(1)
       extraInfo = `
           <ul>
-            <li>cada ${data.nome} gera ${formatarNumero((data.ls * lsMultiplier).toFixed(1))} LS</li>
-            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero((data.comprados*data.ls*lsMultiplier).toFixed(1))} LS</li>
-            <li>${formatarNumero(Math.floor(data.gerado))} linhas geradas até agora</li>
+            <li>cada ${data.nome} gera ${formatarNumero((data.lps * lpsMultiplier).toFixed(1), true)} LpS</li>
+            <li>${data.comprados} ${data.comprados > 1 ? data.plural : data.nome} ${data.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando, true)} LpS (${((gerando/(lpsTOT || 1))*100).toFixed(2)}%)</li>
+            <li>${formatarNumero(Math.floor(data.gerado), true)} linhas geradas até agora</li>
           </ul>
       `
     }
 
-    const custo = custoAtual(data)
+    const img = tooltip.querySelector('.tooltip-icon')
+    setImg(img, data.icon)
+    img.classList.toggle('hidden', !data.unlocked)
+    tooltip.querySelector('.tooltip-name').textContent = data.unlocked ? data.nome : '???'
+    tooltip.querySelector('.tooltip-price').textContent = formatarNumero(custo)
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price coin ${pontos < custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-description').textContent = data.unlocked ? data.descricao : '???'
+    tooltip.querySelector('.tooltip-extra').innerHTML = extraInfo
+    tooltip.querySelector('.tooltip-extra').classList.toggle('hidden', !extraInfo)
 
-    tooltip.innerHTML = `
-        <div class="tooltip-header">
-          <div class="tooltip-header--left">
-            <img src="/static/assets/icons/${data.icon}" class="tooltip-icon ${!data.unlocked ? "hidden" : ''}"/>
-            <strong class="tooltip-name">${data.unlocked ? data.nome : '???'}</strong>
-          </div>
-          <span class="tooltip-price ${pontos < custo ? 'high' : 'low'}">${formatarNumero(custo)}</span>
-        </div>
-        <div class="tooltip-content">
-          <span class="tooltip-description">${data.unlocked ? data.descricao : '???'}</span>
-        </div>
-        ${extraInfo}
-    `
-    tooltip.classList.remove('bonus')
     tooltip.style.transform = 'translateY(-50%)'
     tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
     tooltip.style.opacity = 1
@@ -932,22 +1284,32 @@ function showTooltip(x = mouseX, y = mouseY) {
   }
   else if (atributtePre === 'up') {
     const data = upgrades.find(up => up.id === id)
-
-    tooltip.innerHTML = `
-      <div class="tooltip-header">
-        <div class="tooltip-header--left">
-          <img src="/static/assets/icons/${data.icon}" class="tooltip-icon"/>
-          <strong class="tooltip-name">${data.nome}</strong>
+    
+    if (!tooltip.classList.contains('upgrade')) {
+      tooltip.className = 'tooltip upgrade'
+      tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <div class="tooltip-header--left">
+            <img class="tooltip-icon"/>
+            <strong class="tooltip-name"></strong>
+          </div>
+          <span class="tooltip-price coin"></span>
         </div>
-        <span class="tooltip-price ${pontos < data.custo ? 'high' : 'low'}">${formatarNumero(data.custo)}</span>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-function">${data.funcao}</span>
-        <span class="tooltip-description">${data.descricao}</span>
-      </div>
-    `
+        <div class="tooltip-content">
+          <span class="tooltip-function"></span>
+          <span class="tooltip-description"></span>
+        </div>
+      `
+    }
 
-    tooltip.classList.remove('bonus')
+    const img = tooltip.querySelector('.tooltip-icon')
+    setImg(img, data.icon)
+    tooltip.querySelector('.tooltip-name').textContent = data.nome
+    tooltip.querySelector('.tooltip-price').textContent = formatarNumero(data.custo)
+    tooltip.querySelector('.tooltip-price').className = `tooltip-price coin ${pontos < data.custo ? 'high' : 'low'}`
+    tooltip.querySelector('.tooltip-function').textContent = data.funcao
+    tooltip.querySelector('.tooltip-description').textContent = data.descricao
+
     tooltip.style.transform = 'translateY(-50%)'
     tooltip.style.left = `${containerRect.left - tooltip.offsetWidth - 10}px`
     tooltip.style.opacity = 1
@@ -957,17 +1319,23 @@ function showTooltip(x = mouseX, y = mouseY) {
   else if (atributtePre === 'bn') {
     const containerRect = document.querySelector('.container-boosts>.boost').getBoundingClientRect()  
     const data = boostsActive.find(bn => bn.id === id)
+
+    if (!tooltip.classList.contains('bonus')) {
+      tooltip.className = 'tooltip bonus'
+      tooltip.innerHTML = `
+        <div class="tooltip-header center">
+          <strong class="tooltip-name"></strong>
+        </div>
+        <div class="tooltip-content">
+          <span class="tooltip-efeito"></span>
+        </div>
+      `
+    }
+
+    tooltip.querySelector('.tooltip-name').textContent = data.nome
+    tooltip.querySelector('.tooltip-efeito').textContent = data.efeito
     
-    tooltip.classList.add('bonus')
-    tooltip.innerHTML = `
-      <div class="tooltip-header center">
-        <strong class="tooltip-name">${data.nome}</strong>
-      </div>
-      <div class="tooltip-content">
-        <span class="tooltip-efeito">${data.efeito}</span>
-      </div>
-    `
-    const tooltipRect = document.querySelector('.tooltip').getBoundingClientRect()
+    const tooltipRect = tooltip.getBoundingClientRect()
     tooltip.style.left = `${x}px`
     tooltip.style.top = `${containerRect.top - tooltipRect.height - 15}px`
     tooltip.style.transform = `translateX(-50%)`
@@ -975,94 +1343,157 @@ function showTooltip(x = mouseX, y = mouseY) {
   }
 }
 
-function showMobileTooltip(type, item) {
+function showMobileTooltip(type, item, touched = true) {
   const titles = {
     es: 'Estruturas',
     up: 'Upgrades',
     bn: 'Bônus'
   }
 
-  const content = document.createElement('div')
-  const close = document.createElement('button')
+  if (touched) playSound('/static/assets/sounds/open.mp3', .4)
 
-  mobileTooltip.innerHTML = ''
+  const mobileTitle = mobileTooltip.querySelector('.mobile-tooltip--title')
+  const wrapper = mobileTooltip.querySelector(`.mobile-tooltip--wrapper`)
+  const data = wrapper.dataset?.mobileid
+  const isItem = data == item.id
+
+  mobileTooltip.classList.add('enabled')
+  void mobileTooltip.offsetHeight
   mobileTooltip.style.opacity = 1
-  mobileTooltip.style.pointerEvents = 'all'
 
-  content.className = 'mobile-tooltip--content'
-  content.innerHTML = `<div class="mobile-tooltip--title">${titles[type]}</div>`
+  mobileTitle.textContent = titles[type]
 
   if (type == 'es') {
-    content.innerHTML += `
-      <div class="mobile-tooltip--wrapper">
+    const gerando = (item.comprados * item.lps * lpsMultiplier).toFixed(1)
+    const percentual = ((gerando / (lpsTOT || 1)) * 100).toFixed(2)
+
+    if (!isItem) {
+      // Cria o HTML se ainda não existir
+      wrapper.innerHTML = `
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
+          <img class="mobile-tooltip--icon"/>
           <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name">${item.nome}</span>
-              <span>Comprados: ${item.comprados}</span>
+            <span class="mobile-tooltip--name"></span>
+            <span class="mobile-tooltip--comprados"></span>
           </div>
         </div>
-        <div class="monile-tootltip--items">
-            <ul>
-              <li>cada ${item.nome} gera ${formatarNumero((item.ls * lsMultiplier).toFixed(1))} LS</li>
-              <li>${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero((item.comprados * item.ls * lsMultiplier).toFixed(1))} LS</li>
-              <li>${formatarNumero(Math.floor(item.gerado))} linhas geradas até agora</li>
-            </ul>
+        <div class="mobile-tooltip--items">
+          <ul>
+            <li class="tooltip-lps-unico"></li>
+            <li class="tooltip-lps-total"></li>
+            <li class="tooltip-gerado"></li>
+          </ul>
         </div>
-          <span class="tooltip-description">${item.descricao}</span>
-      </div>
-    `
+        <span class="tooltip-description"></span>
+      `
+
+      wrapper.dataset.mobileid = item.id // Define o ID do wrapper para o nome da estrutura
+    }
+
+    // Atualiza os dados SEMPRE
+    let img = wrapper.querySelector('.mobile-tooltip--icon')
+    setImg(img, item.icon)
+
+    wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
+    wrapper.querySelector('.mobile-tooltip--comprados').textContent = `Comprados: ${item.comprados}`
+    wrapper.querySelector('.tooltip-lps-unico').textContent = `cada ${item.nome} gera ${formatarNumero((item.lps * lpsMultiplier).toFixed(1), true)} LpS`
+    wrapper.querySelector('.tooltip-lps-total').textContent = `${item.comprados} ${item.comprados > 1 ? item.plural : item.nome} ${item.comprados > 1 ? 'estão' : 'está'} gerando ${formatarNumero(gerando)} LpS (${percentual}%)`
+    wrapper.querySelector('.tooltip-gerado').textContent = `${formatarNumero(Math.floor(item.gerado), true)} linhas geradas até agora`
+    wrapper.querySelector('.tooltip-description').textContent = item.descricao
   } else if (type == 'up') {
-    content.innerHTML += `
-      <div class="mobile-tooltip--wrapper">
+    if (!isItem) {
+      // Cria o HTML se ainda não existir
+      wrapper.innerHTML = `
         <div class="mobile-tooltip--header">
-          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
+          <img class="mobile-tooltip--icon" />
           <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name">${item.nome}</span>
+            <span class="mobile-tooltip--name"></span>
           </div>
         </div>
-        <span class="tooltip-function">${item.funcao}</span>
-        <span class="tooltip-description">${item.descricao}</span>
-      </div>
-    `
+        <span class="tooltip-function"></span>
+        <span class="tooltip-description"></span>
+      `
+
+      wrapper.dataset.mobileid = item.id // Define o ID do wrapper para o nome do upgrade
+    }
+
+    // Atualiza os dados SEMPRE
+    const img = wrapper.querySelector('.mobile-tooltip--icon')
+    setImg(img, item.icon)
+
+    wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
+    wrapper.querySelector('.tooltip-function').textContent = item.funcao
+    wrapper.querySelector('.tooltip-description').textContent = item.descricao
   } else if (type == 'bn') {
-    content.innerHTML += `
-      <div class="mobile-tooltip--wrapper">
-        <div class="mobile-tooltip--header">
-          <img  src="/static/assets/icons/${item.icon}" class="mobile-tooltip--icon"/>
-          <div class="mobile-tooltip--header-text">
-              <span class="mobile-tooltip--name">${item.nome}</span>
+    if (!isItem) {
+      // Cria o HTML se ainda não existir
+      wrapper.innerHTML = `
+          <div class="mobile-tooltip--header">
+            <img class="mobile-tooltip--icon" />
+            <div class="mobile-tooltip--header-text">
+              <span class="mobile-tooltip--name"></span>
+            </div>
           </div>
-        </div>
-        <span class="tooltip-function">${item.efeito}</span>
-        <span class="tooltip-description">${item.descricao}</span>
-      </div>
-    `
+          <span class="tooltip-function"></span>
+          <span class="tooltip-description"></span>
+      `
+      wrapper.dataset.mobileid = item.id // Define o ID do wrapper para o nome do bônus
+    }
+
+    // Atualiza os dados SEMPRE
+    const img = wrapper.querySelector('.mobile-tooltip--icon')
+    setImg(img, item.icon)
+
+    wrapper.querySelector('.mobile-tooltip--name').textContent = item.nome
+    wrapper.querySelector('.tooltip-function').textContent = item.efeito
+    wrapper.querySelector('.tooltip-description').textContent = item.descricao
   }
-
-  close.className = 'close-bttn'
-  close.textContent = 'Fechar'
-
-  addSafeTouchListener(close, (e) => {
-    e.stopPropagation(); // impede que o clique vá para outros elementos
-    e.preventDefault(); // (opcional) previne o comportamento padrão, se necessário
-    closeMobileTootip()
-    playSound('/static/assets/sounds/close.ogg', .8)
-  })
-
-  content.appendChild(close)
-  mobileTooltip.appendChild(content)
 }
 
 function closeMobileTootip() {
   mobileTooltip.style.opacity = 0
-  mobileTooltip.style.pointerEvents = 'none'
 }
+
+const close = mobileTooltip.querySelector('.close-bttn')
+
+mobileTooltip.addEventListener("transitionend", (e) => {
+  if (e.propertyName === "opacity" && mobileTooltip.classList.contains('closing')) {
+    mobileTooltip.classList.remove('closing')
+    mobileTooltip.classList.remove('enabled')
+  }
+})
+
+close.addEventListener('click', (e) => {
+  if (getComputedStyle(mobileTooltip).opacity != 1) return
+
+  e.stopPropagation() // impede que o clique vá para outros elementos
+  e.preventDefault() // (opcional) previne o comportamento padrão, se necessário
+  closeMobileTootip()
+  mobileTooltip.classList.add('closing')
+  mobileTooltipItem = {type: '', item: null} // Reseta o item
+  playSound('/static/assets/sounds/close.mp3', .8)
+})
+
 
 // CONTAINER DA DIREITA (UPGRADES/ESTRUTURAS)
 
+bulkButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) return
+
+    playSound(`/static/assets/sounds/tab.mp3`, .5)
+
+    bulkButtons.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
+    btn.classList.add('active') // Depois, adiciona somente no que foi clicado
+
+    bulkBuy = Number(btn.dataset.bulk)
+
+    if (tabActive == 'Estruturas') renderEstruturas()
+  })
+})
+
 buttonsHeader.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', () => {
       if (btn.classList.contains('active')) return
 
       buttonsHeader.forEach((b) => b.classList.remove('active')) // Primeiro, remove "active" de todos
@@ -1073,7 +1504,7 @@ buttonsHeader.forEach((btn) => {
       notificacoes.estruturas.clear()
       atualizarIndicadores()
 
-      playSound(`/static/assets/sounds/tab.ogg`, .5)
+      playSound(`/static/assets/sounds/tab.mp3`, .5)
       // Através do conteúdo, verifica qual botão foi clicado
       tabActive = btn.querySelector('.text').textContent
       if (tabActive == 'Upgrades') renderUpgrades() // Irá renderizar UPGRADES
@@ -1081,6 +1512,37 @@ buttonsHeader.forEach((btn) => {
       else return
     })
 })
+
+function setScrollShadows(el) {
+  function updateVars() {
+    const { scrollTop, scrollHeight, clientHeight } = el;
+    let ot = 1, ob = 1;
+
+    // Sem scroll: ambos 0
+    if (scrollHeight <= clientHeight) {
+      ot = 0;
+      ob = 0;
+    } else {
+      const maxScroll = scrollHeight - clientHeight;
+
+      ot = scrollTop / maxScroll
+      ob = 1 - (scrollTop / maxScroll)
+    }
+
+    el.style.setProperty('--ot', ot);
+    el.style.setProperty('--ob', ob);
+  }
+
+  // Atualiza no load e no scroll
+  updateVars();
+  el.addEventListener('scroll', updateVars);
+
+  // Observa mudanças no tamanho/conteúdo
+  const ro = new ResizeObserver(updateVars);
+  ro.observe(el);
+}
+
+setScrollShadows(containerContent)
 
 // Função que irá rendereizar a lista certa na seção de estruturas
 const renderEstruturas = () => {
@@ -1093,137 +1555,151 @@ const renderEstruturas = () => {
 
   estruturasFixed.forEach((item) => {
     const id = `estrutura-${item.id}`
-    const estrutura = document.getElementById(id)
+    let estrutura = document.getElementById(id)
 
-    // Se o item já está renderizado, não adiciona ele novamente, apenas atualiza
-    if (estrutura) {
-      const custo = estrutura.querySelector('.cust')
-      const itemName = estrutura.querySelector('.item-name')
-      const comprados = estrutura.querySelector('.item-purchased')
+    // Se o item não está renderizado, cria a estrutura HTML
+    if (!estrutura) {
+      estrutura = document.createElement('div')
+      estrutura.id = id
+      estrutura.className = "content-item estrutura"
+      estrutura.setAttribute('data-tooltipId', item.id)
 
-      if (item.unlocked) {
-        if (item.comprados > 0) comprados.textContent = item.comprados
-        if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
-        itemName.textContent = item.nome
-        estrutura.classList.remove('hidden')
-        estrutura.classList.add('unlocked')
-      }
-      custo.textContent = formatarNumero(custoAtual(item))
-      if (custoAtual(item) > pontos) {
-        custo.classList.add('high')
-        custo.classList.remove('low')
-      } else {
-        custo.classList.add('low')
-        custo.classList.remove('high')
-      }
-      
-      return
-    } 
-
-    const custo = custoAtual(item)
-    const div = document.createElement("div")
-    div.id = id
-    div.innerHTML = (`
-      <div class="item-icon"><img src="/static/assets/icons/${item.icon}"/></div>
-      <div class="item-content">
-        <div class="item-text">
-          <span class="item-name">${!item.unlocked ? '???' : item.nome}</span>
-          <span class="cust ${custo> pontos ? 'high' : 'low'}">${formatarNumero(custo)}</span>
+      estrutura.innerHTML = (`
+        <img class="item-icon">
+        <div class="item-content">
+          <div class="item-text">
+            <div class="item-text--wrapper">
+              <span class="mobile-purchased"></span>
+              <span class="mobile-name"></span>
+              <span class="item-name"></span>
+            </div>
+            <div class="cust-wrapper">
+              <span class="cust"></span>
+            </div>
+          </div>
+          <span class="item-purchased"></span>
+          <button class="info-bttn">INFO</button>
         </div>
-        <span class="item-purchased">${item.comprados > 0 ? item.comprados : ''}</span>
-        <button class="info-bttn">INFO</button>
-      </div>
-    `)
-    div.className = "content-item estrutura"
+      `)
+
+      estrutura.addEventListener('click', (e) => {
+        const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
+        if (hasClickedInfo) return
+    
+        buyEstrutura(item.id)
+      })
+
+      addSafeTouchListener(estrutura.querySelector('.info-bttn'), () => {
+        close.classList.remove('closing')
+        mobileTooltipItem = {item, type: 'es'}
+        showMobileTooltip('es', item)
+      })
+    
+      contentList.appendChild(estrutura)
+    } 
+    
+    const custoContainer = estrutura.querySelector('.cust')
+    const itemName = estrutura.querySelector('.item-name')
+    const mobileName = estrutura.querySelector('.mobile-name')
+    const mobilePurchased = estrutura.querySelector('.mobile-purchased')
+    const comprados = estrutura.querySelector('.item-purchased')
+
+    const img = estrutura.querySelector('.item-icon')
+    setImg(img, item.icon)
+
+    const custo = Math.round(sumPG(custoAtual(item), 1.15, bulkBuy))
+
     if (item.unlocked) {
-      div.classList.add('unlocked')
+      if (item.comprados > 0) {
+        comprados.textContent = item.comprados
+        mobilePurchased.classList.add('with-value')
+        mobilePurchased.textContent = item.comprados
+      }
+      if (estrutura.classList.contains('hidden')) estrutura.style.animation = 'fade-in .8s linear'
+      itemName.textContent = item.nome
+      mobileName.textContent = item.comprados > 1 ? item.plural : item.nome
+      estrutura.classList.remove('hidden')
+      estrutura.classList.add('unlocked')
+    } else {
+      itemName.textContent = '???'
+      mobileName.textContent = '???'
+      estrutura.classList.add('hidden')
     }
 
-    else div.classList.add('hidden')
-    div.setAttribute('data-tooltipId', item.id)
-    div.addEventListener('click', (e) => {
-      const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
-      if (hasClickedInfo) return
-  
-      buyEstrutura(item.id)
-    })
-
-    addSafeTouchListener(div.querySelector('.info-bttn'), () => {
-      showMobileTooltip('es', item)
-      playSound('/static/assets/sounds/open.ogg', .4)
-    })
-    
-    contentList.appendChild(div)
-
+    custoContainer.textContent = formatarNumero(custo)
+    custoContainer.classList = `cust coin ${custo > pontos ? 'high' : 'low'}`
   })
 }
 
 // Função que irá renderizar a lista certa na seção de upgrades
 const renderUpgrades = () => {
-  if (!contentList.querySelector('.upgrade')) contentList.innerHTML = ''
+  if (!contentList.querySelector('.upgrade') && !contentList.querySelector('.all-purchased')) {
+    contentList.innerHTML = ''
+  }
 
   const upgradesFiltered = upgrades.filter(item => !item.purchased)
   if (upgradesFiltered.length > 0) {
     upgradesFiltered.forEach(item => {
       const id = `upgrade-${item.id}`
-      const upgrade = document.getElementById(id)
+      let upgrade = document.getElementById(id)
 
-      if (upgrade) {
-        const custo = upgrade.querySelector('.cust')
-
-        if (item.purchased) upgrade.remove()
-        else {
-          custo.textContent = formatarNumero(item.custo)
-          if (item.custo > pontos) {
-            upgrade.classList.toggle('unlocked', false)
-            custo.classList.add('high')
-            custo.classList.remove('low')
-          } else {
-            upgrade.classList.toggle('unlocked', true)
-            custo.classList.add('low')
-            custo.classList.remove('high')
-          }
-        }
-        return 
+      if (!upgrade) {
+        upgrade = document.createElement('div')
+        upgrade.id = id
+    
+        upgrade.innerHTML = (`
+          <img class="item-icon"/>
+          <div class="item-content">
+            <div class="item-text">
+              <span class="item-name">${item.nome}</span>
+              <span class="cust coin"></span>
+            </div>
+            <button class="info-bttn">INFO</button>
+          </div>
+        `)
+    
+        upgrade.className = "content-item upgrade"
+        if (pontos >= item.custo) upgrade.classList.add('unlocked')
+    
+        upgrade.setAttribute('data-tooltipId', item.id)
+        upgrade.addEventListener('click', (e) => {
+          const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
+          if (hasClickedInfo) return
+          
+          const hasBought = buyUpgrade(item.id)
+          if (hasBought) upgrade.remove()
+        })
+    
+        addSafeTouchListener(upgrade.querySelector('.info-bttn'), () => {
+          close.classList.remove('closing')
+          mobileTooltipItem = {item, type: 'up'}
+          showMobileTooltip('up', item)
+        })
+        
+        contentList.appendChild(upgrade)
+      }
+      
+      if (item.purchased) {
+        upgrade.remove()
+        return
       }
 
-      const div = document.createElement("div")
-      div.id = id
+      const img = upgrade.querySelector('.item-icon')
+      setImg(img, item.icon)
 
-      div.innerHTML = (`
-        <div class="item-icon"><img src="/static/assets/icons/${item.icon}"/></div>
-        <div class="item-content">
-          <div class="item-text">
-            <span class="item-name">${item.nome}</span>
-            <span class="cust ${item.custo > pontos ? 'high' : 'low'}">${formatarNumero(item.custo)}</span>
-          </div>
-          <button class="info-bttn">INFO</button>
-        </div>
-      `)
+      const custoContainer = upgrade.querySelector('.cust')
 
-      div.className = "content-item upgrade"
-      if (pontos >= item.custo) div.classList.add('unlocked')
-
-      div.setAttribute('data-tooltipId', item.id)
-      div.addEventListener('click', (e) => {
-        const hasClickedInfo = document.elementsFromPoint(e.clientX, e.clientY).some(el => el.classList.contains('info-bttn'))
-        if (hasClickedInfo) return
-        
-        const hasBought = buyUpgrade(item.id)
-        if (hasBought) div.remove()
-      })
-
-      addSafeTouchListener(div.querySelector('.info-bttn'), () => {
-        showMobileTooltip('up', item)
-        playSound('/static/assets/sounds/open.ogg', .4)
-      })
-      
-      contentList.appendChild(div)
+      custoContainer.textContent = formatarNumero(item.custo)
+      custoContainer.className = `cust coin ${item.custo > pontos ? 'high' : 'low'}`
+      upgrade.classList.toggle('unlocked', pontos >= item.custo)
     })
   } else {
+    if (contentList.querySelector('.all-purchased')) return
     const span = document.createElement("span")
 
+    span.className = 'all-purchased'
     span.style.fontSize = '1.2em'
+    span.style.marginTop = '2em'
     span.textContent = 'Você comprou tudo :('
     contentList.appendChild(span)
   }
@@ -1231,15 +1707,36 @@ const renderUpgrades = () => {
 
 // Compra a estrutura, aumenta o contador de "comprados" e subtrai dos pontos
 const buyEstrutura = (id) => {
-  const estrutura = estruturas.find( e => e.id == id )
-  const custo = custoAtual(estrutura)
+  const estrutura = estruturas.find(e => e.id == id);
+  let custo = 0;
+  let quantidadeComprada = 0;
 
-  if (pontos < custo) return
-
-  estrutura.comprados += 1
-  refresh(-custo)
+  // Tenta comprar o bulkBuy completo primeiro
+  custo = Math.round(sumPG(custoAtual(estrutura), 1.15, bulkBuy));
   
-  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
+  if (pontos >= custo) {
+    quantidadeComprada = bulkBuy;
+  } else {
+    // Se não tiver pontos para o bulkBuy, calcula quantas estruturas é possível comprar
+    for (let i = bulkBuy; i >= 1; i--) {
+      const custoParcial = Math.round(sumPG(custoAtual(estrutura), 1.15, i));
+      if (pontos >= custoParcial) {
+        quantidadeComprada = i;
+        custo = custoParcial;
+        break;
+      }
+    }
+  }
+
+  // Se for possível comprar pelo menos uma estrutura
+  if (quantidadeComprada > 0) {
+    estrutura.comprados += quantidadeComprada;
+    refresh(-custo);
+    playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.mp3`, .5);
+  } else {
+    // Se não for possível comprar nenhuma, a função simplesmente retorna
+    return;
+  }
 }
 
 // Compra a estrutura, deixa ela como "purchased" (comprada), ativa o efeito do upgrade e subtrai dos pontos
@@ -1253,7 +1750,7 @@ const buyUpgrade = (id) => {
 
   refresh(-upgrade.custo)
   
-  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.ogg`, .5)
+  playSound(`/static/assets/sounds/b${randomBetween(1, 2)}.mp3`, .5)
 
   return true
 }
@@ -1265,14 +1762,14 @@ const buyUpgrade = (id) => {
 const triggerCoffeeEvent = () => {
     // A cada um segundo, verificar se o número aleatorizado é menor que a probabilidade, para então spawnar o coffee
     setInterval(() => {
-        if (Math.random() < coffeeProb) spawnCoffe()
+        if (Math.random() < coffeeProb) spawnCoffee()
     }, 1000)
 }
 
 let lastBonus = ''
 
 // Função responsável por spawnar o café, recebendo de parâmetro qual o BÔNUS escolhido
-const spawnCoffe = (bonusId = null) => {
+function spawnCoffee (bonusId = null, duracao = 2500)  {
     // Cria o elemento que vai envolver (wrap) o coffee
     const div = document.createElement("div")
     div.classList.add('coffee-wrapper')
@@ -1281,24 +1778,24 @@ const spawnCoffe = (bonusId = null) => {
     // Insere no DOM
     coffeeContainer.appendChild(div)
     
+    const fadeCSS = getComputedStyle(div).getPropertyValue('--time').trim()
+    const fadeNum = parseFloat(fadeCSS) * 1000 // converte para milissegundos
+    
     // Pega coordenadas aleatórias, respeitando o tamanho da tela
     const { x, y } = randomCoord(div)
     div.style.top = y
     div.style.left = x
 
-    // É necessário um pequeno intervalo para então colocar a opacidade e a escala em 1 (CSS fará a transição suave)
-    setTimeout(() => {
-      div.style.opacity = 1
-      div.style.transform = "scale(1)"
-      div.innerHTML = `<div class="coffee" style="animation: pulse 2s infinite ease-in-out, tilt 5s infinite"></div>`
-    }, 50)
+    div.style.opacity = 1
+    div.style.transform = "scale(1)"
+    div.innerHTML = `<div class="coffee" style="animation: pulse 2s infinite ease-in-out, tilt 5s infinite"></div>`
 
     // Quando se passar 5s, adicionar uma animação de "fade-out"
     setTimeout(() => {
       div.classList.add("fade-out")
       div.style.opacity = 0
       div.style.transform = "scale(0)"
-    }, 10050) //10050ms = 10s (lembrando que há 5s só para surgir o elemento)
+    }, fadeNum + duracao) // 5s (surgimento) + tempo em que ficará na tela
 
     // Adicionar um listener para saber quando o "fade-out" terminou, para então remover a div do "coffee"
     div.addEventListener("transitionend", (e) => {
@@ -1308,11 +1805,12 @@ const spawnCoffe = (bonusId = null) => {
     // Ao clicar no café:
     div.addEventListener('click', () => {
       // Esse operador serve para: se "bonusName" for null, será escolhido um bonus aleatório, senão será escolhido o que foi enviado como parâmetro pela função
+      updateStat('totalCoffees', 1)
       const bonus = bonusList.find(b => b.id == bonusId) ?? escolherBonusComPeso(bonusList)
       setBonus(bonus) // Coloca o bônus na tela
       spawnAlert(x, y)
       
-      playSound(`/static/assets/sounds/coffee.ogg`, .5)
+      playSound(`/static/assets/sounds/coffee.mp3`, .5)
       div.remove() // Remove o café
     })
 }
@@ -1371,7 +1869,7 @@ const randomCoord = (el) => {
 
 // Ao invés de usar porcentagens, utilzamos pesos (pois teríamos que recalcular sempre que um café novo fosse adicionado): quantos maior, mais provável de ser escolhido
 const escolherBonusComPeso = (list) => {
-  const listFiltered = list.filter(l => l?.peso)
+  const listFiltered = list.filter(l => l?.peso && l?.unlocked)
   const totalPeso = listFiltered.reduce((soma, b) => soma + b.peso, 0) // Essa linha soma TODOS os pesos
   const sorteio = Math.random() * totalPeso // Aqui é sorteado um número entre 0 e o PESO TOTAL
 
@@ -1395,6 +1893,9 @@ function setBonus(bonus) {
     return
   } // Se o bonus nao tem um icone, ele não é um bonus "passivo" e não precisa ficar na listinha de bonus
 
+  if (bonus.nome == 'Café Divino') { document.querySelector('.hacker').classList.add('active') } // Adiciona a classe 'active' para o hacker
+  else if (bonus.nome == 'Café Demoníaco') { document.querySelector('.demon').classList.add('active') } // Adiciona a classe 'active' para o demon
+
   const active = boostsActive.find(b => b.nome == bonus.nome) // Verifica se já tem um boost ativo
 
   // Se o bonus já está ativo, será renovado
@@ -1406,7 +1907,7 @@ function setBonus(bonus) {
       removeBoost(bonus.id)
     }, bonus.duracao * 1000)
 
-    const boostDiv = document.querySelector(`[data-id="${bonus.id}"]`)
+    const boostDiv = document.querySelector(`[data-bonusid="${bonus.id}"]`)
     lastBonus = {
       nome: active.nome,
       efeito: active.efeito,
@@ -1453,14 +1954,17 @@ function setBonus(bonus) {
   const div = document.createElement("div")
   div.className = `boost cooldown`
   div.setAttribute('data-tooltipId', bonus.id)
-  div.dataset.id = bonus.id // Coloca um data-set para facilitar a localização dessa div
-  div.style.backgroundImage = `url('/static/assets/${bonus.icon}')` // Coloca dire
+  div.dataset.bonusid = bonus.id // Coloca um data-set para facilitar a localização dessa div
   div.style.setProperty('--time', `${bonus.duracao}s`) // Coloca uma variável para o CSS saber o tempo da animação
   addSafeTouchListener(div, () => {
     showMobileTooltip('bn', bonusActive)
-    playSound('/static/assets/sounds/open.ogg', .4)
   })
 
+  const img = document.createElement("img")
+  img.className = 'boost-icon'
+  setImg(img, bonus.icon) // Coloca o ícone do bonus
+  div.appendChild(img) // Coloca o ícone dentro da div
+  
   boostsContainer.appendChild(div) // Adiciona ao container dos boosts
 }
 
@@ -1469,10 +1973,13 @@ function removeBoost(id) {
   const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
+    if (boost.nome == 'Café Divino') { document.querySelector('.hacker').classList.remove('active')} // Remove a classe 
+    else if (boost.nome == 'Café Demoníaco') { document.querySelector('.demon').classList.remove('active')} // Remove a classe 
+
     if (boost.reverter) boost.reverter() // Desfaz o efeito
     boostsActive.splice(index, 1) // Retira o boost da lista
 
-    const boostDiv = document.querySelector(`[data-id="${id}"]`) // Pega a div com o boost ativo
+    const boostDiv = document.querySelector(`[data-bonusid="${id}"]`) // Pega a div com o boost ativo
     stopMatrix(id) // Para com a respectiva matrix
     boostDiv.remove()
     showTooltip()
@@ -1635,9 +2142,8 @@ function generateCodeLine(add = 1) {
 
 // INICIO LINHAS POR SEGUNDO (FINALMENTE)
 
-function custoAtual(el) {
-    return Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
-}
+const sumPG = (a1, q, n) => (a1*(Math.pow(q, n) - 1))/((q - 1)||1)
+const custoAtual = (el) => Math.floor(el.custoBase * Math.pow(1.15, el.comprados))
 
 const timing = 0.1
 
@@ -1645,15 +2151,15 @@ function gerarPassivamente() {
   let totalGerado = 0;
 
   estruturas.forEach(estrutura => {
-    const geradoPorEssa = estrutura.ls * estrutura.comprados * lsMultiplier * timing
+    const geradoPorEssa = estrutura.lps * estrutura.comprados * lpsMultiplier * timing
     estrutura.gerado += geradoPorEssa
     totalGerado += geradoPorEssa
   })
 
 
   if (totalGerado == 0) return
-  lsTOT = totalGerado / timing
-  lsPersecondContainer.textContent = `por segundo: ${formatarNumero(lsTOT.toFixed(1))}` 
+  lpsTOT = totalGerado / (timing || 1)
+  lpsPersecondContainer.textContent = `linhas p/ segundo: ${formatarNumero(lpsTOT.toFixed(1))}` 
   refresh(totalGerado)
 }
 
@@ -1719,21 +2225,21 @@ function playMusic(url, finalVolume = 1, loop = true, fadeDuration = 2000) {
 
     // Fade-in
     const steps = 20;
-    const interval = fadeDuration / steps;
+    const interval = fadeDuration / (steps || 1);
     let currentStep = 0;
 
     fadeInInterval = setInterval(() => {
       currentStep++;
-      const newVolume = finalVolume * (currentStep / steps);
+      const newVolume = finalVolume * (currentStep / (steps || 1));
       audio.volume = Math.min(finalVolume, newVolume);
 
       if (currentStep >= steps) {
         clearInterval(fadeInInterval);
       }
-    }, interval);
+    }, interval)
   }).catch((err) => {
     console.error("Erro ao tocar música:", err);
-  });
+  })
 }
 
 function stopMusic(useFade = true, fadeDuration = 1000) {
@@ -1744,13 +2250,13 @@ function stopMusic(useFade = true, fadeDuration = 1000) {
 
   if (useFade) {
     const steps = 20;
-    const interval = fadeDuration / steps;
+    const interval = fadeDuration / (steps || 1);
     let currentStep = 0;
     const startVolume = currentMusic.volume;
 
     fadeOutInterval = setInterval(() => {
       currentStep++;
-      const newVolume = startVolume * (1 - currentStep / steps);
+      const newVolume = startVolume * (1 - currentStep / (steps || 1));
       currentMusic.volume = Math.max(0, newVolume);
 
       if (currentStep >= steps) {
@@ -1795,18 +2301,28 @@ modalForm.addEventListener('submit', (e) => {
 })
 
 window.addEventListener('submitError', (e) => {
-  if(modalContainer.classList.contains("disabled")) modalContainer.classList.remove("disabled");
+  if (modalContainer.classList.contains("disabled")) modalContainer.classList.remove("disabled");
   modalErrorContainer.textContent = e.detail.error;
   modalInput.value = ''
 })
 
-window.addEventListener('submitSucess', (e) => {
-  company = e.detail.companyName;
-  companyName.textContent = company;
-  modalErrorMessage = ''
-  closeModal()
-  startGame()
-  if (e.detail.hasToRenderLb) requestLeaderboard()
+const submitPromise = new Promise((resolve) => {
+  if (!idPlayer) { resolve() }
+
+  window.addEventListener('submitError', (e) => {
+    resolve();
+  })
+
+  window.addEventListener('submitSucess', (e) => {
+    company = e.detail.companyName;
+    companyName.textContent = company;
+    modalErrorMessage = '';
+    closeModal();
+    startGame();
+    if (e.detail.hasToRenderLb) requestLeaderboard();
+
+    resolve(); // Finaliza a promise quando tudo do evento acabar
+  })
 })
 
 // VERIFICAR SE A PÁGINA FOI CARREGADA
@@ -1817,13 +2333,17 @@ function setData(){
   // verifica as upgrades compradas e armazenas
   let listPatchUpgrades = [];
   upgrades.forEach((element) => {
-    if(element.purchased) listPatchUpgrades.push(element.id)
+    listPatchUpgrades.push({
+      "id": element.id,
+      "purchased": element.purchased,
+      "unlocked": element.unlocked,
+    })
   })
   
   // verifica as estruturas compradas e armazenas
   let listPatchStructures = [];
   estruturas.forEach((element)=>{
-    if(element.comprados > 0) listPatchStructures.push({
+    if (element.comprados > 0) listPatchStructures.push({
       "id": element.id,
       "comprados": element.comprados,
       "gerado": element.gerado,
@@ -1832,6 +2352,7 @@ function setData(){
 
   localStorage.setItem("upgrades", JSON.stringify({salve: listPatchUpgrades}));
   localStorage.setItem("estruturas", JSON.stringify({salve: listPatchStructures}));
+  localStorage.setItem('stats', JSON.stringify(defaultStats))
 }
 
 // Toda vez que atualizar a página, ele atualiza os dados
@@ -1870,11 +2391,19 @@ function startGame() {
     requestLeaderboard()
   }, 1000 * 5);
 
-  setTimeout(() => {
+  const setCoffeeInterval = () => {
     coffeeInterval = setInterval(() => {
-      if (Math.random() < coffeeProb) spawnCoffe()
+      if (Math.random() < coffeeProb) spawnCoffee()
     }, 1000)
-  }, 1000 * 15)
+  }
+
+  if (pontos == 0) {
+    setTimeout(() => {
+      setCoffeeInterval()
+    }, 1000 * 15)
+  } else {
+    setCoffeeInterval()
+  }
 }
 
 function endGame() {
@@ -1882,10 +2411,11 @@ function endGame() {
   coffeeInterval = null
 }
 
-function reset(lsToo, cookiesToo) {
+function reset(lsToo = true, cookiesToo = true) {
   debug = true
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
+  localStorage.removeItem('stats')
   if (lsToo) {
     refresh(-pontos)
     atualizarPontos(pontos)
@@ -1899,3 +2429,11 @@ function reset(lsToo, cookiesToo) {
 
   location.reload()
 }
+
+Promise.all([preloadPromise, submitPromise])
+  .then(() => {
+    closeLoading();
+  })
+  .catch((err) => {
+    console.error('Erro em uma das operações:', err);
+  });

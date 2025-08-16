@@ -25,3 +25,14 @@ txaio==25.6.1
 typing_extensions==4.14.1
 tzdata==2025.2
 zope.interface==7.2
+channels_redis==4.3.0
+dj-database-url==3.0.1
+gunicorn==23.0.0
+msgpack==1.1.1
+mysqlclient==2.2.7
+packaging==25.0
+psycopg2-binary==2.9.10
+python-decouple==3.8
+python-dotenv==1.1.1
+redis==6.2.0
+whitenoise==6.9.0

@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import json
+from django.contrib.auth import authenticate, login
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-
+import json
+import os
 
 from .models import Companies
 
@@ -56,6 +57,14 @@ def companiesPostName(request, *args, **kwargs):
             company = Companies.objects.create(
                 companyName = company_name,
             )
+
+            # Caso o usuário seja o nome do admin, ele já realiza o login
+            if company_name == str(os.environ.get("DJANGO_SUPERUSER_USERNAME")):
+                user = authenticate(request, username=company_name, password= os.environ.get("DJANGO_SUPERUSER_PASSWORD"))
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+
             
             #Retorna uma mensagem para o request
             return JsonResponse({
@@ -81,12 +90,14 @@ def lsPatch(request, *args, **kwargs):
             # Coloca os dados no body em variáveis
             company_id = data.get("id")
             new_ls = data.get("lsCount")
+            new_ls_highest = data.get("lsHighest")
 
             # requisita os campos em relação ao id
             company = Companies.objects.get(id=company_id)
 
             if new_ls or new_ls >= 0:
                 company.lsCount = new_ls
+                company.lsHighest = new_ls_highest
             
             company.save()
 
@@ -113,10 +124,10 @@ def stopGame(request, *args, **kwargs):
 # Requisita os dados para o leaderboard
 def leaderboard_data(request, *args, **kwargs):
     if request.method == "GET":
-        players = Companies.objects.order_by('-lsCount') # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
+        players = Companies.objects.all() # carrega todos os dados do database em ordenando os dados em ordem decrescente em relação ao lsCount
 
         # converte em lista
-        data = list(players.values("companyName", "lsCount", "id"))
+        data = list(players.values("companyName", "lsHighest", "id"))
         return JsonResponse(data, safe=False)
 
 

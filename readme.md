@@ -40,6 +40,12 @@ Em outro, com a mesma configuração
 # Esse aqui é um facilitador, em que toda vez que se atualiza algo ele atualiza automaticamente a tela
 python manage.py livereload
 ```
+
+## CRIAR O ARQUIVO .ENV
+No ambiente de produção, há dados que precisam ser escondidas, e o render requesita que tenha esses dados.
+Eles são as variávies de ambiente, que estão definidas no **.env**, e, para ambientes de teste, precisam dela para que não ocorra nenhum erro na hora de enviar para produção.
+
+
 # DICAS DE DESENVOLVIMENTO
 
 ## BACKEND
@@ -102,3 +108,5 @@ Se o código não adicionar nenhum endereço no html, pode-se
 ./pasta/arquivo
 ./arquivo
 ```
+
+
