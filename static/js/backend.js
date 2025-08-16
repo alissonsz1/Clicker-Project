@@ -199,6 +199,7 @@ function updateNamePlayer(name){
 // RODAR AO INICIALIZAR
 if (idPlayer){
     getData()
+
 }
 // Eventos windows
 
