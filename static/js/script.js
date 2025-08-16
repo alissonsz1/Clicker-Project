@@ -120,7 +120,7 @@ const upgrades = [
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
     icon: 'cafeteira.webp',
     // icon: 'placeholder.webp',
-    efeito: () => coffeeProb *= 2,
+    efeito: () => coffeeProb *= 1.5,
   },
   {
     nome: "Frigobar",
@@ -129,7 +129,7 @@ const upgrades = [
     funcao: 'Aumenta as chances de se aparecer um cafézinho.',
     icon: 'frigobar.webp',
     // icon: 'placeholder.webp',
-    efeito: () => coffeeProb *= 2,
+    efeito: () => coffeeProb *= 1.5,
   },
   {
     nome: "Certificado Online",
@@ -138,7 +138,7 @@ const upgrades = [
     funcao: 'Cada clique gera o dobro de linhas.',
     icon: 'certificado.webp',
     // icon: 'placeholder.webp',
-    efeito: () => boost *= 2,
+    efeito: () => boost *= 1.5,
   },
   {
     nome: "Calculadora científica",
@@ -646,9 +646,7 @@ function atualizarPontos(novoValor) {
   // Dispara um evento personalizado com o novo valor
 
   const newPoints = Number(novoValor).toFixed(0);
-  const newHighestPoint = Number(lpsHighest).toFixed(0);
-  
-  
+  const newHighestPoint = Number(lpsHighest).toFixed(0);  
 
   const evento = new CustomEvent("pontosAtualizados", {
     detail: { "newPoints": newPoints, "newHighestPoint": newHighestPoint }
@@ -1966,11 +1964,14 @@ function removeBoost(id) {
   const index = boostsActive.findIndex(b => b.id === id)
   if (index !== -1) {
     const boost = boostsActive[index]
+    
     if (boost.nome == 'Café Divino') { document.querySelector('.hacker').classList.remove('active')} // Remove a classe 
     else if (boost.nome == 'Café Demoníaco') { document.querySelector('.demon').classList.remove('active')} // Remove a classe 
-
+    
     if (boost.reverter) boost.reverter() // Desfaz o efeito
     boostsActive.splice(index, 1) // Retira o boost da lista
+
+    renderStats()
 
     const boostDiv = document.querySelector(`[data-bonusid="${id}"]`) // Pega a div com o boost ativo
     stopMatrix(id) // Para com a respectiva matrix
@@ -2404,12 +2405,12 @@ function endGame() {
   coffeeInterval = null
 }
 
-function reset(lsToo = true, cookiesToo = true) {
+function reset(linesToo = true, cookiesToo = true) {
   debug = true
   localStorage.removeItem('upgrades')
   localStorage.removeItem('estruturas')
   localStorage.removeItem('stats')
-  if (lsToo) {
+  if (linesToo) {
     refresh(-pontos)
     atualizarPontos(pontos)
   }
