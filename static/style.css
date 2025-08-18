@@ -756,7 +756,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     height: var(--cs);
     cursor: pointer;
     background-size: var(--cs) var(--cs);
-    background-image: url('./assets/icons/coffee.webp');
+    background-image: url('./assets/icons/coffee.png');
     background-position: 0 0;
     image-rendering: pixelated;
 
@@ -1033,18 +1033,12 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 }
 
 .stats {
-    position: fixed;
-    left: 0em;
-    top: 19%;
-    transform: translateX(0) translateY(-50%);
+    pointer-events: all;
     transition: transform .2s ease;
     filter: drop-shadow(5px 5px 5px var(--bs));
-    overflow: hidden;
-    z-index: 200;
 }
 
 .stats-icon {
-    --icon-size: 52px;
     aspect-ratio: 1/1;
     width: var(--icon-size);
     position: relative;
@@ -1068,6 +1062,22 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 1em;
+}
+
+/* SIDE BTTNS */
+
+.side-bttns {
+    --icon-size: 52px;
+    pointer-events: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    justify-content: center;
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
 }
 
 /* CONTAINER BOOSTS */
@@ -1355,15 +1365,14 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
 .leaderboard-wrapper {
     --cont-w: 280px;
     --cont-h: 326px;
-    --icon-size: 52px;
+    pointer-events: all;
     display: flex;
     align-items: flex-start;
-    position: fixed;
+    /* position: fixed;
     left: 0em;
-    top: 50%;
+    top: 50%; */
     width: calc(var(--cont-w) + var(--icon-size));
-    transform: translateX(0) translateY(-50%);
-    transform: translateX(calc(-1 * var(--cont-w))) translateY(-50%);
+    transform: translateX(calc(-1 * var(--cont-w)));
     transition: transform .2s ease;
     filter: drop-shadow(5px 5px 5px var(--bs));
 
@@ -1600,7 +1609,7 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     }
 
     .leaderboard-wrapper:hover {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
 
     .leaderboard-wrapper.visible .leaderboard-content  {
@@ -1653,9 +1662,9 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         flex-direction: column;
         width: 100%;
     }
-
-    .stats {
-        top: 44%;
+    
+    .side-bttns {
+        --icon-size: 42px;    
     }
 
     .leaderboard-wrapper {
@@ -1683,12 +1692,12 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     }
 
     .leaderboard-wrapper.enabled {
+        position: fixed;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        inset: 0;
-        transform: none;
+        width: 100vw;
+        height: 100vh;
         touch-action: none;
         z-index: 100000;
     }
