@@ -84,11 +84,8 @@ if(user == "codelab-admin"){
     buttonStop.id = "buttonStop";
     buttonStop.textContent = "PARAR";
     document.body.appendChild(buttonStop);
-
-
+    document.querySelector(".buttonStop").addEventListener("click", stopGame);
 }
-
-document.querySelector(".buttonStop").addEventListener("click", stopGame);
 
 // variáveis em csrftoken
 window.csrfToken = document.getElementById("csrf-token").value;
