@@ -44,6 +44,7 @@ services:
   buildCommand: pip install -r requirements.txt
   startCommand: |
     python manage.py migrate &&
+    python manage.py flush --no-input &&
     python manage.py createadmin &&
     python manage.py collectstatic --noinput &&
     daphne -b 0.0.0.0 -p $PORT devClicker.asgi:application
