@@ -998,7 +998,7 @@ window.addEventListener("dispatchPlayerData", (event) => {
 
 
 
-  refresh(loadingPlayer.lsCount)
+  refresh(loadingPlayer.lsCount, true)
 })
 
 // Traz os dados do leaderboard do backend na primeira execução
@@ -1027,10 +1027,10 @@ window.addEventListener("dispatchStructList", (event)=> {
 
 // USAR ESSA FUNÇÃO PARA ATUALIZAR OS PONTOS
 // valorAtual = pontos em seu estado ATUAL / add = o incremento que será adicionado (ou subtraído)
-function refresh(add) {
+function refresh(add, startPlayer = false) {
   valorAtual = pontos
   pontos = valorAtual + add;
-  if(add > 0) lpsHighest += add;
+  if(add > 0 && !startPlayer) lpsHighest += add;
 
   if (pontos != 0) document.title = `${formatarNumero(Math.floor(pontos), true)} linha${pontos > 1 ? 's' : ''} de código - Dev Clicker`
   checarDesbloqueios(pontos)
