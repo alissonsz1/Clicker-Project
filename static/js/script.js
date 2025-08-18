@@ -799,11 +799,30 @@ function renderLeaderboard(jogadores) {
 socket.onmessage = (e) => {
   // ESTRUTURA = {id, companyName, lsCount}
   statusPage = JSON.parse(e.data).status;
-  console.log(statusPage);
   if(statusPage == "pause"){
     loadingScreen.classList.remove('invisible');
-    
+    let newDiv = document.createElement("div");
+    newDiv.className = "leaderboardEnd";
+    newDiv.id = "leaderboardEnd";
+    newDiv.style.display = "fixed";
+    newDiv.appendChild(lbContentContainer);
+    loadingScreen.replaceChildren(newDiv)
+    lbContentContainer.style.fontSize = "1.5em";
+    newDiv.style.width = "95%";
+    newDiv.style.height = "95%";
+    void lbContentContainer.offsetWidth;
+    lbContentContainer.style.opacity = 1;
+    lbContentContainer.style.display = "block";
+    lbContentContainer.style.visibility = "visible";
+    lbContentContainer.style.maxWidth = "100%";
+    lbContentContainer.style.maxHeight = "100%";
+    lbContentContainer.style.height = "560px";
+    lbContentContainer.style.margin = "auto";
+    lbContentContainer.style.border = "var(--c1b)";
+    lbContentContainer.style.backgroundColor = "var(--c3)";
+    void lbContentContainer.offsetWidth;
 
+    
   } else {
     loadingScreen.classList.add('invisible');
   }
