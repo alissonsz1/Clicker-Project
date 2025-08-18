@@ -1824,3 +1824,21 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
         height: 55vw;
     }
 }
+
+/* Botão para parar */
+.buttonStop, .resume{
+    z-index: 200;
+    border: var(--c1b);
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 10px;
+    padding: 5px;
+    background-color: var(--c4);
+    font-size: 1em;
+}
+
+.resume {
+    top: auto;
+    bottom: 0;
+}

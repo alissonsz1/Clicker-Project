@@ -573,6 +573,7 @@ let defaultStats = {
 }
 let lpsHighest = 0;
 let statusPage;
+let lbContentContainerStyle;
 
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
@@ -795,6 +796,7 @@ function renderLeaderboard(jogadores) {
 
 // Socket para parar o jogo
 socket.onmessage = (e) => {
+  lbContentContainerStyle = lbContentContainer.style;
   // ESTRUTURA = {id, companyName, lsCount}
   statusPage = JSON.parse(e.data).status;
   if(statusPage == "pause"){
@@ -819,6 +821,14 @@ socket.onmessage = (e) => {
     lbContentContainer.style.border = "var(--c1b)";
     lbContentContainer.style.backgroundColor = "var(--c3)";
     void lbContentContainer.offsetWidth;
+
+    let resume = document.createElement("button");
+    resume.className = "resume";
+    resume.id = "resume";
+    resume.textContent = "VOLTAR";
+    loadingScreen.appendChild(resume);
+
+    document.querySelector(".resume").addEventListener("click", resumeGame);
 
     
   } else {

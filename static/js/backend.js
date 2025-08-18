@@ -1,5 +1,6 @@
 // Funções
 const stopGame = () => {
+    document.querySelector(".buttonStop").classList.add("hidden");
     if(user == "codelab-admin"){
         fetch('/stop-game/', {
             method:"PUT",
@@ -76,6 +77,18 @@ let playerDetails; // vai armazenar os dados do player através de seu id
 let lsCount; // coleta os pontos do player
 
 const user = document.getElementById("user").value;
+
+if(user == "codelab-admin"){
+    let buttonStop = document.createElement("button");
+    buttonStop.className = "buttonStop";
+    buttonStop.id = "buttonStop";
+    buttonStop.textContent = "PARAR";
+    document.body.appendChild(buttonStop);
+
+
+}
+
+document.querySelector(".buttonStop").addEventListener("click", stopGame);
 
 // variáveis em csrftoken
 window.csrfToken = document.getElementById("csrf-token").value;
