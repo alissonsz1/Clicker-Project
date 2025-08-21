@@ -601,6 +601,25 @@ const tap = document.querySelector('.tap') // Ícone que aparece quando clica no
 const statsContainer = document.querySelector('.stats');
 const loadingScreen = document.querySelector('.loading-screen');
 
+const savedVersion = localStorage.getItem("deploy_version");
+
+const deployUpdate = async () => {
+  const response = await fetch("/deploy-version/");
+  const data = await response.json();
+  console.log(data);
+  // if (savedVersion && savedVersion !== data.deploy_version) {
+  //     console.log(data.deployUpdate);
+  //     console.log("AQUI");
+  //     location.reload(true);
+  // }
+}
+
+setInterval(async () => {
+  console.log("AQUI");
+  deployUpdate();
+}, 5000);
+
+
 // PRELOAD (CACHE)
 const iconCache = {}
 

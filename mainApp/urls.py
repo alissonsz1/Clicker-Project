@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from django.http import JsonResponse
 
 #Importação dos views
 from .views import (
@@ -9,7 +10,9 @@ from .views import (
     lsPatch,
     leaderboard_data,
     stopGame,
+    deploy_version_view
 )
+
 
 # As rotas de solicitação
 urlpatterns = [
@@ -19,4 +22,5 @@ urlpatterns = [
     path('patch-ls-data/', lsPatch, name="companies-patch-ls"),  # atualizar as linhas de código
     path('leaderboard/', leaderboard_data,name="leaderboard-get"),
     path('stop-game/', stopGame,name="stop-game"),
+    path("deploy-version/", deploy_version_view),
 ]

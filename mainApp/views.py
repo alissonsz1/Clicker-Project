@@ -5,6 +5,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import json
 import os
+from django.conf import settings
+
 
 from .models import Companies
 
@@ -136,5 +138,8 @@ def leaderboard_data(request, *args, **kwargs):
 
 # Renderiza as páginas html
 def devClicker(request, *args, **kwargs):
-    renderizing = render(request, "index.html", {})
+    renderizing = render(request, "index.html", {})        
     return renderizing
+
+def deploy_version_view(request):
+    return JsonResponse({"deploy_version": settings.DEPLOY_HASH})
