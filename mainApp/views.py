@@ -140,6 +140,3 @@ def leaderboard_data(request, *args, **kwargs):
 def devClicker(request, *args, **kwargs):
     renderizing = render(request, "index.html", {})        
     return renderizing
-
-def deploy_version_view(request):
-    return JsonResponse({"deploy_version": settings.DEPLOY_HASH})
