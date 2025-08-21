@@ -64,7 +64,7 @@ function setCookie(cookieName, cookieValue, expiresDays){
 function getCookie(key) {
     // A expressão regex checa se: está no começo ou se possui um ponto e vírgula com espaços em seguida (";  ")
     // Se achar isso, procurará por "key=" e depois o número correspondente
-    const regex = new RegExp(`(?:^|;\\s*)${key}=(\\d+)`)
+    const regex = new RegExp(`(?:^|;\\s*)${key}=([a-f0-9-]{36})`);
     const match = document.cookie.match(regex)
     const cookieId = match?.[1] // [1] retorna o primeiro grupo encontrado que segue esse padrão
     return cookieId
@@ -177,7 +177,7 @@ function postCompany(post){
         .then(data => {
             lsCount = 0;
             idPlayer = data.id;
-            setCookie("id", data.id, 8);
+            setCookie("id", `${data.id}`, 8);
             dispatchNameSubmit('submitSucess', {companyName: post.companyName}, true);
         })
         .catch(err => {

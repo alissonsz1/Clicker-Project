@@ -667,9 +667,7 @@ addSafeTouchListener(leaderboardWrapperContainer, toggleMobileLeaderboard)
 lbContentContainer.addEventListener("transitionend", (e) => {
   if (e.propertyName === "opacity" && getComputedStyle(lbContentContainer).opacity != 1) {
     leaderboardWrapperContainer.classList.remove('enabled')
-    console.log("AQUI 0");
   }
-  console.log("AQUI 1");
 })
 
 if (!window.matchMedia('(pointer: coarse)').matches) {
@@ -689,14 +687,12 @@ leaderboardWrapperContainer.addEventListener('mouseenter', (e) => {
 })
 
 leaderboardWrapperContainer.addEventListener('mouseleave', (e) => {
-  console.log("AQUI 3");
   if (window.matchMedia('(pointer: coarse)').matches) return
     leaderboardWrapperContainer.classList.add('out')
   playSound(`/static/assets/sounds/lb-out.mp3`, .4)
 })
 
 function toggleMobileLeaderboard(e) {
-  console.log("AQUI 4");
   const touchedContent = e.target.closest('.leaderboard-content')
   if (touchedContent) return
 
