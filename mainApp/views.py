@@ -120,7 +120,7 @@ def stopGame(request, *args, **kwargs):
         user = data.get("user")
 
         if(user == "codelab-admin"):
-            updateDetect("pause")
+            updateDetect(data.get("status"))
             return JsonResponse({"messages": "pause"},status=200, safe=False)  
 
 # Requisita os dados para o leaderboard

@@ -1490,7 +1490,11 @@ body.matrix .button-header.active, body.evil .button-header.active { background-
     /* color: white; */
 }
 
-
+.leaderboard-end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /**/
 .loading-screen {

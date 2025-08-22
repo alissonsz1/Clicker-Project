@@ -31,6 +31,8 @@ class LeaderboardConsumer(AsyncWebsocketConsumer):
         game_status['status'] = data['status']
         await self.send(text_data=json.dumps(game_status["status"]))
 
+        
+
     async def leaderboard_update(self, event):
         # Quando o backend envia um evento do tipo "leaderboard.update" (via group_send),
         # este método é chamado automaticamente com o payload em event["data"]
@@ -38,5 +40,3 @@ class LeaderboardConsumer(AsyncWebsocketConsumer):
         alert = json.dumps(event["data"])
         game_status.update({'status': event["data"]["status"]})
         await self.send(text_data=alert)
-
-

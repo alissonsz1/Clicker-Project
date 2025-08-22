@@ -573,7 +573,8 @@ let defaultStats = {
 }
 let lpsHighest = 0;
 let statusPage;
-let lbContentContainerStyle;
+//let lbContentContainerStyle;
+let styleLbContainer;
 
 
 const button = document.getElementById('click_button') // Teclado CLICÁVEL
@@ -724,6 +725,7 @@ function requestLeaderboard() {
 }
 
 function renderLeaderboard(jogadores) {
+  console.log(jogadores);
   jogadores = jogadores.map((j, i) => ({...j, pos: i+1}))
   const yourPlayer = jogadores.find(j => j.id == idPlayer);
 
@@ -792,11 +794,12 @@ function renderLeaderboard(jogadores) {
 }
 
 // Socket para parar o jogo
-socket.onmessage = (e) => {
-  lbContentContainerStyle = lbContentContainer.style;
+socket.onmessage = async (e) => {
+  //lbContentContainerStyle = lbContentContainer.style;
   // ESTRUTURA = {id, companyName, lsCount}
-  statusPage = JSON.parse(e.data).status;
+  statusPage = await JSON.parse(e.data).status;
   if(statusPage == "pause"){
+    styleLbContainer = lbContentContainer.style;
     loadingScreen.classList.remove('invisible');
     let newDiv = document.createElement("div");
     newDiv.className = "leaderboardEnd";
@@ -807,11 +810,15 @@ socket.onmessage = (e) => {
     lbContentContainer.style.fontSize = "1.5em";
     newDiv.style.width = "95%";
     newDiv.style.height = "95%";
+    newDiv.style.display = 'flex'
+    newDiv.style.alignItems = 'center'
+    newDiv.style.justifyContent = 'center'
     void lbContentContainer.offsetWidth;
     lbContentContainer.style.opacity = 1;
     lbContentContainer.style.display = "block";
     lbContentContainer.style.visibility = "visible";
-    lbContentContainer.style.maxWidth = "100%";
+    lbContentContainer.style.maxWidth = "350px";
+    lbContentContainer.style.width = '100%'
     lbContentContainer.style.maxHeight = "100%";
     lbContentContainer.style.height = "560px";
     lbContentContainer.style.margin = "auto";
@@ -819,18 +826,25 @@ socket.onmessage = (e) => {
     lbContentContainer.style.backgroundColor = "var(--c3)";
     void lbContentContainer.offsetWidth;
 
-    let resume = document.createElement("button");
-    resume.className = "resume";
-    resume.id = "resume";
-    resume.textContent = "VOLTAR";
-    loadingScreen.appendChild(resume);
+    if(user =="codelab-admin"){
+      let resume = document.createElement("button");
+      resume.className = "resume";
+      resume.id = "resume";
+      resume.textContent = "VOLTAR";
+      loadingScreen.appendChild(resume);
 
-    document.querySelector(".resume").addEventListener("click", resumeGame);
+      document.querySelector(".resume").addEventListener("click", resumeGame);
+    }
 
-    
-  } else {
-    loadingScreen.classList.add('invisible');
+  } else if (statusPage == "resume") {
+    await runningGame();  // Agora o await funciona de verdade
+    console.log("Game voltou para running. Agora posso seguir...");
+    window.location.reload(); // só se realmente for necessário
   }
+
+  
+  
+
 }
 
 // FIM DO LEADERBOARD

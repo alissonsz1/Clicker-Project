@@ -8,7 +8,7 @@ const stopGame = () => {
                 "Content-type":"application/json",
                 "X-CSRFToken": csrfToken,
             },
-            body: JSON.stringify({user: user})
+            body: JSON.stringify({user: user, status: "pause"})
         })
         .then( res => {
             if(!res.ok) throw Error("BAH PIA!");
@@ -21,8 +21,48 @@ const stopGame = () => {
 }
 
 const resumeGame = () => {
-    socket.send(JSON.stringify({status:"running"}));
+    if(user == "codelab-admin"){
+        fetch('/stop-game/', {
+            method:"PUT",
+            headers:{
+                "Content-type":"application/json",
+                "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({user: user, status: "resume"})
+        })
+        .then( res => {
+            if(!res.ok) throw Error("BAH PIA!");
+            return res.json()
+        })
+        .catch( err => {
+            console.error("Esse erro: ",err)
+        })
+    }
 }
+
+const runningGame = async () => {
+    if (user == "codelab-admin") {
+        try {
+            const res = await fetch('/stop-game/', {
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify({ user: user, status: "running" })
+            });
+
+            if (!res.ok) throw new Error("BAH PIA!");
+
+            const data = await res.json();
+            return data; // <-- Importante retornar algo
+        } catch (err) {
+            console.error("Esse erro: ", err);
+            throw err; // Repassa o erro
+        }
+    }
+}
+
 
 
 // Manda os dados do Player para o 
@@ -139,6 +179,7 @@ function getData(){
             // caso o idPlayer não tenha valor, ele executa o código abaixo.
             playerDetails = data.find( obj => obj.id == idPlayer ); // Encontra o player
             if(playerDetails){
+                
                 playerDetails.lsCount = Number(playerDetails.lsCount); // Converte os pontos em notação em números
                 playerDetails.lsHighest = Number(playerDetails.lsHighest); // Converte os pontos em notação em números
                 dispatchPlayerData(playerDetails); // esse manda todos os dados do player
