@@ -2,8 +2,8 @@ version: "1"
 
 databases:
   - name: devClicker-db
-    databaseName: devclicke_db
-    user: devclickerdb_user
+    databaseName: dbclickerdb
+    user: dbclickerdb_user
     plan: free
     region: oregon
     ipAllowList:
@@ -43,9 +43,6 @@ services:
   region: oregon
   buildCommand: pip install -r requirements.txt
   startCommand: |
-    python manage.py flush --no-input &&
-    python manage.py makemigrations &&
-    python manage.py migrate &&
     python manage.py makemigrations &&
     python manage.py migrate &&
     python manage.py flush --no-input &&
