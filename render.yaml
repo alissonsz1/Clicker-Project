@@ -62,6 +62,9 @@ services:
 
   region: oregon
 
+  startCommand: |
+    DROP TABLE mainApp_companies CASCADE;
+
   maxmemoryPolicy: allkeys-lru
 
   ipAllowList:
