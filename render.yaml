@@ -2,8 +2,8 @@ version: "1"
 
 databases:
   - name: devClicker-db
-    databaseName: devclicker_db
-    user: devclicker_db_user
+    databaseName: devclicke_db
+    user: devclickerdb_user
     plan: free
     region: oregon
     ipAllowList:
@@ -61,9 +61,6 @@ services:
   plan: free
 
   region: oregon
-
-  startCommand: |
-    DROP TABLE mainApp_companies CASCADE;
 
   maxmemoryPolicy: allkeys-lru
 
